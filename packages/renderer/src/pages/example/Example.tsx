@@ -168,7 +168,7 @@ const Example = () => {
           <Button
             variant='outlined'
             sx={{ mr: 1, width: '250px', whiteSpace: 'nowrap' }}>
-            React useState: {count}
+            Matt useState: {count}
           </Button>
           <Button
             sx={{ width: 100 }}
