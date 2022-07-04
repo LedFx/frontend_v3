@@ -34,7 +34,7 @@ function handleMessage(e: MessageEvent) {
   const event: LedFxEvent = JSON.parse(e.data)
   console.log("Received event:", event)
   switch (event.type) {
-    case eventType.Log: 
+    case eventType.Log:
       console.log(event.data);
       showSnackbar(event.data.level as VariantType, event.data.msg)
   }
