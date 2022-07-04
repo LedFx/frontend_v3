@@ -47,7 +47,7 @@ const electronSteps = (theme: any) => [
     },
   },
 ];
-const HomeTour = ({ sx }: any) => {
+const HomeTour = ({ sx, children }: any) => {
   const [isTourOpen, setIsTourOpen] = useState(false);
   const setTour = useStore((state) => state.tours.setTour);
   const theme = useTheme();
@@ -63,7 +63,7 @@ const HomeTour = ({ sx }: any) => {
           setTour('home', true);
           setIsTourOpen(true);
         }}>
-        <Help />
+        {children || <Help />}
       </Button>
       <Tour
         steps={!!window.ipcRenderer ? [...wSteps, ...eSteps] : wSteps}

@@ -168,7 +168,7 @@ const Example = () => {
           <Button
             variant='outlined'
             sx={{ mr: 1, width: '250px', whiteSpace: 'nowrap' }}>
-            Not_Matt useState: {count}
+            useState: {count}
           </Button>
           <Button
             sx={{ width: 100 }}
@@ -194,7 +194,7 @@ const Example = () => {
           <Button sx={{ width: 100 }} onClick={() => increase(1)}>
             + 1
           </Button>
-        </Paper>       
+        </Paper>    
 
         {ipcRenderer && (
           <Paper elevation={3} sx={{ p: 2, m: 1, minWidth: 480 }}>
@@ -225,7 +225,15 @@ const Example = () => {
             <InfoOutlined />
           </Button>{' '}
           {pkg.env.VITRON_TOURS && <HomeTour sx={{ width: 60 }} />}
-        </Paper>
+        </Paper>       
+        <Paper elevation={3} sx={{ p: 2, m: 1, minWidth: 480 }}>
+          <Button
+            variant='outlined'            
+            sx={{ mr: 1, fontSize: 17, width: '250px', whiteSpace: 'nowrap' }}>
+            Ledfx v3:
+          </Button>
+          <Button component={RouterLink} to='/' size={'large'}>go back</Button>
+        </Paper>   
 
         {ipcRenderer && (
           <Paper elevation={1} sx={{ p: 2, m: 1, minWidth: 480 }}>
