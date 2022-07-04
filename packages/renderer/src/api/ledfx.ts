@@ -6,7 +6,7 @@ import produce from 'immer';
 // eslint-disable-next-line import/no-cycle
 
 
-const baseURL = 'http://localhost:8300';
+const baseURL = 'http://localhost:8080';
 const storedURL = window.localStorage.getItem('ledfx-v3-host');
 
 const api = axios.create({

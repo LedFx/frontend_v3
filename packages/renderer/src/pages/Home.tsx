@@ -13,6 +13,8 @@ const ipcRenderer = window.ipcRenderer || false
 const Home = () => {
   const snackbar = useStore((state) => state.ui.snackbar)
   const getSettings = useStore((state) => state.api.getSettings)
+  const getDevices = useStore((state) => state.api.getDevices)
+  const addDevice = useStore((state) => state.api.addDevice)
   const scanForDevices = useStore((state) => state.api.scanForDevices)
   const { enqueueSnackbar } = useSnackbar()
 
@@ -41,6 +43,8 @@ const Home = () => {
           {/* <HomeTour>Tour</HomeTour> */}
           <Button onClick={() => enqueueSnackbar('I love hooks')}>Notification</Button>
           <Button onClick={() => getSettings()}>getSettings</Button>          
+          <Button onClick={() => getDevices()}>getDevices</Button>          
+          <Button onClick={() => addDevice().then(()=>getDevices())}>addDevice</Button>          
           <Button onClick={() => scanForDevices()}>scanForDevices</Button>          
           <Button component={RouterLink} to='/Example' size={'large'}>Basic Examples</Button>
         </Stack>

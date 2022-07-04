@@ -3,52 +3,73 @@
 /* eslint-disable no-underscore-dangle */
 /* eslint-disable consistent-return */
 import React, { useEffect, useLayoutEffect, useState } from 'react';
-
+import { useStore } from '../store/useStore'
 import { useLocation } from 'react-router-dom';
 import Sockette from 'sockette';
+import { VariantType } from 'notistack';
 
+enum eventType {
+  Log,
+  Shutdown,
+  EffectRender,
+  EffectUpdate,
+  EffectDelete,
+  GlobalEffectUpdate,
+  VirtualUpdate,
+  VirtualDelete,
+  DeviceUpdate,
+  DeviceDelete,
+  ConnectionsUpdate,
+}
+
+interface LedFxEvent {
+  timestamp: string,
+  type: eventType,
+  title: string,
+  data: Record<string, any>
+}
+
+function handleMessage(e: MessageEvent) {
+  const showSnackbar = useStore((state) => state.ui.showSnackbar)
+  const event: LedFxEvent = JSON.parse(e.data)
+  console.log("Received event:", event)
+  switch (event.type) {
+    case eventType.Log: 
+      console.log(event.data);
+      showSnackbar(event.data.level as VariantType, event.data.msg)
+  }
+}
 
 function createSocket() {
-    const _ws = new Sockette(
-        'ws://localhost:8300/websocket',
-      {
-        timeout: 5e3,
-        maxAttempts: 10,
-        onopen: (e) => {
-          console.log('NEW BASE Connected!', e);
-          // document.dispatchEvent(
-          //   new CustomEvent("disconnected", {
-          //     detail: {
-          //       isDisconnected: false
-          //     }
-          //   })
-          // );
-          (_ws as any).ws = e.target;
-        },
-        onmessage: (event) => {
-          console.log('NEW BASE MSG!', event);
-          if (JSON.parse(event.data).type) {
-            document.dispatchEvent(
-              new CustomEvent('YZNEW', { detail: JSON.parse(event.data) })
-            );
-          }
-        },
-        // onreconnect: e => console.log('Reconnecting...', e),
-        // onmaximum: e => console.log('Stop Attempting!', e),
-        onclose: (e) => {
-          console.log('NEW BASE Closed!', e);
-          // document.dispatchEvent(
-          //   new CustomEvent("disconnected", {
-          //     detail: {
-          //       isDisconnected: true
-          //     }
-          //   })
-          // );
-        },
-        // onerror: e => console.log('Error:', e)
-      }
-    );
-    return _ws;
+  const _ws = new Sockette(
+    'ws://localhost:8080/websocket',
+    {
+      timeout: 5e3,
+      maxAttempts: 10,
+      onopen: (e: Event) => {
+        console.log('Connected to LedFx Server', e);
+        (_ws as any).ws = e.target;
+      },
+      onmessage: (e: Event) => {
+        console.log('Message from LedFx Server', e);
+        handleMessage(e as MessageEvent);
+      },
+      onreconnect: (e: Event) => console.log('Reconnecting to LedFx Server...', e),
+      onmaximum: (e: Event) => console.log('Maximum reconnect attempts to LedFx Server', e),
+      onclose: (e: Event) => {
+        console.log('Disconnected from LedFx Server', e);
+        // document.dispatchEvent(
+        //   new CustomEvent("disconnected", {
+        //     detail: {
+        //       isDisconnected: true
+        //     }
+        //   })
+        // );
+      },
+      // onerror: e => console.log('Error:', e)
+    }
+  );
+  return _ws;
 }
 const ws = createSocket();
 export default ws;
