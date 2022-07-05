@@ -12,7 +12,7 @@
     {
       "type": "shell",
       "label": "2. Run Backend (win)",
-      "command": "core\\LedFx.exe -p ${input:port}",
+      "command": "core\\LedFx.exe -p ${input:port} -l 0",
       "problemMatcher": []
     },
     {
