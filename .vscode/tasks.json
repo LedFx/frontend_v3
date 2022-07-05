@@ -9,6 +9,35 @@
       "command": "node .vscode/.debug.script.mjs",
       "isBackground": true,
       "problemMatcher": []
+    },
+    {
+      "type": "npm",
+      "script": "start",
+      "problemMatcher": [],
+      "label": "web: start",
+      "detail": "node scripts/start.mjs"
+    },
+    {
+      "type": "npm",
+      "script": "build",
+      "group": "build",
+      "problemMatcher": [],
+      "label": "web: dist",
+      "detail": "tsc --noEmit -p packages/renderer/tsconfig.json && node scripts/build.mjs"
+    },
+    {
+      "type": "npm",
+      "script": "dev",
+      "problemMatcher": [],
+      "label": "app: dev",
+      "detail": "node scripts/watch.mjs"
+    },
+    {
+      "type": "npm",
+      "script": "dist",
+      "problemMatcher": [],
+      "label": "app: dist",
+      "detail": "tsc --noEmit -p packages/renderer/tsconfig.json && node scripts/build.mjs && yarn electron-builder"
     }
   ]
 }
