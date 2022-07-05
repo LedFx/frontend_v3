@@ -1,15 +1,21 @@
 import styles from '@/styles/app.module.scss'
-import { Button, Stack, Typography } from '@mui/material'
+import { Button, TextField , Stack, Typography } from '@mui/material'
 import { useStore } from '../store/useStore'
 import pkg from '../../../../package.json'
 import Box from '@mui/material/Box'
 import { Link as RouterLink } from 'react-router-dom'
 import { useSnackbar } from 'notistack'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 
 const ipcRenderer = window.ipcRenderer || false
 
 const Home = () => {
+  // @not_matt 
+  // - `text` is a local state
+  // - only available inside this component
+  // - it is not persistant
+  const [text, setText] = useState('Text')
+
   const snackbar = useStore((state) => state.ui.snackbar)
   const devices = useStore((state) => state.api.devices)
   const virtuals = useStore((state) => state.api.virtuals)
@@ -46,11 +52,16 @@ const Home = () => {
         <Stack spacing={1}>
           <Button onClick={() => enqueueSnackbar('I love hooks')}>Notification</Button>
           <Button onClick={() => getSettings()}>getSettings</Button>          
-          <Button onClick={() => getDevices()}>getDevices</Button>          
+          <Button onClick={() => getDevices()}>getDevices</Button>  
+          <TextField 
+            variant="outlined"
+            value={text}
+            onChange={(e)=>setText(e.target.value)}
+          />        
           <Button onClick={() => addDevice({
               "type": "UDP Stream",
-              "base_config": {
-                "name": "test device udp",
+              "base_config": {                
+                "name": text, // @not_matt here we are passing the current `text` into the function addDevice
                 "pixel_count": 64
               },
               "impl_config": {
