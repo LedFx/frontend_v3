@@ -22,14 +22,14 @@ enum deviceState {
 }
 
 interface device {
-  id: string
+  id?: string
   type: string
   base_config: {
     name: string
     pixel_count: number
   }
   impl_config: Record<string, any>
-  state: deviceState
+  state?: deviceState
 }
 
 interface effect {
@@ -96,20 +96,26 @@ export const storeApi = (set: any) => ({
       )
     }
   },
-  addDevice: async () => {
+  addDevice: async (device: device) => {
     const resp = await Ledfx('/api/devices', 'POST', {
-      "type": "UDP Stream",
+      "type": device.type,
       "base_config": {
-        "name": "test device udp",
-        "pixel_count": 64
+        "name": device.base_config.name,
+        "pixel_count": device.base_config.pixel_count
       },
       "impl_config": {
-        "ip": "192.168.0.69"
+        "ip": device.impl_config.ip
       }
     });
     // TODO: proper resp & resp handling
     if (resp) {
       console.log(resp)
     }
+
+    // OR you could now do it like this, if you are enforcing device as a param
+    // const res = await Ledfx('/api/devices', 'POST', device);
+    // if (res) {
+    //   console.log(res)
+    // }
   },
 })

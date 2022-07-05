@@ -47,7 +47,16 @@ const Home = () => {
           <Button onClick={() => enqueueSnackbar('I love hooks')}>Notification</Button>
           <Button onClick={() => getSettings()}>getSettings</Button>          
           <Button onClick={() => getDevices()}>getDevices</Button>          
-          <Button onClick={() => addDevice().then(()=>getDevices())}>addDevice</Button>          
+          <Button onClick={() => addDevice({
+              "type": "UDP Stream",
+              "base_config": {
+                "name": "test device udp",
+                "pixel_count": 64
+              },
+              "impl_config": {
+                "ip": "192.168.0.69"
+              }
+            }).then(()=>getDevices())}>addDevice</Button>          
           <Button component={RouterLink} to='/Example' size={'large'}>Basic Examples</Button>
         </Stack>
         <hr />
