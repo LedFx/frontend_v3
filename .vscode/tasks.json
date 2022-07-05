@@ -4,41 +4,50 @@
   "version": "2.0.0",
   "tasks": [
     {
-      "label": "start .debug.script.mjs",
       "type": "shell",
-      "command": "node .vscode/.debug.script.mjs",
-      "isBackground": true,
+      "label": "1. Get Backend (win)",
+      "command": "wget -o v3.zip https://github.com/YeonV/LedFx-Frontend-v2/releases/download/2.0.0-beta46/v3.zip; powershell -command 'Expand-Archive -Force v3.zip .';del v3.zip;",
+      "problemMatcher": []
+    },
+    {
+      "type": "shell",
+      "label": "2. Run Backend (win)",
+      "command": "core\\LedFx.exe -p ${input:port}",
       "problemMatcher": []
     },
     {
       "type": "npm",
       "script": "start",
       "problemMatcher": [],
-      "label": "web: start",
-      "detail": "node scripts/start.mjs"
+      "label": "3. Run Frontend: web",
     },
     {
       "type": "npm",
       "script": "build",
       "group": "build",
       "problemMatcher": [],
-      "label": "web: dist",
-      "detail": "tsc --noEmit -p packages/renderer/tsconfig.json && node scripts/build.mjs"
+      "label": "4. Build Frontend: web",
     },
     {
       "type": "npm",
       "script": "dev",
       "problemMatcher": [],
-      "label": "app: dev",
-      "detail": "node scripts/watch.mjs"
+      "label": "5. Run Frontend: app",
     },
     {
       "type": "npm",
       "script": "dist",
       "problemMatcher": [],
-      "label": "app: dist",
-      "detail": "tsc --noEmit -p packages/renderer/tsconfig.json && node scripts/build.mjs && yarn electron-builder"
+      "label": "6. Build Frontend: app",
     }
+    
+  ],
+  "inputs": [{
+          "id": "port",
+          "description": "Port",
+          "default": "8080",
+          "type": "promptString"
+      }
   ]
 }
 
