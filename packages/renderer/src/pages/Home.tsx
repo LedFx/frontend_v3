@@ -73,6 +73,8 @@ const Home = () => {
         <hr />
         <Typography>Devices:</Typography>
         <Typography>{JSON.stringify(devices)}</Typography>
+        {/* This is how you can render Records         */}
+        {Object.keys(devices).map(d => <div>{devices[d].base_config.name}</div>)}
         <hr />
         <Typography>Virtuals:</Typography>
         <Typography>{JSON.stringify(virtuals)}</Typography>
