@@ -5,8 +5,7 @@ import produce from 'immer';
 // import { useStore } from '@/store/useStore';
 // eslint-disable-next-line import/no-cycle
 
-
-const baseURL = 'http://localhost:8080';
+const baseURL = `${import.meta.env.VITE_CORE_PROTOCOL || 'http'}://${import.meta.env.VITE_CORE_HOST || 'localhost'}:${import.meta.env.VITE_CORE_PORT || '8080'}`;
 const storedURL = window.localStorage.getItem('ledfx-v3-host');
 
 const api = axios.create({

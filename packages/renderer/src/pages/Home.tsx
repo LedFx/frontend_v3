@@ -1,5 +1,5 @@
 import styles from '@/styles/app.module.scss'
-import { Button, Stack } from '@mui/material'
+import { Button, Stack, Typography } from '@mui/material'
 import { useStore } from '../store/useStore'
 import pkg from '../../../../package.json'
 import Box from '@mui/material/Box'
@@ -43,6 +43,7 @@ const Home = () => {
               : '100vh',
         }}>
         <p>Welcome to LedFx v3</p>
+        <Typography>CORE: {`${import.meta.env.VITE_CORE_PROTOCOL || 'http'}://${import.meta.env.VITE_CORE_HOST || 'localhost'}:${import.meta.env.VITE_CORE_PORT || '8080'}`}</Typography>
         <Stack spacing={1}>
           <Button onClick={() => enqueueSnackbar('I love hooks')}>Notification</Button>
           <Button onClick={() => getSettings()}>getSettings</Button>          
@@ -61,6 +62,7 @@ const Home = () => {
         {JSON.stringify(connections)}
         <hr />
         {JSON.stringify(settings)}
+        <hr />
       </header>
     </Box>
   )

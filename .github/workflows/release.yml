@@ -87,14 +87,14 @@ jobs:
         if: matrix.OSNAME != 'win'
         env:
           release_version: ${{ steps.package-version.outputs.current-version}}
-          REACT_APP_VERSION: ${{ steps.package-version.outputs.current-version}}
+          VITE_VERSION: ${{ steps.package-version.outputs.current-version}}
         run: GH_TOKEN=${{secrets.GH_TOKEN}} yarn dist -p "never"
 
       - name: Build Win project
         if: matrix.OSNAME == 'win'
         env:
           release_version: ${{ steps.package-version.outputs.current-version}}
-          REACT_APP_VERSION: ${{ steps.package-version.outputs.current-version}}
+          VITE_VERSION: ${{ steps.package-version.outputs.current-version}}
         run: set GH_TOKEN=${{secrets.GH_TOKEN}} && yarn dist -p "never"
 
       - name: Upload Release Asset

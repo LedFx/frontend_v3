@@ -42,7 +42,7 @@ function handleMessage(e: MessageEvent) {
 
 function createSocket() {
   const _ws = new Sockette(
-    'ws://localhost:8080/websocket',
+    `${import.meta.env.VITE_CORE_PROTOCOL === 'https' ? 'wss' : 'ws'}://${import.meta.env.VITE_CORE_HOST || 'localhost'}:${import.meta.env.VITE_CORE_PORT || '8080'}/websocket`,
     {
       timeout: 5e3,
       maxAttempts: 10,
