@@ -25,6 +25,7 @@
     "@mui/icons-material": "^5.8.4",
     "@mui/material": "^5.8.5",
     "axios": "^0.27.2",
+    "create-vitron": "^0.0.7",
     "custom-electron-titlebar": "^4.1.0",
     "electron-devtools-installer": "^3.2.0",
     "electron-store": "^8.0.2",
