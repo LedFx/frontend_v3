@@ -6,12 +6,16 @@ import Box from '@mui/material/Box'
 import { Link as RouterLink } from 'react-router-dom'
 import { useSnackbar } from 'notistack'
 import { useEffect } from 'react'
-import HomeTour from '@/docs/HomeTour'
 
 const ipcRenderer = window.ipcRenderer || false
 
 const Home = () => {
   const snackbar = useStore((state) => state.ui.snackbar)
+  const devices = useStore((state) => state.api.devices)
+  const virtuals = useStore((state) => state.api.virtuals)
+  const effects = useStore((state) => state.api.effects)
+  const connections = useStore((state) => state.api.connections)
+  const settings = useStore((state) => state.api.settings)
   const getSettings = useStore((state) => state.api.getSettings)
   const getDevices = useStore((state) => state.api.getDevices)
   const addDevice = useStore((state) => state.api.addDevice)
@@ -40,7 +44,6 @@ const Home = () => {
         }}>
         <p>Welcome to LedFx v3</p>
         <Stack spacing={1}>
-          {/* <HomeTour>Tour</HomeTour> */}
           <Button onClick={() => enqueueSnackbar('I love hooks')}>Notification</Button>
           <Button onClick={() => getSettings()}>getSettings</Button>          
           <Button onClick={() => getDevices()}>getDevices</Button>          
@@ -48,6 +51,16 @@ const Home = () => {
           <Button onClick={() => scanForDevices()}>scanForDevices</Button>          
           <Button component={RouterLink} to='/Example' size={'large'}>Basic Examples</Button>
         </Stack>
+        <hr />
+        {JSON.stringify(devices)}
+        <hr />
+        {JSON.stringify(virtuals)}
+        <hr />
+        {JSON.stringify(effects)}
+        <hr />
+        {JSON.stringify(connections)}
+        <hr />
+        {JSON.stringify(settings)}
       </header>
     </Box>
   )
