@@ -71,15 +71,20 @@ const Home = () => {
           <Button component={RouterLink} to='/Example' size={'large'}>Basic Examples</Button>
         </Stack>
         <hr />
-        {JSON.stringify(devices)}
+        <Typography>Devices:</Typography>
+        <Typography>{JSON.stringify(devices)}</Typography>
         <hr />
-        {JSON.stringify(virtuals)}
+        <Typography>Virtuals:</Typography>
+        <Typography>{JSON.stringify(virtuals)}</Typography>
         <hr />
-        {JSON.stringify(effects)}
+        <Typography>Effects:</Typography>
+        <Typography>{JSON.stringify(effects)}</Typography>
         <hr />
-        {JSON.stringify(connections)}
+        <Typography>Connections:</Typography>
+        <Typography>{JSON.stringify(connections)}</Typography>
         <hr />
-        {JSON.stringify(settings)}
+        <Typography>Settings:</Typography>
+        <Typography>{JSON.stringify(settings)}</Typography>
         <hr />
       </header>
     </Box>
