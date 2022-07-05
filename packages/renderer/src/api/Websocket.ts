@@ -30,7 +30,7 @@ interface LedFxEvent {
 }
 
 function handleMessage(e: MessageEvent) {
-  const showSnackbar = useStore((state) => state.ui.showSnackbar)
+  const showSnackbar = useStore.getState().ui.showSnackbar
   const event: LedFxEvent = JSON.parse(e.data)
   console.log("Received event:", event)
   switch (event.type) {
