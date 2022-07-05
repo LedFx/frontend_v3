@@ -19,7 +19,6 @@ const Home = () => {
   const getSettings = useStore((state) => state.api.getSettings)
   const getDevices = useStore((state) => state.api.getDevices)
   const addDevice = useStore((state) => state.api.addDevice)
-  const scanForDevices = useStore((state) => state.api.scanForDevices)
   const { enqueueSnackbar } = useSnackbar()
 
   useEffect(() => {
@@ -49,7 +48,6 @@ const Home = () => {
           <Button onClick={() => getSettings()}>getSettings</Button>          
           <Button onClick={() => getDevices()}>getDevices</Button>          
           <Button onClick={() => addDevice().then(()=>getDevices())}>addDevice</Button>          
-          <Button onClick={() => scanForDevices()}>scanForDevices</Button>          
           <Button component={RouterLink} to='/Example' size={'large'}>Basic Examples</Button>
         </Stack>
         <hr />
