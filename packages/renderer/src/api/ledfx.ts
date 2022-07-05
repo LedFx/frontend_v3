@@ -36,43 +36,7 @@ export const Ledfx = async (
         response = await api.get(path);
         break;
     }
-    // console.log('1:', response);
-    if (response.data && response.data.payload) {
-      setState(
-        produce((state: any) => {
-          state.ui.snackbar = {
-            isOpen: true,
-            variant: response.data.payload.type || 'error',
-            message:
-              response.data.payload.reason ||
-              response.data.payload.message ||
-              JSON.stringify(response.data.payload),
-          };
-        })
-      );
-      // console.log('2:', response);
-      if (response.data.status) {
-        return response.data.status;
-      }
-    }
-    // console.log('3:', response);
-    if (response.payload) {
-      setState(
-        produce((state: any) => {
-          state.ui.snackbar = {
-            isOpen: true,
-            variant: response.payload.type || 'error',
-            message:
-              response.payload.reason ||
-              response.payload.message ||
-              JSON.stringify(response.payload),
-          };
-        })
-      );
-    }
-    // console.log('4:', response);
     if (response.status === 200) {
-      // console.log('4eyyy:', response);
       setState(
         produce((state: any) => {
           state.disconnected = false;

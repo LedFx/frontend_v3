@@ -65,13 +65,80 @@ interface settings {
   logLevel: number
 }
 
+// Schema interfaces
+
+interface schema {
+  effect: typedSchema
+  device: typedSchema
+  virtual: Record<string, schemaEntry>
+  setting: Record<string, schemaEntry>
+}
+
+interface schemaEntry {
+  default: any
+  description: string
+  required: boolean
+  title: string
+  type: string
+  validation: Record<string, any>
+}
+
+interface typedSchema {
+  base: Record<string, schemaEntry>
+  types: string[]
+}
+
 export const storeApi = (set: any) => ({
   settings: {} as settings,
   effects: {} as Record<string, effect>,
   devices: {} as Record<string, device>,
   virtuals: {} as Record<string, virtual>,
+  schema: {} as schema,
   connections: {} as connections,
   globalEffectConfig: {} as effectConfig,
+  getSchema: async () => {
+    // hydrate schema
+    let resp = await Ledfx('/api/effects/schema')
+    if (resp) {
+      set(
+        produce((state: any) => {
+          state.api.schema.effect = resp as schema["effect"]
+        }),
+        false,
+        'api/getEffectSchema'
+      )
+    }
+    resp = await Ledfx('/api/devices/schema')
+    if (resp) {
+      set(
+        produce((state: any) => {
+          state.api.schema.device = resp as schema["device"]
+        }),
+        false,
+        'api/getDeviceSchema'
+      )
+    }
+    resp = await Ledfx('/api/virtuals/schema')
+    if (resp) {
+      set(
+        produce((state: any) => {
+          state.api.schema.virtual = resp as schema["virtual"]
+        }),
+        false,
+        'api/getVirtualSchema'
+      )
+    }
+    resp = await Ledfx('/api/settings/schema')
+    if (resp) {
+      set(
+        produce((state: any) => {
+          state.api.schema.settings = resp as schema["setting"]
+        }),
+        false,
+        'api/getSettingSchema'
+      )
+    }
+  },
   getSettings: async () => {
     const resp = await Ledfx('/api/settings')
     if (resp) {

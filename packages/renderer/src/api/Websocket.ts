@@ -23,20 +23,24 @@ enum eventType {
 }
 
 interface LedFxEvent {
-  timestamp: string,
-  type: eventType,
-  title: string,
-  data: Record<string, any>
+  Timestamp: string,
+  Type: eventType,
+  Title: string,
+  Data: Record<string, any>
 }
 
 function handleMessage(e: MessageEvent) {
   const showSnackbar = useStore.getState().ui.showSnackbar
   const event: LedFxEvent = JSON.parse(e.data)
   console.log("Received event:", event)
-  switch (event.type) {
+  switch (event.Type) {
     case eventType.Log:
-      console.log(event.data);
-      showSnackbar(event.data.level as VariantType, event.data.msg)
+      showSnackbar(event.Data.level as VariantType, event.Data.msg)
+      break
+    case eventType.EffectUpdate:
+      
+    default:
+      console.log("Event type not implemented:", event.Type)
   }
 }
 
@@ -51,7 +55,6 @@ function createSocket() {
         (_ws as any).ws = e.target;
       },
       onmessage: (e: Event) => {
-        console.log('Message from LedFx Server', e);
         handleMessage(e as MessageEvent);
       },
       onreconnect: (e: Event) => console.log('Reconnecting to LedFx Server...', e),
