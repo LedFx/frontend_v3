@@ -10,7 +10,7 @@ import { useEffect, useState } from 'react'
 const ipcRenderer = window.ipcRenderer || false
 
 const Home = () => {
-  // @not_matt 
+  // @not_matt
   // - `text` is a local state
   // - only available inside this component
   // - it is not persistant
@@ -55,35 +55,51 @@ const Home = () => {
               : '100vh',
         }}>
         <p>Welcome to LedFx v3</p>
-        <Typography>CORE: {`${import.meta.env.VITE_CORE_PROTOCOL || 'http'}://${import.meta.env.VITE_CORE_HOST || 'localhost'}:${import.meta.env.VITE_CORE_PORT || '8080'}`}</Typography>
+        <Typography>
+          CORE:{' '}
+          {`${import.meta.env.VITE_CORE_PROTOCOL || 'http'}://${
+            import.meta.env.VITE_CORE_HOST || 'localhost'
+          }:${import.meta.env.VITE_CORE_PORT || '8080'}`}
+        </Typography>
         <Stack spacing={1}>
-          <Button onClick={() => enqueueSnackbar('I love hooks')}>Notification</Button>
+          <Button onClick={() => enqueueSnackbar('I love hooks')}>
+            Notification
+          </Button>
           <Button onClick={() => getSettings()}>getSettings</Button>
           <Button onClick={() => getSchema()}>getSchema</Button>
           <Button onClick={() => handleDevices()}>getDevices</Button>
           <Button onClick={() => getEffects()}>getEffects</Button>
           <TextField
-            variant="outlined"
+            variant='outlined'
             value={text}
             onChange={(e) => setText(e.target.value)}
           />
-          <Button onClick={() => addDevice({
-            "type": "UDP Stream",
-            "base_config": {
-              "name": text, // @not_matt here we are passing the current `text` into the function addDevice
-              "pixel_count": 64
-            },
-            "impl_config": {
-              "ip": "192.168.0.69"
-            }
-          }).then(() => getDevices())}>addDevice</Button>
-          <Button component={RouterLink} to='/Example' size={'large'}>Basic Examples</Button>
+          <Button
+            onClick={() =>
+              addDevice({
+                type: 'UDP Stream',
+                base_config: {
+                  name: text, // @not_matt here we are passing the current `text` into the function addDevice
+                  pixel_count: 64,
+                },
+                impl_config: {
+                  ip: '192.168.0.69',
+                },
+              }).then(() => getDevices())
+            }>
+            addDevice
+          </Button>
+          <Button component={RouterLink} to='/Example' size={'large'}>
+            Basic Examples
+          </Button>
         </Stack>
         <hr />
         <Typography>Devices:</Typography>
         <Typography>{JSON.stringify(devices)}</Typography>
         {/* This is how you can render Records         */}
-        {Object.keys(devices).map(d => <div key={devices[d].id}>{devices[d].base_config.name}</div>)}
+        {Object.keys(devices).map((d) => (
+          <div key={devices[d].id}>{devices[d].base_config.name}</div>
+        ))}
         <hr />
         <Typography>Schema:</Typography>
         <Typography>{JSON.stringify(schema)}</Typography>

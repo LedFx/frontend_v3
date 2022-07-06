@@ -94,7 +94,6 @@ interface deviceSchema {
   types: string[]
 }
 
-
 // startup operations flow
 // 1. get schema into store
 // 2. use schema to generate effect (interface) populated with defaults
@@ -103,12 +102,6 @@ interface deviceSchema {
 //  .   update default effect interface with config
 //  .   save to store
 // 5. repeat for devices, settings, virtuals
-
-
-
-
-
-
 
 export const storeApi = (set: any, get: any) => ({
   settings: {} as settings,
@@ -124,7 +117,7 @@ export const storeApi = (set: any, get: any) => ({
     if (resp) {
       set(
         produce((state: any) => {
-          state.api.schema.effect = resp as schema["effect"]
+          state.api.schema.effect = resp as schema['effect']
         }),
         false,
         'api/getEffectSchema'
@@ -134,7 +127,7 @@ export const storeApi = (set: any, get: any) => ({
     if (resp) {
       set(
         produce((state: any) => {
-          state.api.schema.device = resp as schema["device"]
+          state.api.schema.device = resp as schema['device']
         }),
         false,
         'api/getDeviceSchema'
@@ -144,7 +137,7 @@ export const storeApi = (set: any, get: any) => ({
     if (resp) {
       set(
         produce((state: any) => {
-          state.api.schema.virtual = resp as schema["virtual"]
+          state.api.schema.virtual = resp as schema['virtual']
         }),
         false,
         'api/getVirtualSchema'
@@ -154,7 +147,7 @@ export const storeApi = (set: any, get: any) => ({
     if (resp) {
       set(
         produce((state: any) => {
-          state.api.schema.settings = resp as schema["setting"]
+          state.api.schema.settings = resp as schema['setting']
         }),
         false,
         'api/getSettingSchema'
@@ -162,18 +155,25 @@ export const storeApi = (set: any, get: any) => ({
     }
   },
   enrichDevices: () => {
-    Object.entries(get().api.devices).map(([deviceKey, device]: any)=>{
-      Object.keys(get().api.schema.device.impl[device.type]).map((attr:any)=>{
-        if (Object.keys(get().api.devices[deviceKey].impl_config).indexOf(attr) === -1) {
-          set(
-            produce((state: any) => {        
-              state.api.devices[deviceKey].impl_config[attr] = get().api.schema.device.impl[device.type][attr].default
-            }),
-            false,
-            'api/enrichDevice'
-          )
+    Object.entries(get().api.devices).map(([deviceKey, device]: any) => {
+      Object.keys(get().api.schema.device.impl[device.type]).map(
+        (attr: any) => {
+          if (
+            Object.keys(get().api.devices[deviceKey].impl_config).indexOf(
+              attr
+            ) === -1
+          ) {
+            set(
+              produce((state: any) => {
+                state.api.devices[deviceKey].impl_config[attr] =
+                  get().api.schema.device.impl[device.type][attr].default
+              }),
+              false,
+              'api/enrichDevice'
+            )
+          }
         }
-      })    
+      )
     })
   },
   getSettings: async () => {
@@ -214,15 +214,15 @@ export const storeApi = (set: any, get: any) => ({
   },
   addDevice: async (device: device) => {
     const resp = await Ledfx('/api/devices', 'POST', {
-      "type": device.type,
-      "base_config": {
-        "name": device.base_config.name,
-        "pixel_count": device.base_config.pixel_count
+      type: device.type,
+      base_config: {
+        name: device.base_config.name,
+        pixel_count: device.base_config.pixel_count,
       },
-      "impl_config": {
-        "ip": device.impl_config.ip
-      }
-    });
+      impl_config: {
+        ip: device.impl_config.ip,
+      },
+    })
     // TODO: proper resp & resp handling
     if (resp) {
       console.log(resp)
