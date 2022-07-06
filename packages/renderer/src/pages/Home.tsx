@@ -27,8 +27,8 @@ const Home = () => {
   const getEffects = useStore((state) => state.api.getEffects)
   const getSettings = useStore((state) => state.api.getSettings)
   const getDevices = useStore((state) => state.api.getDevices)
+  const enrichDevices = useStore((state) => state.api.enrichDevices)
   const addDevice = useStore((state) => state.api.addDevice)
-  // const getDefaultDeviceConfig = useStore((state) => state.api.getDefaultDeviceConfig)
   const { enqueueSnackbar } = useSnackbar()
 
   useEffect(() => {
@@ -36,16 +36,7 @@ const Home = () => {
   }, [snackbar])
 
   const handleDevices = () => {
-    getDevices()
-    // .then(()=>{
-    //   Object.keys(devices).map(deviceid => Object.keys(schema.device.impl).map(deviceType => getDefaultDeviceConfig(schema.device, deviceType, deviceid)))         
-    // })    
-
-    // for each effect getEffects() {
-    //   const e as effect
-    //   e.base = getDefaultDeviceConfig()
-      
-    // }
+    getDevices().then(() => enrichDevices())
   }
   return (
     <Box

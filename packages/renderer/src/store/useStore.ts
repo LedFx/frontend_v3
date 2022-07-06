@@ -12,9 +12,9 @@ export const useStore = create(
       {
         hackedBy: 'Blade',
       },
-      (set:any)=> ({
+      (set:any, get: any)=> ({
         ui: storeUI(set),
-        api: storeApi(set),
+        api: storeApi(set, get),
         tours: storeTours(set),
         example: storeBears(set)
       })
