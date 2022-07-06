@@ -24,15 +24,29 @@ const Home = () => {
   const settings = useStore((state) => state.api.settings)
   const schema = useStore((state) => state.api.schema)
   const getSchema = useStore((state) => state.api.getSchema)
+  const getEffects = useStore((state) => state.api.getEffects)
   const getSettings = useStore((state) => state.api.getSettings)
   const getDevices = useStore((state) => state.api.getDevices)
   const addDevice = useStore((state) => state.api.addDevice)
+  // const getDefaultDeviceConfig = useStore((state) => state.api.getDefaultDeviceConfig)
   const { enqueueSnackbar } = useSnackbar()
 
   useEffect(() => {
     enqueueSnackbar(snackbar.message, { variant: snackbar.variant })
   }, [snackbar])
 
+  const handleDevices = () => {
+    getDevices()
+    // .then(()=>{
+    //   Object.keys(devices).map(deviceid => Object.keys(schema.device.impl).map(deviceType => getDefaultDeviceConfig(schema.device, deviceType, deviceid)))         
+    // })    
+
+    // for each effect getEffects() {
+    //   const e as effect
+    //   e.base = getDefaultDeviceConfig()
+      
+    // }
+  }
   return (
     <Box
       sx={{
@@ -55,7 +69,8 @@ const Home = () => {
           <Button onClick={() => enqueueSnackbar('I love hooks')}>Notification</Button>
           <Button onClick={() => getSettings()}>getSettings</Button>
           <Button onClick={() => getSchema()}>getSchema</Button>
-          <Button onClick={() => getDevices()}>getDevices</Button>
+          <Button onClick={() => handleDevices()}>getDevices</Button>
+          <Button onClick={() => getEffects()}>getEffects</Button>
           <TextField
             variant="outlined"
             value={text}
