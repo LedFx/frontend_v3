@@ -1,101 +1,98 @@
-import electronImg from '@/assets/electron.png';
-import muiImg from '@/assets/mui.png';
-import react from '@/assets/react.svg';
-import vite from '@/assets/vite.svg';
-import zustand from '@/assets/zustand.png';
-import logoTitle from '@/assets/logotitle.svg';
-import typescript from '@/assets/typescript.svg';
-import immer from '@/assets/immer.svg';
-import reactRouter from '@/assets/reactrouter.svg';
-import styles from '@/styles/app.module.scss';
-import pkg from '../../../../../package.json';
-import { useState, useEffect } from 'react';
-import { Avatar, Button, Paper, Typography, Box, Chip } from '@mui/material';
-import { useStore } from '../../store/useStore';
-import { Link as RouterLink } from 'react-router-dom';
-import { InfoOutlined, Brightness4, Brightness7 } from '@mui/icons-material';
-import HomeTour from '@/docs/HomeTour';
+import electronImg from '@/assets/electron.png'
+import muiImg from '@/assets/mui.png'
+import react from '@/assets/react.svg'
+import vite from '@/assets/vite.svg'
+import zustand from '@/assets/zustand.png'
+import logoTitle from '@/assets/logotitle.svg'
+import typescript from '@/assets/typescript.svg'
+import immer from '@/assets/immer.svg'
+import reactRouter from '@/assets/reactrouter.svg'
+import styles from '@/styles/app.module.scss'
+import pkg from '../../../../../package.json'
+import { useState, useEffect } from 'react'
+import { Avatar, Button, Paper, Typography, Box, Chip } from '@mui/material'
+import { useStore } from '../../store/useStore'
+import { Link as RouterLink } from 'react-router-dom'
+import { InfoOutlined, Brightness4, Brightness7 } from '@mui/icons-material'
 
-const ipcRenderer = window.ipcRenderer || false;
+const ipcRenderer = window.ipcRenderer || false
 
 const Example = () => {
   // React's useState
-  const [count, setCount] = useState(0);
-  const [message, setMessage] = useState('hacked by Blade');
-  const [data, setData] = useState(0);
+  const [count, setCount] = useState(0)
+  const [message, setMessage] = useState('hacked by Blade')
+  const [data, setData] = useState(0)
 
   // Zustand-Store
-  const { darkMode, setDarkMode } = useStore((state) => state.ui);
-  const bears = useStore((state) => state.example.animals.bears);
-  const increase = useStore((state) => state.example.increase);
+  const { darkMode, setDarkMode } = useStore((state) => state.ui)
 
   // Electron-Store
   const onClickSetStore = () => {
-    ipcRenderer.send('set', ['count', count]);
-    onClickGetStore();
-  };
+    ipcRenderer.send('set', ['count', count])
+    onClickGetStore()
+  }
   const onClickGetStore = () => {
-    ipcRenderer.send('get');
-  };
+    ipcRenderer.send('get')
+  }
 
   // IPC Example
   const onClickWithIpc = () => {
-    ipcRenderer.send('ping-pong', 'some data from ipcRenderer');
-  };
+    ipcRenderer.send('ping-pong', 'some data from ipcRenderer')
+  }
   const onClickWithIpcSync = () => {
     const message = ipcRenderer.sendSync(
       'ping-pong-sync',
       'some data from ipcRenderer'
-    );
-    setMessage(message);
-  };
+    )
+    setMessage(message)
+  }
 
   // DarkMode mui & nativeTheme
   const toggleDarkmode = () => {
     if (ipcRenderer) {
-      ipcRenderer.sendSync('toggle-darkmode', 'try');
+      ipcRenderer.sendSync('toggle-darkmode', 'try')
     } else {
-      setDarkMode(!darkMode);
+      setDarkMode(!darkMode)
     }
-  };
+  }
 
   // set React-state from Electron-Store
   useEffect(() => {
     if (ipcRenderer) {
       if (data) {
-        setCount(data);
+        setCount(data)
       }
     }
-  }, [data]);
+  }, [data])
 
   // IPC init
   useEffect(() => {
     if (ipcRenderer) {
       ipcRenderer.on('ping-pong', (event: any, data: any) => {
-        setMessage(data);
-      });
+        setMessage(data)
+      })
       ipcRenderer.on('get', (event: any, data: any) => {
-        setData(data.count);
-      });
+        setData(data.count)
+      })
       async function getDarkMode() {
-        const dark = await ipcRenderer.sendSync('get-darkmode');
-        setDarkMode(dark === 'yes');
+        const dark = await ipcRenderer.sendSync('get-darkmode')
+        setDarkMode(dark === 'yes')
       }
-      getDarkMode();
+      getDarkMode()
     }
     return () => {
       if (ipcRenderer) {
-        ipcRenderer.removeAllListeners('ping-pong');
-        ipcRenderer.removeAllListeners('get');
+        ipcRenderer.removeAllListeners('ping-pong')
+        ipcRenderer.removeAllListeners('get')
       }
-    };
-  }, []);
+    }
+  }, [])
 
   useEffect(() => {
     if (ipcRenderer) {
-      onClickGetStore();
+      onClickGetStore()
     }
-  }, []);
+  }, [])
 
   return (
     <Box
@@ -115,7 +112,14 @@ const Example = () => {
         }}>
         <div className={styles.logos}>
           <div className={styles.imgBox}>
-            <img src={logoTitle} style={{ width: '480px', filter: darkMode ? 'invert(0)' : 'invert(1)' }} alt='Vitron' />
+            <img
+              src={logoTitle}
+              style={{
+                width: '480px',
+                filter: darkMode ? 'invert(0)' : 'invert(1)',
+              }}
+              alt='Vitron'
+            />
           </div>
         </div>
 
@@ -182,20 +186,6 @@ const Example = () => {
           </Button>
         </Paper>
 
-        <Paper elevation={3} sx={{ p: 2, m: 1, minWidth: 480 }}>
-          <Button
-            variant='outlined'            
-            sx={{ mr: 1, fontSize: 17, width: '250px', whiteSpace: 'nowrap' }}>
-            Zustand: {bears}
-          </Button>
-          <Button sx={{ width: 100 }} onClick={() => increase(-1)}>
-            - 1
-          </Button>{' '}
-          <Button sx={{ width: 100 }} onClick={() => increase(1)}>
-            + 1
-          </Button>
-        </Paper>    
-
         {ipcRenderer && (
           <Paper elevation={3} sx={{ p: 2, m: 1, minWidth: 480 }}>
             <Button
@@ -211,7 +201,7 @@ const Example = () => {
             </Button>
           </Paper>
         )}
-        
+
         <Paper elevation={3} sx={{ p: 2, m: 1, minWidth: 480 }}>
           <Button
             variant='outlined'
@@ -221,29 +211,33 @@ const Example = () => {
           <Button size={'large'} sx={{ width: 60 }} onClick={toggleDarkmode}>
             {darkMode ? <Brightness7 /> : <Brightness4 />}
           </Button>{' '}
-          <Button size={'large'} sx={{ width: 60 }} component={RouterLink} to={"info"}>
+          <Button
+            size={'large'}
+            sx={{ width: 60 }}
+            component={RouterLink}
+            to={'info'}>
             <InfoOutlined />
-          </Button>{' '}
-          {pkg.env.VITRON_TOURS && <HomeTour sx={{ width: 60 }} />}
-        </Paper>       
+          </Button>
+        </Paper>
         <Paper elevation={3} sx={{ p: 2, m: 1, minWidth: 480 }}>
           <Button
-            variant='outlined'            
+            variant='outlined'
             sx={{ mr: 1, fontSize: 17, width: '250px', whiteSpace: 'nowrap' }}>
             Ledfx v3:
           </Button>
-          <Button component={RouterLink} to='/' size={'large'}>go back</Button>
-        </Paper>   
+          <Button component={RouterLink} to='/' size={'large'}>
+            go back
+          </Button>
+        </Paper>
 
         {ipcRenderer && (
           <Paper elevation={1} sx={{ p: 2, m: 1, minWidth: 480 }}>
             <Typography color={'textSecondary'}>{message}</Typography>
           </Paper>
         )}
-        
       </header>
     </Box>
-  );
-};
+  )
+}
 
-export default Example;
+export default Example
