@@ -94,15 +94,6 @@ interface deviceSchema {
   types: string[]
 }
 
-// startup operations flow
-// 1. get schema into store
-// 2. use schema to generate effect (interface) populated with defaults
-// 3. get effects (will be partial config)
-// 4. for each effect:
-//  .   update default effect interface with config
-//  .   save to store
-// 5. repeat for devices, settings, virtuals
-
 export const storeApi = (set: any, get: any) => ({
   settings: {} as settings,
   effects: {} as Record<string, effect>,
@@ -110,6 +101,7 @@ export const storeApi = (set: any, get: any) => ({
   virtuals: {} as Record<string, virtual>,
   schema: {} as schema,
   connections: {} as connections,
+  states: {} as Record<string, boolean>,
   globalEffectConfig: {} as effectConfig,
 
   getSchema: async () => {
@@ -154,28 +146,6 @@ export const storeApi = (set: any, get: any) => ({
       )
     }
   },
-  enrichDevices: () => {
-    Object.entries(get().api.devices).map(([deviceKey, device]: any) => {
-      Object.keys(get().api.schema.device.impl[device.type]).map(
-        (attr: any) => {
-          if (
-            Object.keys(get().api.devices[deviceKey].impl_config).indexOf(
-              attr
-            ) === -1
-          ) {
-            set(
-              produce((state: any) => {
-                state.api.devices[deviceKey].impl_config[attr] =
-                  get().api.schema.device.impl[device.type][attr].default
-              }),
-              false,
-              'api/enrichDevice'
-            )
-          }
-        }
-      )
-    })
-  },
   getSettings: async () => {
     const resp = await Ledfx('/api/settings')
     if (resp) {
@@ -209,6 +179,42 @@ export const storeApi = (set: any, get: any) => ({
         }),
         false,
         'api/getEffects'
+      )
+    }
+  },
+  getVirtuals: async () => {
+    const resp = await Ledfx('/api/virtuals')
+    if (resp) {
+      set(
+        produce((state: any) => {
+          state.api.virtuals = resp
+        }),
+        false,
+        'api/getVirtuals'
+      )
+    }
+  },
+  getConnections: async () => {
+    const resp = await Ledfx('/api/virtuals/connect')
+    if (resp) {
+      set(
+        produce((state: any) => {
+          state.api.connections = resp
+        }),
+        false,
+        'api/getConnections'
+      )
+    }
+  },
+  getStates: async () => {
+    const resp = await Ledfx('/api/virtuals/state')
+    if (resp) {
+      set(
+        produce((state: any) => {
+          state.api.states = resp
+        }),
+        false,
+        'api/getStates'
       )
     }
   },

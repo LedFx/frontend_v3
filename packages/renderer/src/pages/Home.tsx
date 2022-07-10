@@ -23,11 +23,14 @@ const Home = () => {
   const connections = useStore((state) => state.api.connections)
   const settings = useStore((state) => state.api.settings)
   const schema = useStore((state) => state.api.schema)
+  const states = useStore((state) => state.api.states)
   const getSchema = useStore((state) => state.api.getSchema)
   const getEffects = useStore((state) => state.api.getEffects)
   const getSettings = useStore((state) => state.api.getSettings)
   const getDevices = useStore((state) => state.api.getDevices)
-  const enrichDevices = useStore((state) => state.api.enrichDevices)
+  const getVirtuals = useStore((state) => state.api.getVirtuals)
+  const getConnections = useStore((state) => state.api.getConnections)
+  const getStates = useStore((state) => state.api.getStates)
   const addDevice = useStore((state) => state.api.addDevice)
   const { enqueueSnackbar } = useSnackbar()
 
@@ -35,9 +38,6 @@ const Home = () => {
     enqueueSnackbar(snackbar.message, { variant: snackbar.variant })
   }, [snackbar])
 
-  const handleDevices = () => {
-    getDevices().then(() => enrichDevices())
-  }
   return (
     <Box
       sx={{
@@ -67,8 +67,11 @@ const Home = () => {
           </Button>
           <Button onClick={() => getSettings()}>getSettings</Button>
           <Button onClick={() => getSchema()}>getSchema</Button>
-          <Button onClick={() => handleDevices()}>getDevices</Button>
+          <Button onClick={() => getDevices()}>getDevices</Button>
           <Button onClick={() => getEffects()}>getEffects</Button>
+          <Button onClick={() => getVirtuals()}>getVirtuals</Button>
+          <Button onClick={() => getConnections()}>getConnections</Button>
+          <Button onClick={() => getStates()}>getStates</Button>
           <TextField
             variant='outlined'
             value={text}
@@ -112,6 +115,9 @@ const Home = () => {
         <hr />
         <Typography>Connections:</Typography>
         <Typography>{JSON.stringify(connections)}</Typography>
+        <hr />
+        <Typography>States:</Typography>
+        <Typography>{JSON.stringify(states)}</Typography>
         <hr />
         <Typography>Settings:</Typography>
         <Typography>{JSON.stringify(settings)}</Typography>
