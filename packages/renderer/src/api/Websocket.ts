@@ -7,6 +7,7 @@ import { useStore } from '../store/useStore'
 import { useLocation } from 'react-router-dom';
 import Sockette from 'sockette';
 import { VariantType } from 'notistack';
+import { virtual, device, effect, effectConfig, connections, settings } from '@/store/storeApi';
 
 enum eventType {
   Log,
@@ -20,6 +21,7 @@ enum eventType {
   DeviceUpdate,
   DeviceDelete,
   ConnectionsUpdate,
+  SettingsUpdate,
 }
 
 interface LedFxEvent {
@@ -31,6 +33,12 @@ interface LedFxEvent {
 
 function handleMessage(e: MessageEvent) {
   const showSnackbar = useStore.getState().ui.showSnackbar
+  const setVirtual = useStore.getState().api.setVirtual
+  const setDevice = useStore.getState().api.setDevice
+  const setEffect = useStore.getState().api.setEffect
+  const setGlobalEffectConfig = useStore.getState().api.setGlobalEffectConfig
+  const setConnections = useStore.getState().api.setConnections
+  const setSettings = useStore.getState().api.setSettings
   const event: LedFxEvent = JSON.parse(e.data)
   console.log("Received event:", event)
   switch (event.Type) {
@@ -38,7 +46,35 @@ function handleMessage(e: MessageEvent) {
       showSnackbar(event.Data.level as VariantType, event.Data.msg)
       break
     case eventType.EffectUpdate:
-      
+      setEffect(event.Data as effect)
+      break
+    case eventType.DeviceUpdate:
+      setDevice(event.Data as device)
+      break
+    case eventType.VirtualUpdate:
+      setVirtual(event.Data as virtual)
+      break
+    case eventType.EffectDelete:
+      // delete effects[event.Data.id] // @blade like this?
+      break
+    case eventType.DeviceDelete:
+      // delete devices[event.Data.id] // @blade like this?
+      break
+    case eventType.VirtualDelete:
+      // delete virtuals[event.Data.id] // @blade like this?
+      break
+    case eventType.GlobalEffectUpdate:
+      setGlobalEffectConfig(event.Data.config as effectConfig)
+      break
+    case eventType.ConnectionsUpdate:
+      setConnections(event.Data as connections)
+      break
+    case eventType.SettingsUpdate:
+      setSettings(event.Data.settings as settings)
+      break
+    case eventType.Shutdown:
+      console.log("Shutdown event!")
+      break
     default:
       console.log("Event type not implemented:", event.Type)
   }

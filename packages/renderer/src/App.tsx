@@ -9,9 +9,33 @@ import Home from './pages/Home'
 import { SnackbarProvider } from 'notistack'
 import ws, { WsContext } from './api/Websocket'
 
+export const hydrateStore = () => {
+  const getSchema = useStore((state) => state.api.getSchema)
+  const getEffects = useStore((state) => state.api.getEffects)
+  const getSettings = useStore((state) => state.api.getSettings)
+  const getDevices = useStore((state) => state.api.getDevices)
+  const getVirtuals = useStore((state) => state.api.getVirtuals)
+  const getConnections = useStore((state) => state.api.getConnections)
+  const getGlobalEffectConfig = useStore((state) => state.api.getGlobalEffectConfig)
+
+  Promise.all([
+    getSchema(),
+    getEffects(),
+    getSettings(),
+    getDevices(),
+    getVirtuals(),
+    getConnections(),
+    getGlobalEffectConfig(),
+  ])
+  console.log("hydrated store!")
+
+}
+
 const App = () => {
   const darkMode = useStore((state) => state.ui.darkMode)
   const showSnackbar = useStore((state) => state.ui.showSnackbar)
+
+  hydrateStore();
 
   const theme = useMemo(
     () =>
@@ -54,6 +78,7 @@ const App = () => {
       document.removeEventListener('YZNEW', handleWebsockets)
     }
   }, [])
+
   return (
     <ThemeProvider theme={theme}>
       <SnackbarProvider maxSnack={5}>

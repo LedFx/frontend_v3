@@ -9,6 +9,9 @@ import { useEffect, useState } from 'react'
 
 const ipcRenderer = window.ipcRenderer || false
 
+
+
+
 const Home = () => {
   // @not_matt
   // - `text` is a local state
@@ -22,21 +25,22 @@ const Home = () => {
   const effects = useStore((state) => state.api.effects)
   const connections = useStore((state) => state.api.connections)
   const settings = useStore((state) => state.api.settings)
+  const globalEffectConfig = useStore((state) => state.api.globalEffectConfig)
   const schema = useStore((state) => state.api.schema)
-  const states = useStore((state) => state.api.states)
   const getSchema = useStore((state) => state.api.getSchema)
   const getEffects = useStore((state) => state.api.getEffects)
   const getSettings = useStore((state) => state.api.getSettings)
   const getDevices = useStore((state) => state.api.getDevices)
   const getVirtuals = useStore((state) => state.api.getVirtuals)
   const getConnections = useStore((state) => state.api.getConnections)
-  const getStates = useStore((state) => state.api.getStates)
+  const getGlobalEffectConfig = useStore((state) => state.api.getGlobalEffectConfig)
   const addDevice = useStore((state) => state.api.addDevice)
   const { enqueueSnackbar } = useSnackbar()
 
   useEffect(() => {
     enqueueSnackbar(snackbar.message, { variant: snackbar.variant })
   }, [snackbar])
+
 
   return (
     <Box
@@ -71,7 +75,7 @@ const Home = () => {
           <Button onClick={() => getEffects()}>getEffects</Button>
           <Button onClick={() => getVirtuals()}>getVirtuals</Button>
           <Button onClick={() => getConnections()}>getConnections</Button>
-          <Button onClick={() => getStates()}>getStates</Button>
+          <Button onClick={() => getGlobalEffectConfig()}>getGlobalEffectConfig</Button>
           <TextField
             variant='outlined'
             value={text}
@@ -96,33 +100,29 @@ const Home = () => {
             Basic Examples
           </Button>
         </Stack>
-        <hr />
-        <Typography>Devices:</Typography>
-        <Typography>{JSON.stringify(devices)}</Typography>
-        {/* This is how you can render Records         */}
-        {Object.keys(devices).map((d) => (
-          <div key={devices[d].id}>{devices[d].base_config.name}</div>
-        ))}
-        <hr />
-        <Typography>Schema:</Typography>
-        <Typography>{JSON.stringify(schema)}</Typography>
-        <hr />
-        <Typography>Virtuals:</Typography>
-        <Typography>{JSON.stringify(virtuals)}</Typography>
-        <hr />
-        <Typography>Effects:</Typography>
-        <Typography>{JSON.stringify(effects)}</Typography>
-        <hr />
-        <Typography>Connections:</Typography>
-        <Typography>{JSON.stringify(connections)}</Typography>
-        <hr />
-        <Typography>States:</Typography>
-        <Typography>{JSON.stringify(states)}</Typography>
+        </header>
         <hr />
         <Typography>Settings:</Typography>
-        <Typography>{JSON.stringify(settings)}</Typography>
+        <Typography align="left"><pre>{JSON.stringify(settings, null, 2)}</pre></Typography>
         <hr />
-      </header>
+        <Typography>Effects:</Typography>
+        <Typography align="left"><pre>{JSON.stringify(effects, null, 2)}</pre></Typography>
+        <hr />
+        <Typography>Virtuals:</Typography>
+        <Typography align="left"><pre>{JSON.stringify(virtuals, null, 2)}</pre></Typography>
+        <hr />
+        <Typography>Devices:</Typography>
+        <Typography align="left"><pre>{JSON.stringify(devices, null, 2)}</pre></Typography>
+        <hr />
+        <Typography>GlobalEffectConfig:</Typography>
+        <Typography align="left"><pre>{JSON.stringify(globalEffectConfig, null, 2)}</pre></Typography>
+        <hr />
+        <Typography>Connections:</Typography>
+        <Typography align="left"><pre>{JSON.stringify(connections, null, 2)}</pre></Typography>
+        <hr />
+        <Typography>Schema:</Typography>
+        <Typography align="left"><pre>{JSON.stringify(schema, null, 2)}</pre></Typography>
+        <hr />
     </Box>
   )
 }
