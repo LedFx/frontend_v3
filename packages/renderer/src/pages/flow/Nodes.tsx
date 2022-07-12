@@ -2,26 +2,47 @@ import { useCallback } from 'react';
 import { Handle, Position } from 'react-flow-renderer';
 import { useStore } from '../../store/useStore'
 import { Button, TextField, Stack, Typography } from '@mui/material'
-import { effect } from '@/store/storeApi';
+import { effect, virtual, device } from '@/store/storeApi';
 
-const handleStyle = { left: 10 };
+export const EffectNode = (node) => {
+    const effect = node.data as effect
+    return (
+        <div className='node'>
+            <div>
+                <Typography>{effect.id}</Typography>
+                <Typography align="left"><pre>{JSON.stringify(effect.base_config, null, 2)}</pre></Typography>
+            </div>
+            <Handle type="source" position={Position.Right} id="a" />
+        </div>
+    );
+}
 
-export const EffectNode = ( node ) => {
-  const onChange = useCallback((evt) => {
-    console.log(evt.target.value);
-  }, []);
+export const VirtualNode = (node) => {
+    const virtual = node.data as virtual
+    return (
+        <div className='node'>
+            <div>
+                <Typography>{virtual.id}</Typography>
+                <Typography>Active: {virtual.active}</Typography>
+                <Typography align="left"><pre>{JSON.stringify(virtual.base_config, null, 2)}</pre></Typography>
+            </div>
+            <Handle type="source" position={Position.Right} id="a" />
+        </div>
+    );
+}
 
-  const effects = useStore((state) => state.api.effects)
-
-  return (
-    <div className='effect-node'>
-      <Handle type="target" position={Position.Top} />
-      <div>
-        <Typography>{node.id}</Typography>
-        <Typography align="left"><pre>{JSON.stringify(node.data.base_config, null, 2)}</pre></Typography>
-      </div>
-      <Handle type="source" position={Position.Bottom} id="a" />
-      <Handle type="source" position={Position.Bottom} id="b" style={handleStyle} />
-    </div>
-  );
+export const DeviceNode = (node) => {
+    const device = node.data as device
+    return (
+        <div className='node'>
+            <div>
+                <Typography>{device.id}</Typography>
+                <Typography>State: {device.state}</Typography>
+                <Typography>Type: {device.type}</Typography>
+                <Typography align="left"><pre>{JSON.stringify(device.base_config, null, 2)}</pre></Typography>
+                <Typography align="left"><pre>{JSON.stringify(device.impl_config, null, 2)}</pre></Typography>
+            </div>
+            <Handle type="source" position={Position.Right} id="a" />
+        </div>
+    );
 }

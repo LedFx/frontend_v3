@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import ReactFlow, { useNodesState, useEdgesState, addEdge } from 'react-flow-renderer';
 import { useStore } from '../../store/useStore'
-import { EffectNode } from './Nodes';
+import { EffectNode, VirtualNode, DeviceNode } from './Nodes';
 import './nodes.css';
 
-const nodeTypes = { effectNode: EffectNode };
+const nodeTypes = { effectNode: EffectNode, virtualNode: VirtualNode, deviceNode: DeviceNode };
 
 const initialNodes = [
     {
@@ -33,37 +33,68 @@ const initialEdges = [
 
 const HorizontalFlow = () => {
 
-    // const effects = useStore.getState().api.effects
-    const virtuals = useStore.getState().api.virtuals
-    const devices = useStore.getState().api.virtuals
-    const effects = useStore.subscribe(
-        (state) => {
-            console.log("Got effects change!", state.api.effects);
-        },
-        (state) => state.api.effects
-    )
-    // const unsub2 = useStore.subscribe(console.log, state.api => state.api.effects)
+    const effects = useStore((state) => state.api.effects)
+    const virtuals = useStore((state) => state.api.virtuals)
+    const devices = useStore((state) => state.api.devices)
 
     const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes as any);
     const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
     const onConnect = (params: any) => setEdges((els) => addEdge(params, els));
 
     useEffect(() => {
-        setNodes((nodes) =>
-          nodes.map((node) => {
-            if (node.id === '1') {
-              // it's important that you create a new object here
-              // in order to notify react flow about the change
-              node.data = {
-                ...node.data,
-                label: nodeName,
-              };
+        setNodes((nodes) => {
+            // empty out the nodes, we will make it fresh each time
+            nodes = []
+            for (const effect_id in effects) {
+                nodes.push(
+                    {
+                        id: effect_id,
+                        type: 'effectNode',
+                        sourcePosition: 'right',
+                        position: { x: 0, y: 0 },
+                        data: effects[effect_id]
+                    },
+                )
             }
-    
-            return node;
-          })
+            for (const virtual_id in virtuals) {
+                nodes.push(
+                    {
+                        id: virtual_id,
+                        type: 'virtualNode',
+                        targetPosition: 'left',
+                        sourcePosition: 'right',
+                        position: { x: 0, y: 0 },
+                        data: virtuals[virtual_id]
+                    },
+                )
+            }
+            for (const device_id in devices) {
+                nodes.push(
+                    {
+                        id: device_id,
+                        type: 'deviceNode',
+                        targetPosition: 'left',
+                        position: { x: 0, y: 0 },
+                        data: devices[device_id]
+                    },
+                )
+            }
+            return nodes
+        }
+            // nodes.map((node) => {
+            //     if (node.id === '1') {
+            //         // it's important that you create a new object here
+            //         // in order to notify react flow about the change
+            //         node.data = {
+            //             ...node.data,
+            //             label: nodeName,
+            //         };
+            //     }
+
+            //     return node;
+            // })
         );
-      }, [nodeName, setNodes]);
+    }, [effects, virtuals, devices]);
 
 
     return (
