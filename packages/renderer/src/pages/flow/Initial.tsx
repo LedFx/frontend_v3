@@ -1,7 +1,4 @@
-import React from 'react';
-import ReactFlow, { useNodesState, useEdgesState, addEdge } from 'react-flow-renderer';
-
-const initialNodes = [
+export const initialNodes = [
     {
         id: 'horizontal-1',
         sourcePosition: 'right',
@@ -60,7 +57,7 @@ const initialNodes = [
     },
 ];
 
-const initialEdges = [
+export const initialEdges = [
     {
         id: 'horizontal-e1-2',
         source: 'horizontal-1',
@@ -111,25 +108,3 @@ const initialEdges = [
         animated: true,
     },
 ];
-
-const HorizontalFlow = () => {
-    const [nodes, _, onNodesChange] = useNodesState(initialNodes);
-    const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
-    const onConnect = (params) => setEdges((els) => addEdge(params, els));
-
-    return (
-        <div style={{ height: 800 }}>
-            <ReactFlow
-                nodes={nodes}
-                edges={edges}
-                onNodesChange={onNodesChange}
-                onEdgesChange={onEdgesChange}
-                onConnect={onConnect}
-                fitView
-                attributionPosition="bottom-left"
-            ></ReactFlow>
-        </div>
-    );
-};
-
-export default HorizontalFlow;

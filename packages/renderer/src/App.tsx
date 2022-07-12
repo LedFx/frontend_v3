@@ -6,7 +6,7 @@ import Info from './pages/example/Info'
 import pkg from '../../../package.json'
 import Home from './pages/Home'
 import Example from './pages/example/Example'
-import Flow from './pages/Flow'
+import HorizontalFlow from './pages/flow/Flow'
 import { SnackbarProvider } from 'notistack'
 import ws, { WsContext } from './api/Websocket'
 
@@ -89,7 +89,7 @@ const App = () => {
               <Route path='/' element={<Home />} />
               <Route path='/Example' element={<Example />} />
               <Route path='/Info' element={<Info />} />
-              <Route path='/Flow' element={<Flow />} />
+              <Route path='/Flow' element={<HorizontalFlow />} />
             </Routes>
           </HashRouter>
         </WsContext.Provider>
