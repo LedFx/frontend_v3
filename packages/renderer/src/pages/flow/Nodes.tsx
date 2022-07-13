@@ -12,7 +12,7 @@ export const EffectNode = (node) => {
                 <Typography>{effect.id}</Typography>
                 <Typography align="left"><pre>{JSON.stringify(effect.base_config, null, 2)}</pre></Typography>
             </div>
-            <Handle type="source" position={Position.Right} id="a" />
+            <Handle type="source" position={Position.Right} />
         </div>
     );
 }
@@ -26,7 +26,8 @@ export const VirtualNode = (node) => {
                 <Typography>Active: {virtual.active}</Typography>
                 <Typography align="left"><pre>{JSON.stringify(virtual.base_config, null, 2)}</pre></Typography>
             </div>
-            <Handle type="source" position={Position.Right} id="a" />
+            <Handle type="source" position={Position.Right} />
+            <Handle type="target" position={Position.Left} />
         </div>
     );
 }
@@ -42,7 +43,7 @@ export const DeviceNode = (node) => {
                 <Typography align="left"><pre>{JSON.stringify(device.base_config, null, 2)}</pre></Typography>
                 <Typography align="left"><pre>{JSON.stringify(device.impl_config, null, 2)}</pre></Typography>
             </div>
-            <Handle type="source" position={Position.Right} id="a" />
+            <Handle type="target" position={Position.Left} />
         </div>
     );
 }
