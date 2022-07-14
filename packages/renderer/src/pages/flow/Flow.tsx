@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from 'react';
-import ReactFlow, { useNodesState, useEdgesState, addEdge } from 'react-flow-renderer';
+import ReactFlow, { useNodesState, useEdgesState, addEdge, Background } from 'react-flow-renderer';
 import { useStore } from '../../store/useStore'
 import { EffectNode, VirtualNode, DeviceNode } from './Nodes';
+import ButtonEdge from "./ButtonEdge";
 import './nodes.css';
 
 const nodeTypes = { effectNode: EffectNode, virtualNode: VirtualNode, deviceNode: DeviceNode };
+const edgeTypes = { buttonedge: ButtonEdge };
 
 const initialNodes = [];
-
 const initialEdges = [];
 
 const HorizontalFlow = () => {
@@ -19,7 +20,7 @@ const HorizontalFlow = () => {
 
     const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes as any);
     const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
-    const onConnect = (params: any) => setEdges((els) => addEdge(params, els));
+    const onConnect = (params: any) => setEdges((els) => addEdge({ ...params, type: 'buttonedge' }, els));
 
     useEffect(() => {
         setEdges((edges) => {
@@ -30,7 +31,7 @@ const HorizontalFlow = () => {
                     {
                         id: effect_id + virtual_id,
                         source: effect_id,
-                        type: 'smoothstep',
+                        type: 'buttonedge',
                         target: virtual_id,
                         animated: true,
                     }
@@ -42,7 +43,7 @@ const HorizontalFlow = () => {
                     {
                         id: virtual_id + device_id,
                         source: virtual_id,
-                        type: 'smoothstep',
+                        type: 'buttonedge',
                         target: device_id,
                         animated: true,
                     }
@@ -117,9 +118,13 @@ const HorizontalFlow = () => {
                 onEdgesChange={onEdgesChange}
                 onConnect={onConnect}
                 nodeTypes={nodeTypes}
+                edgeTypes={edgeTypes}
                 fitView
                 attributionPosition="bottom-left"
-            ></ReactFlow>
+            >
+                <Background />
+            </ReactFlow>
+            
         </div>
     );
 };
