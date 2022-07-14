@@ -1,5 +1,5 @@
 /* eslint-disable no-param-reassign */
-import { useStore } from '@/store/useStore'
+import { State, useStore } from '@/store/useStore'
 import axios from 'axios';
 import produce from 'immer';
 // import { useStore } from '@/store/useStore';
@@ -38,7 +38,7 @@ export const Ledfx = async (
     }
     if (response.status === 200) {
       setState(
-        produce((state: any) => {
+        produce((state: State) => {
           state.disconnected = false;
         })
       );
