@@ -1,15 +1,21 @@
 import React, { useEffect, useState } from 'react';
-import ReactFlow, { useNodesState, useEdgesState, addEdge, Background } from 'react-flow-renderer';
+import ReactFlow, { useNodesState, useEdgesState, addEdge, Background, Edge } from 'react-flow-renderer';
 import { useStore } from '../../store/useStore'
-import { EffectNode, VirtualNode, DeviceNode } from './Nodes';
+import { EffectNode, VirtualNode, DeviceNode, AddEffectNode, AddDeviceNode, AddVirtualNode } from './Nodes';
 import ButtonEdge from "./ButtonEdge";
-import './nodes.css';
 
-const nodeTypes = { effectNode: EffectNode, virtualNode: VirtualNode, deviceNode: DeviceNode };
 const edgeTypes = { buttonedge: ButtonEdge };
+const nodeTypes = {
+    effectNode: EffectNode,
+    virtualNode: VirtualNode,
+    deviceNode: DeviceNode,
+    addEffectNode: AddEffectNode,
+    addDeviceNode: AddDeviceNode,
+    addVirtualNode: AddVirtualNode
+};
 
-const initialNodes = [];
-const initialEdges = [];
+const initialNodes: never[] = [];
+const initialEdges: Edge<any>[] = [];
 
 const HorizontalFlow = () => {
 
@@ -57,17 +63,42 @@ const HorizontalFlow = () => {
         setNodes((nodes) => {
             // empty out the nodes, we will make it fresh each time
             nodes = []
+            // add header nodes
+            nodes.push(
+                {
+                    id: "add_effect",
+                    type: 'addEffectNode',
+                    position: { x: -400, y: -200 },
+                    data: {}
+                },
+                {
+                    id: "add_virtual",
+                    type: 'addVirtualNode',
+                    position: { x: 0, y: -200 },
+                    data: {}
+                },
+                {
+                    id: "add_device",
+                    type: 'addDeviceNode',
+                    position: { x: 400, y: -200 },
+                    data: {}
+                },
+            )
+            const dy = 170
+            let i = 0
             for (const effect_id in effects) {
                 nodes.push(
                     {
                         id: effect_id,
                         type: 'effectNode',
                         sourcePosition: 'right',
-                        position: { x: -400, y: 0 },
+                        position: { x: -400, y: i },
                         data: effects[effect_id]
                     },
                 )
+                i += dy
             }
+            i = 0
             for (const virtual_id in virtuals) {
                 nodes.push(
                     {
@@ -75,21 +106,24 @@ const HorizontalFlow = () => {
                         type: 'virtualNode',
                         targetPosition: 'left',
                         sourcePosition: 'right',
-                        position: { x: 0, y: 0 },
+                        position: { x: 0, y: i },
                         data: virtuals[virtual_id]
                     },
                 )
+                i += dy
             }
+            i = 0
             for (const device_id in devices) {
                 nodes.push(
                     {
                         id: device_id,
                         type: 'deviceNode',
                         targetPosition: 'left',
-                        position: { x: 400, y: 0 },
+                        position: { x: 400, y: i },
                         data: devices[device_id]
                     },
                 )
+                i += dy
             }
             return nodes
         }
@@ -124,7 +158,7 @@ const HorizontalFlow = () => {
             >
                 <Background />
             </ReactFlow>
-            
+
         </div>
     );
 };

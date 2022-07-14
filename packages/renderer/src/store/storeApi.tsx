@@ -26,7 +26,7 @@ export interface effect {
   base_config: effectConfig
 }
 
-enum deviceState {
+export enum deviceState {
   Disconnected,
   Connected,
   Disconnecting,
