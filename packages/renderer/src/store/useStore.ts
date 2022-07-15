@@ -3,6 +3,10 @@ import { devtools } from 'zustand/middleware';
 import { combine } from 'zustand/middleware';
 import { storeApi } from './storeApi'
 import { storeUI } from './storeUI';
+import rawProduce from "immer";
+
+export type State = ReturnType<typeof useStore.getState>;
+export const produce = (x: (s: State) => void) => rawProduce<State>(x);
 
 export const useStore = create(
   devtools(
@@ -10,9 +14,10 @@ export const useStore = create(
       {
         hackedBy: 'Blade',
       },
-      (set:any, get: any)=> ({
-        ui: storeUI(set),
-        api: storeApi(set, get)
+      (set, get)=> ({
+        ui: storeUI,
+        api: storeApi,
+        disconnected: true
       })
     )
   )

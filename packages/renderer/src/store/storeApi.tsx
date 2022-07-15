@@ -1,5 +1,5 @@
 import { Ledfx } from '@/api/ledfx'
-import produce from 'immer'
+import { useStore, produce } from './useStore'
 
 export interface virtual {
   id: string
@@ -95,7 +95,7 @@ interface deviceSchema {
 }
 
 
-export const storeApi = (set: any, get: any) => ({
+export const storeApi = {
   settings: {} as settings,
   effects: {} as Record<string, effect>,
   devices: {} as Record<string, device>,
@@ -107,8 +107,8 @@ export const storeApi = (set: any, get: any) => ({
   getSchema: async () => {
     let resp = await Ledfx('/api/effects/schema')
     if (resp) {
-      set(
-        produce((state: any) => {
+     useStore.setState(
+        produce((state) => {
           state.api.schema.effect = resp as schema['effect']
         }),
         false,
@@ -117,8 +117,8 @@ export const storeApi = (set: any, get: any) => ({
     }
     resp = await Ledfx('/api/devices/schema')
     if (resp) {
-      set(
-        produce((state: any) => {
+     useStore.setState(
+        produce((state) => {
           state.api.schema.device = resp as schema['device']
         }),
         false,
@@ -127,8 +127,8 @@ export const storeApi = (set: any, get: any) => ({
     }
     resp = await Ledfx('/api/virtuals/schema')
     if (resp) {
-      set(
-        produce((state: any) => {
+     useStore.setState(
+        produce((state) => {
           state.api.schema.virtual = resp as schema['virtual']
         }),
         false,
@@ -137,9 +137,9 @@ export const storeApi = (set: any, get: any) => ({
     }
     resp = await Ledfx('/api/settings/schema')
     if (resp) {
-      set(
-        produce((state: any) => {
-          state.api.schema.settings = resp as schema['setting']
+     useStore.setState(
+        produce((state) => {
+          state.api.schema.setting = resp as schema['setting']
         }),
         false,
         'api/getSettingSchema'
@@ -149,8 +149,8 @@ export const storeApi = (set: any, get: any) => ({
   getSettings: async () => {
     const resp = await Ledfx('/api/settings')
     if (resp) {
-      set(
-        produce((state: any) => {
+     useStore.setState(
+        produce((state) => {
           state.api.settings = resp
         }),
         false,
@@ -161,8 +161,8 @@ export const storeApi = (set: any, get: any) => ({
   getDevices: async () => {
     const resp = await Ledfx('/api/devices')
     if (resp) {
-      set(
-        produce((state: any) => {
+     useStore.setState(
+        produce((state) => {
           state.api.devices = resp
         }),
         false,
@@ -173,8 +173,8 @@ export const storeApi = (set: any, get: any) => ({
   getEffects: async () => {
     const resp = await Ledfx('/api/effects')
     if (resp) {
-      set(
-        produce((state: any) => {
+     useStore.setState(
+        produce((state) => {
           state.api.effects = resp
         }),
         false,
@@ -186,8 +186,8 @@ export const storeApi = (set: any, get: any) => ({
     const configs = await Ledfx('/api/virtuals')
     const states = await Ledfx('/api/virtuals/state')
     if (configs && states) {
-      set(
-        produce((state: any) => {
+     useStore.setState(
+        produce((state) => {
           const virts = {} as Record<string, virtual>
           for (const id in configs) {
             let v = {} as virtual
@@ -206,8 +206,8 @@ export const storeApi = (set: any, get: any) => ({
   getConnections: async () => {
     const resp = await Ledfx('/api/virtuals/connect')
     if (resp) {
-      set(
-        produce((state: any) => {
+     useStore.setState(
+        produce((state) => {
           state.api.connections = resp
         }),
         false,
@@ -218,8 +218,8 @@ export const storeApi = (set: any, get: any) => ({
   getGlobalEffectConfig: async () => {
     const resp = await Ledfx('/api/effects/global')
     if (resp) {
-      set(
-        produce((state: any) => {
+     useStore.setState(
+        produce((state) => {
           state.api.globalEffectConfig = resp
         }),
         false,
@@ -228,8 +228,8 @@ export const storeApi = (set: any, get: any) => ({
     }
   },
   setEffect: async (newEffect: effect) => {
-    set(
-      produce((state: any) => {
+   useStore.setState(
+      produce((state) => {
         state.api.effects[newEffect.id] = { ...state.api.effects[newEffect.id], ...newEffect }
       }),
       false,
@@ -237,8 +237,8 @@ export const storeApi = (set: any, get: any) => ({
     )
   },
   setVirtual: async (newVirtual: virtual) => {
-    set(
-      produce((state: any) => {
+   useStore.setState(
+      produce((state) => {
         state.api.virtuals[newVirtual.id] = { ...state.api.virtuals[newVirtual.id], ...newVirtual }
       }),
       false,
@@ -246,9 +246,9 @@ export const storeApi = (set: any, get: any) => ({
     )
   },
   setDevice: async (newDevice: device) => {
-    set(
-      produce((state: any) => {
-        newDevice.id != null ? 
+   useStore.setState(
+      produce((state) => {
+        newDevice.id != null ?
         state.api.devices[newDevice.id] = { ...state.api.devices[newDevice.id], ...newDevice } : null
       }),
       false,
@@ -256,8 +256,8 @@ export const storeApi = (set: any, get: any) => ({
     )
   },
   setConnections: async (connections: connections) => {
-    set(
-      produce((state: any) => {
+   useStore.setState(
+      produce((state) => {
         state.api.connections = connections
       }),
       false,
@@ -265,8 +265,8 @@ export const storeApi = (set: any, get: any) => ({
     )
   },
   setGlobalEffectConfig: async (config: effectConfig) => {
-    set(
-      produce((state: any) => {
+   useStore.setState(
+      produce((state) => {
         state.api.globalEffectConfig = config
       }),
       false,
@@ -274,8 +274,8 @@ export const storeApi = (set: any, get: any) => ({
     )
   },
   setSettings: async (settings: settings) => {
-    set(
-      produce((state: any) => {
+   useStore.setState(
+      produce((state) => {
         state.api.settings = settings
       }),
       false,
@@ -304,5 +304,5 @@ export const storeApi = (set: any, get: any) => ({
     //   console.log(res)
     // }
   },
-})
+}
 
