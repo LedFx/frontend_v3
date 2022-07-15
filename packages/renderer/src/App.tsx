@@ -6,7 +6,7 @@ import Info from './pages/example/Info'
 import pkg from '../../../package.json'
 import Home from './pages/Home'
 import Example from './pages/example/Example'
-import HorizontalFlow from './pages/flow/Flow'
+import HorizontalFlow from './components/flow/Flow'
 import { SnackbarProvider } from 'notistack'
 import ws, { WsContext } from './api/Websocket'
 

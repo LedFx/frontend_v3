@@ -6,6 +6,7 @@ import Box from '@mui/material/Box'
 import { Link as RouterLink } from 'react-router-dom'
 import { useSnackbar } from 'notistack'
 import { useEffect, useState } from 'react'
+import { Brightness4, Brightness7 } from '@mui/icons-material'
 
 const ipcRenderer = window.ipcRenderer || false
 
@@ -27,6 +28,8 @@ const Home = () => {
   const settings = useStore((state) => state.api.settings)
   const globalEffectConfig = useStore((state) => state.api.globalEffectConfig)
   const schema = useStore((state) => state.api.schema)
+  const darkMode = useStore((state) => state.ui.darkMode)
+  const setDarkMode = useStore((state) => state.ui.setDarkMode)
   const getSchema = useStore((state) => state.api.getSchema)
   const getEffects = useStore((state) => state.api.getEffects)
   const getSettings = useStore((state) => state.api.getSettings)
@@ -34,8 +37,26 @@ const Home = () => {
   const getVirtuals = useStore((state) => state.api.getVirtuals)
   const getConnections = useStore((state) => state.api.getConnections)
   const getGlobalEffectConfig = useStore((state) => state.api.getGlobalEffectConfig)
-  const addDevice = useStore((state) => state.api.addDevice)
+  const addDevice = useStore((state) => state.api.addDevice)  
   const { enqueueSnackbar } = useSnackbar()
+
+  const toggleDarkmode = () => {
+    if (ipcRenderer) {
+      ipcRenderer.sendSync('toggle-darkmode', 'try')
+    } else {
+      setDarkMode(!darkMode)
+    }
+  }
+
+  useEffect(() => {
+    if (ipcRenderer) {
+      async function getDarkMode() {
+        const dark = await ipcRenderer.sendSync('get-darkmode')
+        setDarkMode(dark === 'yes')
+      }
+      getDarkMode()
+    }
+  }, [])
 
   useEffect(() => {
     enqueueSnackbar(snackbar.message, { variant: snackbar.variant })
@@ -66,6 +87,7 @@ const Home = () => {
           }:${import.meta.env.VITE_CORE_PORT || '8080'}`}
         </Typography>
         <Stack spacing={1}>
+          <Button onClick={toggleDarkmode}>{darkMode ? <Brightness7/> : <Brightness4 />}</Button>
           <Button onClick={() => enqueueSnackbar('I love hooks')}>
             Notification
           </Button>
