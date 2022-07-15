@@ -11,7 +11,7 @@ export const storeUI = (set: any) => ({
   showSnackbar: (variant: VariantType, message: string): void =>
    useStore.setState(
       produce((state) => {
-        state.ui.snackbar = { isOpen: false, message, variant };
+        state.ui.snackbar = { isOpen: true, message, variant };
       }),
       false,
       'ui/showSnackbar'
