@@ -1,7 +1,6 @@
 /* eslint-disable no-param-reassign */
-import { State, useStore } from '@/store/useStore'
+import { useStore, produce } from '@/store/useStore'
 import axios from 'axios';
-import produce from 'immer';
 // import { useStore } from '@/store/useStore';
 // eslint-disable-next-line import/no-cycle
 
@@ -38,7 +37,7 @@ export const Ledfx = async (
     }
     if (response.status === 200) {
       setState(
-        produce((state: State) => {
+        produce((state) => {
           state.disconnected = false;
         })
       );
@@ -46,7 +45,7 @@ export const Ledfx = async (
     }
     // console.log('5:', response);
     return setState(
-      produce((state: any) => {
+      produce((state) => {
         state.ui.snackbar = {
           isOpen: true,
           variant: 'error',
@@ -57,7 +56,7 @@ export const Ledfx = async (
   } catch (error: any) {
     if (error.message) {
       return setState(
-        produce((state: any) => {
+        produce((state) => {
           state.ui.snackbar = {
             isOpen: true,
             variant: 'error',
@@ -67,7 +66,7 @@ export const Ledfx = async (
       );
     }
     setState(
-      produce((state: any) => {
+      produce((state) => {
         state.ui.snackbar = {
           isOpen: true,
           variant: 'error',
