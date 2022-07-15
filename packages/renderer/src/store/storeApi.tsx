@@ -95,7 +95,7 @@ interface deviceSchema {
 }
 
 
-export const storeApi = (set: any, get: any) => ({
+export const storeApi = {
   settings: {} as settings,
   effects: {} as Record<string, effect>,
   devices: {} as Record<string, device>,
@@ -304,5 +304,5 @@ export const storeApi = (set: any, get: any) => ({
     //   console.log(res)
     // }
   },
-})
+}
 

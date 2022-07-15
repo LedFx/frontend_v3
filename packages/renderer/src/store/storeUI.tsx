@@ -1,7 +1,7 @@
 import { VariantType } from 'notistack'
 import { useStore, produce } from './useStore';
 
-export const storeUI = (set: any) => ({
+export const storeUI = {
   darkMode: false,
   snackbar: {
     isOpen: false,
@@ -23,4 +23,4 @@ export const storeUI = (set: any) => ({
       }),
       false,
       "ui/darkmode"),
-})
+};

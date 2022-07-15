@@ -15,8 +15,8 @@ export const useStore = create(
         hackedBy: 'Blade',
       },
       (set, get)=> ({
-        ui: storeUI(set),
-        api: storeApi(set, get),
+        ui: storeUI,
+        api: storeApi,
         disconnected: true
       })
     )
