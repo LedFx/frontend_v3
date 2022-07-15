@@ -88,3 +88,7 @@ release
 dist-ssr
 *.local
 core/
+LedFx.exe
+libaubio-5.dll
+libportaudio.dll
+v3.zip
