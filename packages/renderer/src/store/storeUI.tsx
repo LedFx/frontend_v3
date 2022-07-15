@@ -1,6 +1,5 @@
-import produce from 'immer'
 import { VariantType } from 'notistack'
-import { State, useStore } from './useStore';
+import { useStore, produce } from './useStore';
 
 export const storeUI = (set: any) => ({
   darkMode: false,
@@ -11,7 +10,7 @@ export const storeUI = (set: any) => ({
   },
   showSnackbar: (variant: VariantType, message: string): void =>
    useStore.setState(
-      produce((state: any) => {
+      produce((state) => {
         state.ui.snackbar = { isOpen: false, message, variant };
       }),
       false,
@@ -19,7 +18,7 @@ export const storeUI = (set: any) => ({
     ),
   setDarkMode: (dark: boolean): void =>
     useStore.setState(
-      produce<State>((state) => {
+      produce((state) => {
         state.ui.darkMode = dark
       }),
       false,

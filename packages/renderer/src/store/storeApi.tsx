@@ -1,6 +1,5 @@
 import { Ledfx } from '@/api/ledfx'
-import produce from 'immer'
-import { State, useStore } from './useStore'
+import { useStore, produce } from './useStore'
 
 export interface virtual {
   id: string
@@ -109,7 +108,7 @@ export const storeApi = (set: any, get: any) => ({
     let resp = await Ledfx('/api/effects/schema')
     if (resp) {
      useStore.setState(
-        produce((state: State) => {
+        produce((state) => {
           state.api.schema.effect = resp as schema['effect']
         }),
         false,
@@ -119,7 +118,7 @@ export const storeApi = (set: any, get: any) => ({
     resp = await Ledfx('/api/devices/schema')
     if (resp) {
      useStore.setState(
-        produce((state: State) => {
+        produce((state) => {
           state.api.schema.device = resp as schema['device']
         }),
         false,
@@ -129,7 +128,7 @@ export const storeApi = (set: any, get: any) => ({
     resp = await Ledfx('/api/virtuals/schema')
     if (resp) {
      useStore.setState(
-        produce((state: State) => {
+        produce((state) => {
           state.api.schema.virtual = resp as schema['virtual']
         }),
         false,
@@ -139,7 +138,7 @@ export const storeApi = (set: any, get: any) => ({
     resp = await Ledfx('/api/settings/schema')
     if (resp) {
      useStore.setState(
-        produce((state: State) => {
+        produce((state) => {
           state.api.schema.setting = resp as schema['setting']
         }),
         false,
@@ -151,7 +150,7 @@ export const storeApi = (set: any, get: any) => ({
     const resp = await Ledfx('/api/settings')
     if (resp) {
      useStore.setState(
-        produce((state: State) => {
+        produce((state) => {
           state.api.settings = resp
         }),
         false,
@@ -163,7 +162,7 @@ export const storeApi = (set: any, get: any) => ({
     const resp = await Ledfx('/api/devices')
     if (resp) {
      useStore.setState(
-        produce((state: State) => {
+        produce((state) => {
           state.api.devices = resp
         }),
         false,
@@ -175,7 +174,7 @@ export const storeApi = (set: any, get: any) => ({
     const resp = await Ledfx('/api/effects')
     if (resp) {
      useStore.setState(
-        produce((state: State) => {
+        produce((state) => {
           state.api.effects = resp
         }),
         false,
@@ -188,7 +187,7 @@ export const storeApi = (set: any, get: any) => ({
     const states = await Ledfx('/api/virtuals/state')
     if (configs && states) {
      useStore.setState(
-        produce((state: State) => {
+        produce((state) => {
           const virts = {} as Record<string, virtual>
           for (const id in configs) {
             let v = {} as virtual
@@ -208,7 +207,7 @@ export const storeApi = (set: any, get: any) => ({
     const resp = await Ledfx('/api/virtuals/connect')
     if (resp) {
      useStore.setState(
-        produce((state: State) => {
+        produce((state) => {
           state.api.connections = resp
         }),
         false,
@@ -220,7 +219,7 @@ export const storeApi = (set: any, get: any) => ({
     const resp = await Ledfx('/api/effects/global')
     if (resp) {
      useStore.setState(
-        produce((state: State) => {
+        produce((state) => {
           state.api.globalEffectConfig = resp
         }),
         false,
@@ -230,7 +229,7 @@ export const storeApi = (set: any, get: any) => ({
   },
   setEffect: async (newEffect: effect) => {
    useStore.setState(
-      produce((state: State) => {
+      produce((state) => {
         state.api.effects[newEffect.id] = { ...state.api.effects[newEffect.id], ...newEffect }
       }),
       false,
@@ -239,7 +238,7 @@ export const storeApi = (set: any, get: any) => ({
   },
   setVirtual: async (newVirtual: virtual) => {
    useStore.setState(
-      produce((state: State) => {
+      produce((state) => {
         state.api.virtuals[newVirtual.id] = { ...state.api.virtuals[newVirtual.id], ...newVirtual }
       }),
       false,
@@ -248,7 +247,7 @@ export const storeApi = (set: any, get: any) => ({
   },
   setDevice: async (newDevice: device) => {
    useStore.setState(
-      produce((state: State) => {
+      produce((state) => {
         newDevice.id != null ?
         state.api.devices[newDevice.id] = { ...state.api.devices[newDevice.id], ...newDevice } : null
       }),
@@ -258,7 +257,7 @@ export const storeApi = (set: any, get: any) => ({
   },
   setConnections: async (connections: connections) => {
    useStore.setState(
-      produce((state: State) => {
+      produce((state) => {
         state.api.connections = connections
       }),
       false,
@@ -267,7 +266,7 @@ export const storeApi = (set: any, get: any) => ({
   },
   setGlobalEffectConfig: async (config: effectConfig) => {
    useStore.setState(
-      produce((state: State) => {
+      produce((state) => {
         state.api.globalEffectConfig = config
       }),
       false,
@@ -276,7 +275,7 @@ export const storeApi = (set: any, get: any) => ({
   },
   setSettings: async (settings: settings) => {
    useStore.setState(
-      produce((state: State) => {
+      produce((state) => {
         state.api.settings = settings
       }),
       false,

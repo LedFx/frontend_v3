@@ -3,8 +3,10 @@ import { devtools } from 'zustand/middleware';
 import { combine } from 'zustand/middleware';
 import { storeApi } from './storeApi'
 import { storeUI } from './storeUI';
-export type State = ReturnType<typeof useStore.getState>;
+import rawProduce from "immer";
 
+export type State = ReturnType<typeof useStore.getState>;
+export const produce = (x: (s: State) => void) => rawProduce<State>(x);
 
 export const useStore = create(
   devtools(
