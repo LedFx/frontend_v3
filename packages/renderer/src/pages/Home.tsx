@@ -7,7 +7,7 @@ import { useEffect } from 'react'
 import DrawerRight from '@/components/Drawer/DrawerRight'
 import { Fab } from '@mui/material'
 import { Code } from '@mui/icons-material'
-import HorizontalFlow from '../components/FlowB/HorizontalFlow'
+import Flow from '../components/Flow/Flow'
 
 const ipcRenderer = window.ipcRenderer || false
 
@@ -34,7 +34,7 @@ const Home = () => {
               ? 'calc(100vh - 30px)'
               : '100vh' }}>
 
-          <HorizontalFlow />
+          <Flow />
           <Fab sx={{ position: 'fixed', right: '1.3rem', bottom: '1.3rem' }} color="primary" aria-label="dev-menu" onClick={() => setDrawerOpen('right', true)}>
             <Code />
           </Fab>
