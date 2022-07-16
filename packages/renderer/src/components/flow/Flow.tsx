@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import ReactFlow, { useNodesState, useEdgesState, addEdge, Background, Edge } from 'react-flow-renderer';
+import { useEffect} from 'react';
+import ReactFlow, { useNodesState, useEdgesState, addEdge, Background, Edge, Position } from 'react-flow-renderer';
 import { useStore } from '../../store/useStore'
 import { EffectNode, VirtualNode, DeviceNode, AddEffectNode, AddDeviceNode, AddVirtualNode } from './Nodes';
 import ButtonEdge from "./ButtonEdge";
@@ -17,7 +17,7 @@ const nodeTypes = {
 const initialNodes: never[] = [];
 const initialEdges: Edge<any>[] = [];
 
-const HorizontalFlow = () => {
+const Flow = () => {
 
     const effects = useStore((state) => state.api.effects)
     const virtuals = useStore((state) => state.api.virtuals)
@@ -91,7 +91,7 @@ const HorizontalFlow = () => {
                     {
                         id: effect_id,
                         type: 'effectNode',
-                        sourcePosition: 'right',
+                        sourcePosition: Position.Right,
                         position: { x: -400, y: i },
                         data: effects[effect_id]
                     },
@@ -104,8 +104,8 @@ const HorizontalFlow = () => {
                     {
                         id: virtual_id,
                         type: 'virtualNode',
-                        targetPosition: 'left',
-                        sourcePosition: 'right',
+                        targetPosition: Position.Left,
+                        sourcePosition: Position.Right,
                         position: { x: 0, y: i },
                         data: virtuals[virtual_id]
                     },
@@ -118,7 +118,7 @@ const HorizontalFlow = () => {
                     {
                         id: device_id,
                         type: 'deviceNode',
-                        targetPosition: 'left',
+                        targetPosition: Position.Left,
                         position: { x: 400, y: i },
                         data: devices[device_id]
                     },
@@ -144,24 +144,21 @@ const HorizontalFlow = () => {
 
 
     return (
-        <div style={{ height: 800 }}>
-            <ReactFlow
-                nodes={nodes}
-                edges={edges}
-                onNodesChange={onNodesChange}
-                onEdgesChange={onEdgesChange}
-                onConnect={onConnect}
-                nodeTypes={nodeTypes}
-                edgeTypes={edgeTypes}
-                fitView
-                attributionPosition="bottom-left"
-            >
-                <Background />
-            </ReactFlow>
-
-        </div>
+        <ReactFlow
+            nodes={nodes}
+            edges={edges}
+            onNodesChange={onNodesChange}
+            onEdgesChange={onEdgesChange}
+            onConnect={onConnect}
+            nodeTypes={nodeTypes}
+            edgeTypes={edgeTypes}
+            fitView
+            attributionPosition="bottom-left"
+        >
+            <Background />
+        </ReactFlow>
     );
 };
 
-export default HorizontalFlow;
+export default Flow;
 

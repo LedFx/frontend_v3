@@ -20,6 +20,16 @@ export default function CustomEdge({
   targetPosition,
   style = {},
   markerEnd,
+}:{
+  id: any,
+  sourceX: any,
+  sourceY: any,
+  targetX: any,
+  targetY: any,
+  sourcePosition: any,
+  targetPosition: any,
+  style?: any,
+  markerEnd?: any,
 }) {
   const edgePath = getBezierPath({
     sourceX,
