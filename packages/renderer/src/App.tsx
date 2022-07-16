@@ -4,7 +4,6 @@ import { ThemeProvider, createTheme } from '@mui/material/styles'
 import { HashRouter, Routes, Route } from 'react-router-dom'
 import pkg from '../../../package.json'
 import Home from './pages/Home'
-import Flow from './components/Flow/Flow'
 import { SnackbarProvider } from 'notistack'
 import ws, { WsContext } from './api/Websocket'
 
