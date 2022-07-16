@@ -17,7 +17,7 @@ const nodeTypes = {
 const initialNodes: never[] = [];
 const initialEdges: Edge<any>[] = [];
 
-const Flow = () => {
+const HorizontalFlow = () => {
 
     const effects = useStore((state) => state.api.effects)
     const virtuals = useStore((state) => state.api.virtuals)
@@ -160,5 +160,5 @@ const Flow = () => {
     );
 };
 
-export default Flow;
+export default HorizontalFlow;
 
