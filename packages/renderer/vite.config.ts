@@ -29,7 +29,7 @@ export default defineConfig({
       }
     ),
   ],
-  base: process.env.GHPAGES==="TRUE" ?'/ledfx_frontend_v3/':'./',
+  base: process.env.GHPAGES==="TRUE" ?'/frontend_v3/':'./',
   build: {
     sourcemap: true,
     outDir: '../../dist/renderer',

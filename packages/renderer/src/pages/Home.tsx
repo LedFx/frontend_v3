@@ -4,10 +4,10 @@ import pkg from '../../../../package.json'
 import Box from '@mui/material/Box'
 import { useSnackbar } from 'notistack'
 import { useEffect } from 'react'
-import Flow from '@/components/Flow/Flow'
 import DrawerRight from '@/components/Drawer/DrawerRight'
 import { Fab } from '@mui/material'
 import { Code } from '@mui/icons-material'
+import Flow from '../components/Flow/Flow'
 
 const ipcRenderer = window.ipcRenderer || false
 
