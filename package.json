@@ -2,8 +2,8 @@
   "name": "ledfx_frontend_v3",
   "productName": "ledfx_frontend_v3",
   "private": true,
-  "version": "0.0.3",
-  "description": "ledfx_frontend_v3 0.0.3 - supercharged with Vitron (by Blade)",
+  "version": "0.0.4",
+  "description": "ledfx_frontend_v3 0.0.4 - supercharged with Vitron (by Blade)",
   "author": "Matthew & Yeon a.k.a Blade <dev@yeonv.com>",
   "repository": {
     "url": "https://github.com/not-matt/ledfx_frontend_v3"
