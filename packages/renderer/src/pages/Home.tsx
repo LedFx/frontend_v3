@@ -7,7 +7,7 @@ import { useEffect } from 'react'
 import DrawerRight from '@/components/Drawer/DrawerRight'
 import { Fab } from '@mui/material'
 import { Code } from '@mui/icons-material'
-import HorizontalFlow from '../components/Flow/HorizontalFlow'
+import HorizontalFlow from '../components/FlowB/HorizontalFlow'
 
 const ipcRenderer = window.ipcRenderer || false
 
