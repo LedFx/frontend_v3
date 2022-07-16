@@ -2,11 +2,9 @@ import { useEffect, useMemo } from 'react'
 import { useStore } from './store/useStore'
 import { ThemeProvider, createTheme } from '@mui/material/styles'
 import { HashRouter, Routes, Route } from 'react-router-dom'
-import Info from './pages/example/Info'
 import pkg from '../../../package.json'
 import Home from './pages/Home'
-import Example from './pages/example/Example'
-import HorizontalFlow from './components/flow/Flow'
+import Flow from './components/Flow/Flow'
 import { SnackbarProvider } from 'notistack'
 import ws, { WsContext } from './api/Websocket'
 
@@ -87,9 +85,6 @@ const App = () => {
           <HashRouter>
             <Routes>
               <Route path='/' element={<Home />} />
-              <Route path='/Example' element={<Example />} />
-              <Route path='/Info' element={<Info />} />
-              <Route path='/Flow' element={<HorizontalFlow />} />
             </Routes>
           </HashRouter>
         </WsContext.Provider>
