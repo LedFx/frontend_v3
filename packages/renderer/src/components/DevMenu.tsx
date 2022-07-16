@@ -113,12 +113,6 @@ const DevMenu = () => {
             }>
             addDevice
           </Button>
-          <Button component={RouterLink} to='/Example' size={'large'}>
-            Basic Examples
-          </Button>
-          <Button component={RouterLink} to='/Flow' size={'large'}>
-            React Flow
-          </Button>
         </Stack>
       </header>
       <Box sx={{ textAlign: "left"}}>
