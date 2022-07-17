@@ -153,7 +153,9 @@ const Flow = () => {
             nodeTypes={nodeTypes}
             edgeTypes={edgeTypes}
             fitView
-            attributionPosition="bottom-left"
+            nodesDraggable={false}
+            elementsSelectable={true}
+            attributionPosition="top-right"
         >
             <Background />
         </ReactFlow>
