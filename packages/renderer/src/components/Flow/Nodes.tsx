@@ -10,8 +10,11 @@ import SignalWifiBadIcon from '@mui/icons-material/SignalWifiBad';
 import SignalWifiStatusbar4BarIcon from '@mui/icons-material/SignalWifiStatusbar4Bar';
 import WifiFindIcon from '@mui/icons-material/WifiFind';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
+import ToggleOffIcon from '@mui/icons-material/ToggleOff';
+import ToggleOnIcon from '@mui/icons-material/ToggleOn';
 import { Handle, Position } from 'react-flow-renderer';
 import { Ledfx } from '@/api/ledfx';
+import { useState } from 'react';
 
 const nodeWidth = "300px"
 const nodeHeight = "160px"
@@ -51,7 +54,7 @@ export const VirtualNode = (node: { data: virtual; }) => {
         await Ledfx('/api/virtuals/state', "POST", data)
     }
     return (
-        <Card variant="outlined" sx={{ "width": nodeWidth, "height": nodeHeight }}>
+        <Card variant="outlined" sx={{ "width": nodeWidth, "height": nodeHeight, "borderColor": virtual.active ? "primary" : "" }}>
             <CardContent>
                 <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>{virtual.id}</Typography>
                 <Typography variant="h5">{virtual.base_config.name}</Typography>
@@ -59,7 +62,7 @@ export const VirtualNode = (node: { data: virtual; }) => {
             <CardActions disableSpacing>
                 <Tooltip title="Toggle Activation">
                     <IconButton aria-label="Toggle Activation" onClick={toggle}>
-                        <PowerSettingsNewIcon />
+                        {virtual.active ? <ToggleOnIcon color='primary' /> : <ToggleOffIcon />}
                     </IconButton>
                 </Tooltip>
                 <Tooltip title="Configure">
@@ -68,7 +71,7 @@ export const VirtualNode = (node: { data: virtual; }) => {
                     </IconButton>
                 </Tooltip>
                 <Tooltip title="Delete">
-                    <IconButton aria-label="Delete" onClick={async () => Ledfx('/api/virtuals', "DELETE", {id: virtual.id}) }>
+                    <IconButton aria-label="Delete" onClick={async () => Ledfx('/api/virtuals', "DELETE", { id: virtual.id })}>
                         <DeleteIcon />
                     </IconButton>
                 </Tooltip>
@@ -110,7 +113,7 @@ export const DeviceNode = (node: { data: device; }) => {
 function ConnectionIcon(state: deviceState) {
     switch (state) {
         case deviceState.Connected:
-            return <Tooltip title="Connected" color='disabled'>
+            return <Tooltip title="Connected" color='primary'>
                 <SignalWifiStatusbar4BarIcon />
             </Tooltip>
         case deviceState.Connecting:
@@ -148,6 +151,10 @@ export const AddEffectNode = (_: any) => {
 }
 
 export const AddVirtualNode = (_: any) => {
+    const [toggleState, setToggleState] = useState(false)
+    const toggle = async () => {
+        setToggleState(!toggleState as boolean)
+    }
     return (
         <Card variant="outlined" sx={{ "width": nodeWidth, "height": "150px" }}>
             <CardContent>
@@ -156,8 +163,8 @@ export const AddVirtualNode = (_: any) => {
             </CardContent>
             <CardActions disableSpacing>
                 <Tooltip title="Toggle Activation">
-                    <IconButton aria-label="Toggle Activation">
-                        <PowerSettingsNewIcon />
+                    <IconButton aria-label="Toggle Activation" onClick={toggle}>
+                        {toggleState ? <ToggleOffIcon /> : <ToggleOnIcon color='primary' />}
                     </IconButton>
                 </Tooltip>
                 <Tooltip title="Add Virtual">
