@@ -68,7 +68,7 @@ export const VirtualNode = (node: { data: virtual; }) => {
                     </IconButton>
                 </Tooltip>
                 <Tooltip title="Delete">
-                    <IconButton aria-label="Delete">
+                    <IconButton aria-label="Delete" onClick={async () => Ledfx('/api/virtuals', "DELETE", {id: virtual.id}) }>
                         <DeleteIcon />
                     </IconButton>
                 </Tooltip>
