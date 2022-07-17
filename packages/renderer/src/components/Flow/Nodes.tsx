@@ -11,6 +11,7 @@ import SignalWifiStatusbar4BarIcon from '@mui/icons-material/SignalWifiStatusbar
 import WifiFindIcon from '@mui/icons-material/WifiFind';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import { Handle, Position } from 'react-flow-renderer';
+import { Ledfx } from '@/api/ledfx';
 
 const nodeWidth = "300px"
 const nodeHeight = "160px"
@@ -43,6 +44,12 @@ export const EffectNode = (node: { data: effect; }) => {
 
 export const VirtualNode = (node: { data: virtual; }) => {
     const virtual = node.data as virtual
+    const toggle = async () => {
+        let data = {}
+        data[virtual.id] = !virtual.active
+        console.log(data)
+        await Ledfx('/api/virtuals/state', "POST", data)
+    }
     return (
         <Card variant="outlined" sx={{ "width": nodeWidth, "height": nodeHeight }}>
             <CardContent>
@@ -51,7 +58,7 @@ export const VirtualNode = (node: { data: virtual; }) => {
             </CardContent>
             <CardActions disableSpacing>
                 <Tooltip title="Toggle Activation">
-                    <IconButton aria-label="Toggle Activation">
+                    <IconButton aria-label="Toggle Activation" onClick={toggle}>
                         <PowerSettingsNewIcon />
                     </IconButton>
                 </Tooltip>
