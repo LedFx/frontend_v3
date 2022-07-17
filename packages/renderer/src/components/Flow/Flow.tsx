@@ -1,8 +1,10 @@
-import { useEffect} from 'react';
+import { useEffect } from 'react';
 import ReactFlow, { useNodesState, useEdgesState, addEdge, Background, Edge, Position } from 'react-flow-renderer';
 import { useStore } from '../../store/useStore'
 import { EffectNode, VirtualNode, DeviceNode, AddEffectNode, AddDeviceNode, AddVirtualNode } from './Nodes';
 import ButtonEdge from "./ButtonEdge";
+import { VariantType } from 'notistack';
+import { Ledfx } from '@/api/ledfx';
 
 const edgeTypes = { buttonedge: ButtonEdge };
 const nodeTypes = {
@@ -17,16 +19,35 @@ const nodeTypes = {
 const initialNodes: never[] = [];
 const initialEdges: Edge<any>[] = [];
 
+
 const Flow = () => {
 
     const effects = useStore((state) => state.api.effects)
     const virtuals = useStore((state) => state.api.virtuals)
     const devices = useStore((state) => state.api.devices)
     const connections = useStore((state) => state.api.connections)
+    const showSnackbar = useStore((state) => state.ui.showSnackbar)
 
     const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes as any);
     const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
-    const onConnect = (params: any) => setEdges((els) => addEdge({ ...params, type: 'buttonedge' }, els));
+
+    const makeConnection = async (params: any) => {
+        const sourceType = nodes.find(x => x.id === params.source).type;
+        const targetType = nodes.find(x => x.id === params.target).type;
+        if (sourceType === "effectNode" && targetType == "deviceNode") {
+            showSnackbar("info" as VariantType, "Use a virtual to join an effect to a device")
+            return
+        }
+        var data = {}
+        if (sourceType === "effectNode") {
+            data.effect_id = params.source
+            data.virtual_id = params.target
+        } else {
+            data.virtual_id = params.source
+            data.device_id = params.target
+        }
+        await Ledfx('/api/virtuals/connect', 'POST', data)
+    }
 
     useEffect(() => {
         setEdges((edges) => {
@@ -149,7 +170,7 @@ const Flow = () => {
             edges={edges}
             onNodesChange={onNodesChange}
             onEdgesChange={onEdgesChange}
-            onConnect={onConnect}
+            onConnect={makeConnection}
             nodeTypes={nodeTypes}
             edgeTypes={edgeTypes}
             fitView
@@ -163,4 +184,3 @@ const Flow = () => {
 };
 
 export default Flow;
-

@@ -1,14 +1,10 @@
+import { Ledfx } from '@/api/ledfx';
 import React from 'react';
-import { getBezierPath, getEdgeCenter, getMarkerEnd } from 'react-flow-renderer';
+import { getBezierPath, getEdgeCenter, getMarkerEnd, useReactFlow } from 'react-flow-renderer';
 
 import './edge.css';
 
 const foreignObjectSize = 40;
-
-const onEdgeClick = (evt: React.MouseEvent<HTMLButtonElement, MouseEvent>, id: any) => {
-  evt.stopPropagation();
-  alert(`remove ${id}`);
-};
 
 export default function CustomEdge({
   id,
@@ -31,6 +27,7 @@ export default function CustomEdge({
   style?: any,
   markerEnd?: any,
 }) {
+  const reactFlowInstance = useReactFlow();
   const edgePath = getBezierPath({
     sourceX,
     sourceY,
@@ -45,6 +42,17 @@ export default function CustomEdge({
     targetX,
     targetY,
   });
+
+  const onEdgeClick = async (evt: React.MouseEvent<HTMLButtonElement, MouseEvent>, id: any) => {
+    evt.stopPropagation();
+    const edge = reactFlowInstance.getEdge(id)
+    const sourceType = reactFlowInstance.getNode(edge?.source)?.type === "effectNode" ? "effect_id" : "virtual_id"
+    const targetType = reactFlowInstance.getNode(edge?.target)?.type === "virtualNode" ? "virtual_id" : "device_id"
+    const data = {}
+    data[sourceType] = edge?.source
+    data[targetType] = edge?.target
+    await Ledfx('/api/virtuals/disconnect', 'POST', data)
+  };
 
   return (
     <>
