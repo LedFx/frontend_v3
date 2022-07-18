@@ -8,6 +8,7 @@ import DrawerRight from '@/components/Drawer/DrawerRight'
 import { Fab } from '@mui/material'
 import { Code } from '@mui/icons-material'
 import Flow from '../components/Flow/Flow'
+import TopBar from '@/components/Bars/TopBar'
 
 const ipcRenderer = window.ipcRenderer || false
 
@@ -33,11 +34,9 @@ const Home = () => {
           height: ipcRenderer && pkg.env.VITRON_CUSTOM_TITLEBAR
               ? 'calc(100vh - 30px)'
               : '100vh' }}>
-
+            
+          <TopBar/>
           <Flow />
-          <Fab sx={{ position: 'fixed', right: '1.3rem', bottom: '1.3rem' }} color="primary" aria-label="dev-menu" onClick={() => setDrawerOpen('right', true)}>
-            <Code />
-          </Fab>
           <DrawerRight />          
         </div>
     </Box>

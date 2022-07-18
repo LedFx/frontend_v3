@@ -71,11 +71,9 @@ export default function CustomEdge({
         className="edgebutton-foreignobject"
         requiredExtensions="http://www.w3.org/1999/xhtml"
       >
-        <body>
           <button className="edgebutton" onClick={(event) => onEdgeClick(event, id)}>
             ×
           </button>
-        </body>
       </foreignObject>
     </>
   );

@@ -4,8 +4,8 @@ import ReactGPicker from 'react-gcolor-picker';
 import AddIcon from '@mui/icons-material/Add';
 import useClickOutside from '@/utils/useClickOutside';
 import Popover from '@/components/Popover/Popover';
-import DeleteColorsDialog from '@/components/Dialogs/DeleteColors';
-import useStyles from './GradientPicker.styles';
+// import DeleteColorsDialog from '@/components/Dialogs/DeleteColors';
+// import useStyles from './GradientPicker.styles';
 import {
   GradientPickerDefaultProps,
   GradientPickerProps,
@@ -21,7 +21,7 @@ const GradientPicker = ({
   handleAddGradient,
   sendColorToVirtuals,
 }: GradientPickerProps) => {
-  const classes = useStyles();
+  // const classes = useStyles();
   const popover = useRef(null);
   const [anchorEl, setAnchorEl] = useState(null);
   const [name, setName] = useState('');
@@ -69,7 +69,7 @@ const GradientPicker = ({
 
   return (
     <div
-      className={`${classes.wrapper} step-effect-${index} gradient-picker`}
+      className={`step-effect-${index} gradient-picker`}
       style={{ ...wrapperStyle }}
     >
       <label className="MuiFormLabel-root">
@@ -81,14 +81,14 @@ const GradientPicker = ({
       </label>
       {/* eslint-disable-next-line */}
       <div
-        className={classes.picker}
+        // className={classes.picker}
         style={{ background: pickerBgColorInt }}
         aria-describedby={id}
         onClick={handleClick}
       />
 
       <Popper id={id} open={open} anchorEl={anchorEl} ref={popover && popover}>
-        <div className={`${classes.paper} gradient-picker`}>
+        <div className={`gradient-picker`}>
           <ReactGPicker
             colorBoardHeight={150}
             debounce
@@ -140,7 +140,7 @@ const GradientPicker = ({
               -
             </Button>
             <Popover
-              className={classes.addButton}
+              // className={classes.addButton}
               popoverStyle={{ padding: '0.5rem' }}
               color="default"
               variant="outlined"
@@ -184,10 +184,10 @@ const GradientPicker = ({
           </div>
         </div>
       </Popper>
-      <DeleteColorsDialog
+      {/* <DeleteColorsDialog
         setDialogOpen={setDialogOpen}
         dialogOpen={dialogOpen}
-      />
+      /> */}
     </div>
   );
 };

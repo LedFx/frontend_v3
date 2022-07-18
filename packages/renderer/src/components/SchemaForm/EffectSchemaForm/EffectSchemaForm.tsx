@@ -3,10 +3,12 @@ import { effect, effectConfig, schemaEntry } from "@/store/interfaces";
 import { useStore } from "@/store/useStore";
 import ToggleOffIcon from '@mui/icons-material/ToggleOff';
 import ToggleOnIcon from '@mui/icons-material/ToggleOn';
-import { Button, Checkbox, Dialog, DialogContent, DialogTitle, Grid, IconButton, Slider, Typography } from "@mui/material";
+import { Button, Checkbox, Dialog, DialogContent, DialogTitle, Grid, IconButton, Slider, Switch, Typography } from "@mui/material";
 import { Component, useState } from "react";
 import Frame from "../Frame";
-import { BlurOff, BlurOn, DoNotDisturb, RotateLeft, TimerOff, Timer, InvertColorsOff, InvertColors, BrightnessLow, BrightnessHigh, FlashOff, FlashOn, AutoMode} from "@mui/icons-material";
+import { BlurOff, BlurOn, DoNotDisturb, RotateLeft, TimerOff, Timer, InvertColorsOff, InvertColors, BrightnessLow, BrightnessHigh, FlashOff, FlashOn, AutoMode } from "@mui/icons-material";
+import GradientPicker from "./GradientPicker/GradientPicker";
+import ReactGPicker from 'react-gcolor-picker';
 
 export interface EffectSchemaProps {
     effect: effect
@@ -40,28 +42,36 @@ const freqRange = (schemaEntryMax: schemaEntry, schemaEntryMin: schemaEntry) => 
 
 export const EffectSchemaForm = (effect: effect) => {
     const schema = useStore((state) => state.api.schema.effect)
-    const [applyOnChange, setApplyOnChange] = useState(true)
     const [config, setConfig] = useState(effect.base_config)
-    const applyChanges = async () => {
-        await Ledfx("/api/effects", "POST", effect)
-    }
-    let updatedSettings = {}
 
     const floatSlider = (key: string, StartIcon, EndIcon) => {
         return (
             <Frame
                 title={schema.base[key].title}
                 tip={schema.base[key].description}
-                style={{columnGap: 15}}
+                style={{ columnGap: 15 }}
             >
-                <StartIcon/>
+                <StartIcon />
                 <Slider
                     min={schema.base[key].validation.min}
                     max={schema.base[key].validation.max}
                     step={0.01}
                     value={config[key]}
+                    onChange={async (event) => {
+                        setConfig({
+                            ...config,
+                            [key]: event.target.value
+                        })
+                    }}
+                    onChangeCommitted={async (event) => {
+                        await Ledfx("/api/effects", "PUT", {
+                            "id": effect.id,
+                            "base_config": { [key]: config[key] }
+                        })
+                    }}
+
                 />
-                <EndIcon/>
+                <EndIcon />
             </Frame>)
     }
 
@@ -81,19 +91,44 @@ export const EffectSchemaForm = (effect: effect) => {
                 title={schemaEntry.title}
                 tip={schemaEntry.description}
             >
-                <Typography>Gradient Picker</Typography>
+                <ReactGPicker
+                    colorBoardHeight={150}
+                    debounce
+                    debounceMS={300}
+                    format="hex"
+                    gradient={true}
+                    solid
+                    onChange={(c) => {
+                        //   setPickerBgColorInt(c);
+                        //   return sendColorToVirtuals(c);
+                    }}
+                    popupWidth={288}
+                    showAlpha={false}
+                    value={""}
+                // value={pickerBgColorInt}
+                // defaultColors={Object.values(defaultColors)}
+                />
             </Frame>)
     }
 
-    const boolEntry = (schemaEntry: schemaEntry) => {
+    const boolEntry = (key: string) => {
         return (
             <Frame
-                title={schemaEntry.title}
-                tip={schemaEntry.description}
+                title={schema.base[key].title}
+                tip={schema.base[key].description}
             >
-                <IconButton>
-                    {true ? <ToggleOnIcon color='primary' /> : <ToggleOffIcon />}
-                </IconButton>
+                <Switch
+                    value={config[key]}
+                    onChange={async (event) => {
+                        setConfig({
+                            ...config,
+                            [key]: event.target.value === "on"
+                        })
+                        await Ledfx("/api/effects", "PUT", {
+                            "id": effect.id,
+                            "base_config": { [key]: config[key] }
+                        })
+                    }} />
             </Frame>)
     }
 
@@ -122,10 +157,10 @@ export const EffectSchemaForm = (effect: effect) => {
                     {gradientPicker(schema.base.palette)}
                 </Grid>
                 <Grid item xs={3}>
-                    {boolEntry(schema.base.flip)}
+                    {boolEntry("flip")}
                 </Grid>
                 <Grid item xs={3}>
-                    {boolEntry(schema.base.mirror)}
+                    {boolEntry("mirror")}
                 </Grid>
                 <Grid item xs={12}>
                     {freqRange(schema.base.freq_max, schema.base.freq_min)}
@@ -137,19 +172,6 @@ export const EffectSchemaForm = (effect: effect) => {
                     {floatSlider("bkg_brightness", BrightnessLow, BrightnessHigh)}
                 </Grid>
             </Grid>
-            <Frame
-                title="Options"
-                style={{ "justifyContent": "space-around" }}
-            >
-                <Typography>Apply Settings Immedately on Change</Typography>
-                <Checkbox
-                    checked={applyOnChange}
-                    onChange={() => { setApplyOnChange(!applyOnChange) }}
-                    inputProps={{ 'aria-label': 'controlled' }}
-                />
-                <Button disabled={applyOnChange} variant="outlined">Apply Settings</Button>
-            </Frame>
-
         </>
     )
 }

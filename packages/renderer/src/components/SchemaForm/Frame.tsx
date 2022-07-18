@@ -2,9 +2,9 @@ import { makeStyles } from '@mui/styles';
 import { ReactElement } from 'react';
 import theme from '@/styles/theme';
 import { DefaultTheme, ThemeProvider } from '@mui/system';
-import { Tooltip } from '@mui/material';
+import { Theme, Tooltip } from '@mui/material';
 
-const useStyles = makeStyles((theme: DefaultTheme) => ({
+const useStyles = makeStyles((theme) => ({
   wrapper: {
     minWidth: '23.5%',
     padding: '16px 1.2rem 6px 1.2rem',
@@ -30,6 +30,7 @@ const useStyles = makeStyles((theme: DefaultTheme) => ({
       fontSize: '0.9rem',
       letterSpacing: '0.1rem',
       color: "primary",
+      // backgroundColor: theme.palette.background.paper,
       backgroundColor: "white",
       boxSizing: 'border-box',
     },
