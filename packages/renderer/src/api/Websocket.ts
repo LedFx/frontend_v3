@@ -36,11 +36,13 @@ function handleMessage(e: MessageEvent) {
   const setVirtual = useStore.getState().api.setVirtual
   const setDevice = useStore.getState().api.setDevice
   const setEffect = useStore.getState().api.setEffect
+  const getEffects = useStore.getState().api.getEffects
+  const getDevices = useStore.getState().api.getDevices
+  const getVirtuals = useStore.getState().api.getVirtuals
   const setGlobalEffectConfig = useStore.getState().api.setGlobalEffectConfig
   const setConnections = useStore.getState().api.setConnections
   const setSettings = useStore.getState().api.setSettings
   const event: LedFxEvent = JSON.parse(e.data)
-  console.log("Received event:", event)
   switch (event.Type) {
     case eventType.Log:
       showSnackbar(event.Data.level as VariantType, event.Data.msg)
@@ -55,13 +57,13 @@ function handleMessage(e: MessageEvent) {
       setVirtual(event.Data as virtual)
       break
     case eventType.EffectDelete:
-      // delete effects[event.Data.id] // @blade like this?
+      getEffects()
       break
     case eventType.DeviceDelete:
-      // delete devices[event.Data.id] // @blade like this?
+      getDevices()
       break
     case eventType.VirtualDelete:
-      // delete virtuals[event.Data.id] // @blade like this?
+      getVirtuals()
       break
     case eventType.GlobalEffectUpdate:
       setGlobalEffectConfig(event.Data.config as effectConfig)

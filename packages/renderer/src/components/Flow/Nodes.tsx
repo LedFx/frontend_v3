@@ -1,5 +1,5 @@
 import { device, effect, virtual, deviceState } from '@/store/interfaces';
-import { Button, CardActions, IconButton, Tooltip, Typography } from '@mui/material';
+import { Button, CardActions, IconButton, Tooltip, Typography, useTheme } from '@mui/material';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import TuneIcon from '@mui/icons-material/Tune';
@@ -16,6 +16,7 @@ import { Handle, Position } from 'react-flow-renderer';
 import { Ledfx } from '@/api/ledfx';
 import { useState } from 'react';
 import { EffectSchemaDialog } from '../SchemaForm/EffectSchemaForm/EffectSchemaForm';
+import Popover from '../Popover/Popover';
 
 const nodeWidth = "300px"
 const nodeHeight = "160px"
@@ -23,6 +24,7 @@ const nodeHeight = "160px"
 export const EffectNode = (node: { data: effect; }) => {
     const effect = node.data as effect
     const [open, setOpen] = useState(false)
+    const theme = useTheme()
     return (
         <Card variant="outlined" sx={{ "width": nodeWidth, "height": nodeHeight }}>
             <CardContent>
@@ -41,6 +43,8 @@ export const EffectNode = (node: { data: effect; }) => {
                         <DeleteIcon />
                     </IconButton>
                 </Tooltip>
+                <Popover onConfirm={async ()=>{await Ledfx(`/api/effects?id=${effect.id}`, "DELETE")}} variant="text" />
+
             </CardActions>
             <Handle type="source" position={Position.Right} />
             <EffectSchemaDialog
