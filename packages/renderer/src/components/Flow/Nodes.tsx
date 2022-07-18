@@ -1,4 +1,4 @@
-import { device, effect, virtual, deviceState } from '@/store/storeApi';
+import { device, effect, virtual, deviceState } from '@/store/interfaces';
 import { Button, CardActions, IconButton, Tooltip, Typography } from '@mui/material';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
@@ -15,12 +15,14 @@ import ToggleOnIcon from '@mui/icons-material/ToggleOn';
 import { Handle, Position } from 'react-flow-renderer';
 import { Ledfx } from '@/api/ledfx';
 import { useState } from 'react';
+import { EffectSchemaDialog } from '../SchemaForm/EffectSchemaForm/EffectSchemaForm';
 
 const nodeWidth = "300px"
 const nodeHeight = "160px"
 
 export const EffectNode = (node: { data: effect; }) => {
     const effect = node.data as effect
+    const [open, setOpen] = useState(false)
     return (
         <Card variant="outlined" sx={{ "width": nodeWidth, "height": nodeHeight }}>
             <CardContent>
@@ -30,7 +32,7 @@ export const EffectNode = (node: { data: effect; }) => {
             </CardContent>
             <CardActions disableSpacing>
                 <Tooltip title="Adjust Settings">
-                    <IconButton aria-label="Adjust Settings">
+                    <IconButton aria-label="Adjust Settings" onClick={() => setOpen(!open)}>
                         <TuneIcon />
                     </IconButton>
                 </Tooltip>
@@ -41,7 +43,13 @@ export const EffectNode = (node: { data: effect; }) => {
                 </Tooltip>
             </CardActions>
             <Handle type="source" position={Position.Right} />
+            <EffectSchemaDialog
+                effect={effect}
+                open={open}
+                handleclose={()=>setOpen(false)}
+            />
         </Card>
+
     );
 }
 

@@ -148,18 +148,6 @@ const Flow = () => {
             }
             return nodes
         }
-            // nodes.map((node) => {
-            //     if (node.id === '1') {
-            //         // it's important that you create a new object here
-            //         // in order to notify react flow about the change
-            //         node.data = {
-            //             ...node.data,
-            //             label: nodeName,
-            //         };
-            //     }
-
-            //     return node;
-            // })
         );
     }, [effects, virtuals, devices]);
 

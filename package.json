@@ -24,6 +24,7 @@
     "@emotion/styled": "^11.9.3",
     "@mui/icons-material": "^5.8.4",
     "@mui/material": "^5.8.5",
+    "@mui/styles": "^5.9.0",
     "axios": "^0.27.2",
     "create-vitron": "^0.0.7",
     "custom-electron-titlebar": "^4.1.0",
@@ -33,9 +34,11 @@
     "immer": "^9.0.14",
     "notistack": "^2.0.5",
     "react-flow-renderer": "^10.3.8",
+    "react-gcolor-picker": "^1.2.4",
     "react-router-dom": "6",
     "sockette": "^2.0.6",
     "styled-components": "5.3.5",
+    "use-long-press": "^2.0.2",
     "zustand": "^4.0.0-rc.1"
   },
   "devDependencies": {
