@@ -1,5 +1,5 @@
-import { PopoverProps as PopoverOriginalProps } from '@mui/material';
-import Delete from '@mui/icons-material/Delete';
+import { PopoverProps as PopoverOriginalProps } from '@mui/material'
+import Delete from '@mui/icons-material/Delete'
 
 export interface PopoverProps {
   /**
@@ -14,7 +14,7 @@ export interface PopoverProps {
   /**
    * Set the [color](https://mui.com/components/buttons/#color)
    */
-  color?: "info" | "error" | "success" | "warning" | "inherit" | "primary" | "secondary" | undefined;
+  color?: 'info' | 'error' | 'success' | 'warning' | 'inherit' | 'primary' | 'secondary' | undefined;
   /**
    * Set the [size](https://mui.com/components/buttons/#sizes)
    */
@@ -114,31 +114,31 @@ export interface PopoverProps {
 }
 
 export const PopoverDefaults: PopoverProps = {
-  onConfirm: undefined,
-  confirmDisabled: undefined,
-  confirmContent: undefined,
-  onSingleClick: undefined,
-  onDoubleClick: undefined,
-  openOnDoubleClick: false,
-  openOnLongPress: false,
-  noIcon: false,
-  disabled: false,
-  variant: 'contained',
-  color: 'secondary',
-  vertical: 'center',
-  horizontal: 'left',
-  size: 'small',
-  text: 'Are you sure?',
-  label: undefined,
-  anchorOrigin: undefined,
-  transformOrigin: undefined,
-  startIcon: undefined,
-  icon: <Delete />,
-  content: undefined,
-  footer: undefined,
-  className: undefined,
-  style: {},
-  popoverStyle: undefined,
-  wrapperStyle: undefined,
-  type: 'button',
-};
+	onConfirm: undefined,
+	confirmDisabled: undefined,
+	confirmContent: undefined,
+	onSingleClick: undefined,
+	onDoubleClick: undefined,
+	openOnDoubleClick: false,
+	openOnLongPress: false,
+	noIcon: false,
+	disabled: false,
+	variant: 'contained',
+	color: 'secondary',
+	vertical: 'center',
+	horizontal: 'left',
+	size: 'small',
+	text: 'Are you sure?',
+	label: undefined,
+	anchorOrigin: undefined,
+	transformOrigin: undefined,
+	startIcon: undefined,
+	icon: <Delete />,
+	content: undefined,
+	footer: undefined,
+	className: undefined,
+	style: {},
+	popoverStyle: undefined,
+	wrapperStyle: undefined,
+	type: 'button',
+}

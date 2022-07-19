@@ -1,6 +1,6 @@
-import { effect } from "@/store/interfaces"
-import { Dialog, DialogContent, DialogTitle } from "@mui/material"
-import { EffectSchemaForm } from "../SchemaForm/EffectSchemaForm/EffectSchemaForm"
+import { effect } from '@/store/interfaces'
+import { Dialog, DialogContent, DialogTitle } from '@mui/material'
+import { EffectSchemaForm } from '../SchemaForm/EffectSchemaForm/EffectSchemaForm'
 
 export interface EffectSchemaProps {
     effect: effect
@@ -9,14 +9,14 @@ export interface EffectSchemaProps {
 }
 
 export const EffectSchemaDialog = (props: EffectSchemaProps) => {
-    const { effect, open, handleclose } = props
+	const { effect, open, handleclose } = props
 
-    return (
-        <Dialog open={open} onClose={handleclose}>
-            <DialogTitle>{effect.type} settings</DialogTitle>
-            <DialogContent>
-                {EffectSchemaForm(effect)}
-            </DialogContent>
-        </Dialog>
-    )
+	return (
+		<Dialog open={open} onClose={handleclose}>
+			<DialogTitle>{effect.type} settings</DialogTitle>
+			<DialogContent>
+				{EffectSchemaForm(effect)}
+			</DialogContent>
+		</Dialog>
+	)
 }

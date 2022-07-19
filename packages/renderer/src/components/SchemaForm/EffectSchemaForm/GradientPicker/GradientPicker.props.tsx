@@ -1,4 +1,4 @@
-import { CSSProperties } from '@mui/material/styles/createTypography';
+import { CSSProperties } from '@mui/material/styles/createTypography'
 
 export interface GradientPickerProps {
   pickerBgColor: string;
@@ -12,12 +12,12 @@ export interface GradientPickerProps {
 }
 
 export const GradientPickerDefaultProps = {
-  pickerBgColor: '#800000',
-  title: 'Color',
-  index: 1,
-  isGradient: false,
-  wrapperStyle: {},
-  colors: undefined,
-  handleAddGradient: undefined,
-  sendColorToVirtuals: undefined,
-};
+	pickerBgColor: '#800000',
+	title: 'Color',
+	index: 1,
+	isGradient: false,
+	wrapperStyle: {},
+	colors: undefined,
+	handleAddGradient: undefined,
+	sendColorToVirtuals: undefined,
+}

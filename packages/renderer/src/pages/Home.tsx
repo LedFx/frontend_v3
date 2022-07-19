@@ -14,37 +14,37 @@ import { hydrateStore } from '@/App'
 const ipcRenderer = window.ipcRenderer || false
 
 const Home = () => {
-  const snackbar = useStore((state) => state.ui.snackbar)
-  const { enqueueSnackbar } = useSnackbar()
+	const snackbar = useStore((state) => state.ui.snackbar)
+	const { enqueueSnackbar } = useSnackbar()
 
-  useEffect(() => {
-    enqueueSnackbar(snackbar.message, { variant: snackbar.variant })
-  }, [snackbar])
+	useEffect(() => {
+		enqueueSnackbar(snackbar.message, { variant: snackbar.variant })
+	}, [snackbar])
 
-  return (
-    <Box
-      sx={{
-        bgcolor: 'background.default',
-        color: 'text.primary',
-        overHorizontalFlowX: 'hidden',
-      }}
-      className={styles.app}>
-      <div style={{
-        width: '100%',
-        height: ipcRenderer && pkg.env.VITRON_CUSTOM_TITLEBAR
-          ? 'calc(100vh - 30px)'
-          : '100vh'
-      }}>
+	return (
+		<Box
+			sx={{
+				bgcolor: 'background.default',
+				color: 'text.primary',
+				overHorizontalFlowX: 'hidden',
+			}}
+			className={styles.app}>
+			<div style={{
+				width: '100%',
+				height: ipcRenderer && pkg.env.VITRON_CUSTOM_TITLEBAR
+					? 'calc(100vh - 30px)'
+					: '100vh'
+			}}>
 
-        <TopBar />
-        <Flow />
-        <Fab color="primary" aria-label="add" sx={{ position: 'fixed', right: '1.3rem', bottom: '1.3rem' }} onClick={hydrateStore}>
-          <Refresh />
-        </Fab>
-        <DrawerRight />
-      </div>
-    </Box>
-  )
+				<TopBar />
+				<Flow />
+				<Fab color="primary" aria-label="add" sx={{ position: 'fixed', right: '1.3rem', bottom: '1.3rem' }} onClick={hydrateStore}>
+					<Refresh />
+				</Fab>
+				<DrawerRight />
+			</div>
+		</Box>
+	)
 }
 
 export default Home
