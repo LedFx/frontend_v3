@@ -1,11 +1,11 @@
-import { CSSProperties } from '@material-ui/core/styles/withStyles';
+import { CSSProperties } from '@mui/material/styles/createTypography';
 
 export interface GradientPickerProps {
   pickerBgColor: string;
   title?: string;
   index?: number;
   isGradient?: boolean;
-  wrapperStyle?: CSSProperties;
+  wrapperStyle: CSSProperties;
   colors?: any;
   handleAddGradient?: any;
   sendColorToVirtuals?: any;
@@ -16,7 +16,7 @@ export const GradientPickerDefaultProps = {
   title: 'Color',
   index: 1,
   isGradient: false,
-  wrapperStyle: undefined,
+  wrapperStyle: {},
   colors: undefined,
   handleAddGradient: undefined,
   sendColorToVirtuals: undefined,

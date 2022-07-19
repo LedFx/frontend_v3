@@ -14,7 +14,7 @@ export interface PopoverProps {
   /**
    * Set the [color](https://mui.com/components/buttons/#color)
    */
-  color?: 'inherit' | 'secondary' | 'default' | 'primary' | undefined;
+  color?: "info" | "error" | "success" | "warning" | "inherit" | "primary" | "secondary" | undefined;
   /**
    * Set the [size](https://mui.com/components/buttons/#sizes)
    */

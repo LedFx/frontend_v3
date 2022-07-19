@@ -1,6 +1,6 @@
 /* eslint-disable react/jsx-no-duplicate-props */
 /* eslint-disable no-unsafe-optional-chaining */
-import { makeStyles } from '@mui/material';
+import { makeStyles, Theme } from '@mui/material';
 import { useState } from 'react';
 import {Slider, Card, CardContent, CardHeader, Tooltip, InputAdornment, TextField} from '@mui/material';
 import { useStore } from '@/store/useStore';
@@ -10,7 +10,7 @@ const log13 = (x: number) => Math.log(x) / Math.log(13);
 const logIt = (x: number) => 3700.0 * log13(1 + x / 200.0);
 const hzIt = (x: number) => 200.0 * 13 ** (x / 3700.0) - 200.0;
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles((theme: Theme) => ({
   content: {
     display: 'flex',
     flexDirection: 'row',

@@ -1,6 +1,6 @@
-import { makeStyles } from "@mui/material";
+import { makeStyles, Theme } from "@mui/material";
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles((theme: Theme) => ({
   paper: {
     border: '1px solid',
     borderRadius: 10,

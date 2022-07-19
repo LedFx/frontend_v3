@@ -1,11 +1,10 @@
 import { device, effect, virtual, deviceState } from '@/store/interfaces';
-import { Button, CardActions, IconButton, Tooltip, Typography, useTheme } from '@mui/material';
+import { CardActions, IconButton, Tooltip, Typography, useTheme } from '@mui/material';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import TuneIcon from '@mui/icons-material/Tune';
 import DeleteIcon from '@mui/icons-material/Delete';
 import SettingsIcon from '@mui/icons-material/Settings';
-import PowerSettingsNewIcon from '@mui/icons-material/PowerSettingsNew';
 import SignalWifiBadIcon from '@mui/icons-material/SignalWifiBad';
 import SignalWifiStatusbar4BarIcon from '@mui/icons-material/SignalWifiStatusbar4Bar';
 import WifiFindIcon from '@mui/icons-material/WifiFind';
@@ -62,7 +61,7 @@ export const EffectNode = (node: { data: effect; }) => {
 export const VirtualNode = (node: { data: virtual; }) => {
     const virtual = node.data as virtual
     const toggle = async () => {
-        let data = {}
+        let data = {} as any
         data[virtual.id] = !virtual.active
         console.log(data)
         await Ledfx('/api/virtuals/state', "POST", data)
@@ -112,7 +111,7 @@ export const DeviceNode = (node: { data: device; }) => {
             </CardContent>
             <CardActions disableSpacing>
                 <IconButton aria-label="Status">
-                    {ConnectionIcon(device.state)}
+                    {!!device.state && ConnectionIcon(device.state)}
                 </IconButton>
                 <Tooltip title="Configure">
                     <IconButton aria-label="Configure">

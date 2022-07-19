@@ -16,7 +16,7 @@ const GradientPicker = ({
   title,
   index,
   isGradient = false,
-  wrapperStyle,
+  wrapperStyle = {},
   colors,
   handleAddGradient,
   sendColorToVirtuals,
@@ -142,7 +142,7 @@ const GradientPicker = ({
             <Popover
               // className={classes.addButton}
               popoverStyle={{ padding: '0.5rem' }}
-              color="default"
+              color="inherit"
               variant="outlined"
               content={
                 <TextField

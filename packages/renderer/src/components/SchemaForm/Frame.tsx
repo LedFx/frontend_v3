@@ -1,8 +1,6 @@
 import { makeStyles } from '@mui/styles';
 import { ReactElement } from 'react';
-import theme from '@/styles/theme';
-import { DefaultTheme, ThemeProvider } from '@mui/system';
-import { Theme, Tooltip } from '@mui/material';
+import { Tooltip } from '@mui/material';
 
 const useStyles = makeStyles((theme) => ({
   wrapper: {

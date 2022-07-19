@@ -1,13 +1,10 @@
 import { Ledfx } from "@/api/ledfx";
-import { effect, effectConfig, schemaEntry } from "@/store/interfaces";
+import { effect, schemaEntry } from "@/store/interfaces";
 import { useStore } from "@/store/useStore";
-import ToggleOffIcon from '@mui/icons-material/ToggleOff';
-import ToggleOnIcon from '@mui/icons-material/ToggleOn';
-import { Button, Checkbox, Dialog, DialogContent, DialogTitle, Grid, IconButton, Slider, Switch, Typography } from "@mui/material";
-import { Component, useState } from "react";
+import { Grid, Slider, Switch, Typography } from "@mui/material";
+import { useState } from "react";
 import Frame from "../Frame";
-import { BlurOff, BlurOn, DoNotDisturb, RotateLeft, TimerOff, Timer, InvertColorsOff, InvertColors, BrightnessLow, BrightnessHigh, FlashOff, FlashOn, AutoMode } from "@mui/icons-material";
-import GradientPicker from "./GradientPicker/GradientPicker";
+import { BlurOff, BlurOn, DoNotDisturb, TimerOff, Timer, InvertColorsOff, InvertColors, BrightnessLow, BrightnessHigh, FlashOff, FlashOn, AutoMode } from "@mui/icons-material";
 import ReactGPicker from 'react-gcolor-picker';
 
 const freqRange = (schemaEntryMax: schemaEntry, schemaEntryMin: schemaEntry) => {
@@ -25,7 +22,7 @@ export const EffectSchemaForm = (effect: effect) => {
     const schema = useStore((state) => state.api.schema.effect)
     const [config, setConfig] = useState(effect.base_config)
 
-    const floatSlider = (key: string, StartIcon, EndIcon) => {
+    const floatSlider = (key: string, StartIcon: any, EndIcon: any) => {
         return (
             <Frame
                 title={schema.base[key].title}

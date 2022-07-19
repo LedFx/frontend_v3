@@ -66,10 +66,10 @@ export const CreateVirtualDialog = (props: CreateVirtualDialogProps) => {
                         step={5}
                         marks
                         value={config.framerate}
-                        onChange={(event) => {
+                        onChange={(_event: Event, newValue: number | number[], _activeThumb: number) => {
                             setConfig({
                                 ...config,
-                                framerate: event.target.value
+                                framerate: typeof newValue === 'number' ? newValue : 0,
                             })
                         }}
                     />

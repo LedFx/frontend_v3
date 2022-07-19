@@ -1,6 +1,6 @@
 import { Ledfx } from '@/api/ledfx';
 import React from 'react';
-import { getBezierPath, getEdgeCenter, getMarkerEnd, useReactFlow } from 'react-flow-renderer';
+import { getBezierPath, getEdgeCenter, useReactFlow } from 'react-flow-renderer';
 
 import './edge.css';
 
@@ -46,9 +46,12 @@ export default function CustomEdge({
   const onEdgeClick = async (evt: React.MouseEvent<HTMLButtonElement, MouseEvent>, id: any) => {
     evt.stopPropagation();
     const edge = reactFlowInstance.getEdge(id)
-    const sourceType = reactFlowInstance.getNode(edge?.source)?.type === "effectNode" ? "effect_id" : "virtual_id"
-    const targetType = reactFlowInstance.getNode(edge?.target)?.type === "virtualNode" ? "virtual_id" : "device_id"
-    const data = {}
+    const sourceType = !!edge && reactFlowInstance.getNode(edge.source)?.type === "effectNode" ? "effect_id" : "virtual_id"
+    const targetType = !!edge && reactFlowInstance.getNode(edge.target)?.type === "virtualNode" ? "virtual_id" : "device_id"
+    interface dataProps {
+      "device_id":string|undefined, "virtual_id":string|undefined,"effect_id":string|undefined
+    }
+    const data = {"device_id":"", "virtual_id": "","effect_id":""} as dataProps
     data[sourceType] = edge?.source
     data[targetType] = edge?.target
     await Ledfx('/api/virtuals/disconnect', 'POST', data)

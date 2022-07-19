@@ -1,11 +1,9 @@
 import * as React from 'react';
-import Button from '@mui/material/Button';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import { Chat, Close, Code, GitHub, Language, Menu as MenuIcon, ShoppingCart } from '@mui/icons-material';
 import { IconButton, ListItemIcon } from '@mui/material';
 import { useStore } from '@/store/useStore';
-import { Link } from 'react-router-dom';
 
 export default function TopMenu() {
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);

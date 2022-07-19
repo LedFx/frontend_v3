@@ -1,7 +1,6 @@
 import { Ledfx } from "@/api/ledfx"
-import { effect } from "@/store/interfaces"
 import { useStore } from "@/store/useStore"
-import { Dialog, DialogTitle, DialogContent, Card, CardHeader, CardContent, Typography, Grid, CardActions, Button } from "@mui/material"
+import { Dialog, DialogTitle, DialogContent, Card, CardContent, Typography, Grid, CardActions, Button } from "@mui/material"
 
 export interface CreateEffectDialogProps {
     open: boolean
