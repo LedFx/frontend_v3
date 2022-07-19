@@ -1,5 +1,6 @@
 {
     "recommendations": [
-        "mrmlnc.vscode-json5"
+        "mrmlnc.vscode-json5",
+        "dbaeumer.vscode-eslint"
     ]
 }
