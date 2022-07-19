@@ -18,6 +18,7 @@ import Popover from '../Popover/Popover';
 import { EffectSchemaDialog } from '../Dialogs/EffectSchemaDialog';
 import { CreateEffectDialog } from '../Dialogs/CreateEffectDialog';
 import { CreateVirtualDialog } from '../Dialogs/CreateVirtualDialog';
+import { CreateDeviceDialog } from '../Dialogs/CreateDeviceDialog';
 
 const nodeWidth = "300px"
 const nodeHeight = "160px"
@@ -208,6 +209,8 @@ export const AddVirtualNode = (_: any) => {
 }
 
 export const AddDeviceNode = (_: any) => {
+    const [open, setOpen] = useState(false)
+
     return (
         <Card variant="outlined" sx={{ "width": nodeWidth, "height": "150px" }}>
             <CardContent>
@@ -217,11 +220,15 @@ export const AddDeviceNode = (_: any) => {
             <CardActions disableSpacing>
                 <Tooltip title="Add Device">
 
-                    <IconButton aria-label="Add Device">
+                    <IconButton aria-label="Add Device" onClick={() => setOpen(!open)}>
                         <AddCircleIcon />
                     </IconButton>
                 </Tooltip>
             </CardActions>
+            <CreateDeviceDialog
+                open={open}
+                handleClose={() => setOpen(false)}
+            />
         </Card>
     );
 }
