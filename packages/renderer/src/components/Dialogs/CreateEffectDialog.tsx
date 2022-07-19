@@ -40,8 +40,8 @@ export const CreateEffectDialog = (props: CreateEffectDialogProps) => {
             <DialogTitle>Create Effect</DialogTitle>
             <DialogContent>
                 <Grid container spacing={2}>
-                    {Object.entries(effects.types).map(([_, effectType]) => (
-                        <Grid item xs={4}>
+                    {Object.entries(effects.types).map(([_, effectType],i:number) => (
+                        <Grid item xs={4} key={i}>
                             {effectCard(effectType)}
                         </Grid>
                     ))}

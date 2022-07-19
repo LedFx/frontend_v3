@@ -19,23 +19,25 @@ export const CreateVirtualDialog = (props: CreateVirtualDialogProps) => {
     const [valid, setValid] = useState(id!==undefined)
 
     const applyDefaults = () => {
-        if (id == undefined) {
-            setConfig({
-                name: virtualSchema["name"].default,
-                framerate: virtualSchema["framerate"].default
-            })
-        } else {
-            const virtual = virtuals[id]
-            setConfig({
-                name: virtual.base_config.name,
-                framerate: virtual.base_config.framerate
-            })
+        if (virtualSchema) {            
+            if (id == undefined) {
+                setConfig({
+                    name: virtualSchema["name"].default,
+                    framerate: virtualSchema["framerate"].default
+                })
+            } else {
+                const virtual = virtuals[id]
+                setConfig({
+                    name: virtual.base_config?.name,
+                    framerate: virtual.base_config.framerate
+                })
+            }
         }
     }
 
     useEffect(applyDefaults, [])
 
-    return (
+    return virtualSchema && (
         <Dialog open={open} onClose={handleClose} >
             <DialogTitle>{id===undefined?"Create":"Configure"} Virtual</DialogTitle>
             <DialogContent>
@@ -44,7 +46,7 @@ export const CreateVirtualDialog = (props: CreateVirtualDialogProps) => {
                     tip={virtualSchema["name"].description}
                 >
                     <Input
-                        value={config.name}
+                        value={config.name || ""}
                         error={!valid}
                         onChange={(event) => {
                             setConfig({
@@ -65,7 +67,7 @@ export const CreateVirtualDialog = (props: CreateVirtualDialogProps) => {
                         valueLabelDisplay="auto"
                         step={5}
                         marks
-                        value={config.framerate}
+                        value={config.framerate || 0}
                         onChange={(_event: Event, newValue: number | number[], _activeThumb: number) => {
                             setConfig({
                                 ...config,
