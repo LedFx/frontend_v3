@@ -7,7 +7,7 @@ import { useStore } from '../store/useStore'
 import { useLocation } from 'react-router-dom';
 import Sockette from 'sockette';
 import { VariantType } from 'notistack';
-import { virtual, device, effect, effectConfig, connections, settings } from '@/store/storeApi';
+import { virtual, device, effect, effectConfig, connections, settings } from '@/store/interfaces';
 
 enum eventType {
   Log,
