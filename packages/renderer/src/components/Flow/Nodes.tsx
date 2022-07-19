@@ -67,6 +67,7 @@ export const VirtualNode = (node: { data: virtual; }) => {
         console.log(data)
         await Ledfx('/api/virtuals/state', "POST", data)
     }
+    const [open, setOpen] = useState(false)
     return (
         <Card variant="outlined" sx={{ "width": nodeWidth, "height": nodeHeight, "borderColor": virtual.active ? "primary" : "" }}>
             <CardContent>
@@ -80,7 +81,7 @@ export const VirtualNode = (node: { data: virtual; }) => {
                     </IconButton>
                 </Tooltip>
                 <Tooltip title="Configure">
-                    <IconButton aria-label="Configure">
+                    <IconButton aria-label="Configure" onClick={() => setOpen(!open)}>
                         <SettingsIcon />
                     </IconButton>
                 </Tooltip>
@@ -92,6 +93,11 @@ export const VirtualNode = (node: { data: virtual; }) => {
             </CardActions>
             <Handle type="source" position={Position.Right} />
             <Handle type="target" position={Position.Left} />
+            <CreateVirtualDialog
+                id={virtual.id}
+                open={open}
+                handleClose={() => setOpen(false)}
+            />
         </Card>
     );
 }
@@ -195,9 +201,9 @@ export const AddVirtualNode = (_: any) => {
                 </Tooltip>
             </CardActions>
             <CreateVirtualDialog
-                    open={open}
-                    handleClose={() => setOpen(false)}
-                />
+                open={open}
+                handleClose={() => setOpen(false)}
+            />
         </Card>
     );
 }

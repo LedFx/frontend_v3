@@ -6,28 +6,38 @@ import { useEffect, useState } from "react"
 import Frame from "../SchemaForm/Frame"
 
 export interface CreateVirtualDialogProps {
+    id?: string
     open: boolean
     handleClose: () => void
 }
 
 export const CreateVirtualDialog = (props: CreateVirtualDialogProps) => {
     const virtualSchema = useStore((store) => store.api.schema.virtual)
+    const virtuals = useStore((store) => store.api.virtuals)
     const [config, setConfig] = useState({} as virtual["base_config"])
-    const { open, handleClose } = props
-    const [valid, setValid] = useState(false)
+    const { id, open, handleClose } = props
+    const [valid, setValid] = useState(id!==undefined)
 
-    const applyDefaults = () => (
-        setConfig({
-            name: virtualSchema["name"].default,
-            framerate: virtualSchema["framerate"].default
-        })
-    )
+    const applyDefaults = () => {
+        if (id == undefined) {
+            setConfig({
+                name: virtualSchema["name"].default,
+                framerate: virtualSchema["framerate"].default
+            })
+        } else {
+            const virtual = virtuals[id]
+            setConfig({
+                name: virtual.base_config.name,
+                framerate: virtual.base_config.framerate
+            })
+        }
+    }
 
     useEffect(applyDefaults, [])
 
     return (
         <Dialog open={open} onClose={handleClose} >
-            <DialogTitle>Create Virtual</DialogTitle>
+            <DialogTitle>{id===undefined?"Create":"Configure"} Virtual</DialogTitle>
             <DialogContent>
                 <Frame
                     title={virtualSchema["name"].title}
@@ -67,9 +77,9 @@ export const CreateVirtualDialog = (props: CreateVirtualDialogProps) => {
             </DialogContent>
             <DialogActions>
                 <Button disabled={!valid} variant="outlined" onClick={async () => {
-                    await Ledfx("/api/virtuals", "POST", {"base_config": config})
+                    await Ledfx("/api/virtuals", "POST", { "id": id, "base_config": config })
                     handleClose()
-                }}>Create</Button>
+                }}>{id===undefined?"Create":"Update"}</Button>
             </DialogActions>
         </Dialog>
     )
