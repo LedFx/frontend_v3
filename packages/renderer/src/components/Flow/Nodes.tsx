@@ -15,8 +15,9 @@ import ToggleOnIcon from '@mui/icons-material/ToggleOn';
 import { Handle, Position } from 'react-flow-renderer';
 import { Ledfx } from '@/api/ledfx';
 import { useState } from 'react';
-import { EffectSchemaDialog } from '../SchemaForm/EffectSchemaForm/EffectSchemaForm';
 import Popover from '../Popover/Popover';
+import { EffectSchemaDialog } from '../Dialogs/EffectSchemaDialog';
+import { CreateEffectDialog } from '../Dialogs/CreateEffectDialog';
 
 const nodeWidth = "300px"
 const nodeHeight = "160px"
@@ -34,7 +35,7 @@ export const EffectNode = (node: { data: effect; }) => {
             </CardContent>
             <CardActions disableSpacing>
                 <Tooltip title="Adjust Settings">
-                    <IconButton aria-label="Adjust Settings" onClick={() => setOpen(!open)}>
+                    <IconButton aria-label="Adjust Settings" onClick={() => setOpen(true)}>
                         <TuneIcon />
                     </IconButton>
                 </Tooltip>
@@ -43,14 +44,14 @@ export const EffectNode = (node: { data: effect; }) => {
                         <DeleteIcon />
                     </IconButton>
                 </Tooltip>
-                <Popover onConfirm={async ()=>{await Ledfx(`/api/effects?id=${effect.id}`, "DELETE")}} variant="text" />
+                <Popover onConfirm={async () => { await Ledfx(`/api/effects?id=${effect.id}`, "DELETE") }} variant="text" />
 
             </CardActions>
             <Handle type="source" position={Position.Right} />
             <EffectSchemaDialog
                 effect={effect}
                 open={open}
-                handleclose={()=>setOpen(false)}
+                handleclose={() => setOpen(false)}
             />
         </Card>
 
@@ -140,6 +141,8 @@ function ConnectionIcon(state: deviceState) {
 }
 
 export const AddEffectNode = (_: any) => {
+    const [open, setOpen] = useState(false)
+
     return (
         <Card variant="outlined" sx={{ "width": nodeWidth, "height": "150px" }}>
             <CardContent>
@@ -153,10 +156,14 @@ export const AddEffectNode = (_: any) => {
                     </IconButton>
                 </Tooltip>
                 <Tooltip title="Add Effect">
-                    <IconButton aria-label="Add Effect">
+                    <IconButton aria-label="Add Effect" onClick={() => setOpen(!open)}>
                         <AddCircleIcon />
                     </IconButton>
                 </Tooltip>
+                <CreateEffectDialog
+                    open={open}
+                    handleClose={() => setOpen(false)}
+                />
             </CardActions>
         </Card>
     );

@@ -10,25 +10,6 @@ import { BlurOff, BlurOn, DoNotDisturb, RotateLeft, TimerOff, Timer, InvertColor
 import GradientPicker from "./GradientPicker/GradientPicker";
 import ReactGPicker from 'react-gcolor-picker';
 
-export interface EffectSchemaProps {
-    effect: effect
-    open: boolean
-    handleclose: () => void
-}
-
-export const EffectSchemaDialog = (props: EffectSchemaProps) => {
-    const { effect, open, handleclose } = props
-
-    return (
-        <Dialog open={open} onClose={handleclose}>
-            <DialogTitle>{effect.type} settings</DialogTitle>
-            <DialogContent>
-                {EffectSchemaForm(effect)}
-            </DialogContent>
-        </Dialog>
-    )
-}
-
 const freqRange = (schemaEntryMax: schemaEntry, schemaEntryMin: schemaEntry) => {
     return (
         <Frame
