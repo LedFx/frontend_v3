@@ -2,6 +2,7 @@ export interface virtual {
     id: string
     base_config: {
         name: string
+        framerate: number
     }
     active: boolean
 }

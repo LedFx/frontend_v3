@@ -99,15 +99,18 @@ export const EffectSchemaForm = (effect: effect) => {
                 tip={schema.base[key].description}
             >
                 <Switch
-                    value={config[key]}
+                    value={!config[key]}
                     onChange={async (event) => {
+                        console.log(event)
+                        console.log(config)
                         setConfig({
                             ...config,
-                            [key]: event.target.value === "on"
+                            [key]: !config[key]
                         })
+                        console.log(config)
                         await Ledfx("/api/effects", "PUT", {
                             "id": effect.id,
-                            "base_config": { [key]: config[key] }
+                            "base_config": { [key]: config[key] },
                         })
                     }} />
             </Frame>)

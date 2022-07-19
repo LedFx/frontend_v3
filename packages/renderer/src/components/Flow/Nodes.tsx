@@ -18,6 +18,7 @@ import { useState } from 'react';
 import Popover from '../Popover/Popover';
 import { EffectSchemaDialog } from '../Dialogs/EffectSchemaDialog';
 import { CreateEffectDialog } from '../Dialogs/CreateEffectDialog';
+import { CreateVirtualDialog } from '../Dialogs/CreateVirtualDialog';
 
 const nodeWidth = "300px"
 const nodeHeight = "160px"
@@ -174,6 +175,7 @@ export const AddVirtualNode = (_: any) => {
     const toggle = async () => {
         setToggleState(!toggleState as boolean)
     }
+    const [open, setOpen] = useState(false)
     return (
         <Card variant="outlined" sx={{ "width": nodeWidth, "height": "150px" }}>
             <CardContent>
@@ -187,11 +189,15 @@ export const AddVirtualNode = (_: any) => {
                     </IconButton>
                 </Tooltip>
                 <Tooltip title="Add Virtual">
-                    <IconButton aria-label="Add Virtual">
+                    <IconButton aria-label="Add Virtual" onClick={() => setOpen(!open)}>
                         <AddCircleIcon />
                     </IconButton>
                 </Tooltip>
             </CardActions>
+            <CreateVirtualDialog
+                    open={open}
+                    handleClose={() => setOpen(false)}
+                />
         </Card>
     );
 }
