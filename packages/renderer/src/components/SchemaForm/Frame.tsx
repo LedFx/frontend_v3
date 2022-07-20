@@ -1,8 +1,7 @@
 import { makeStyles } from '@mui/styles'
-import { ReactElement } from 'react'
 import { Tooltip } from '@mui/material'
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(() => ({
 	wrapper: {
 		minWidth: '23.5%',
 		padding: '16px 1.2rem 6px 1.2rem',
@@ -36,16 +35,16 @@ const useStyles = makeStyles((theme) => ({
 }))
 
 interface FrameProps {
-  title?: string;
-  index?: number;
-  children?: any;
-  full?: boolean;
-  style?: any;
-  required?: boolean;
-  variant?: 'outlined' | 'contained' | 'inherit';
-  className?: any;
-  disabled?: boolean;
-  tip?: string;
+	title?: string;
+	index?: number;
+	children?: React.ReactNode;
+	full?: boolean;
+	style?: React.CSSProperties;
+	required?: boolean;
+	variant?: 'outlined' | 'contained' | 'inherit';
+	className?: string;
+	disabled?: boolean;
+	tip?: string;
 }
 
 const Frame = ({
@@ -59,11 +58,10 @@ const Frame = ({
 	className,
 	disabled,
 	tip,
-}: FrameProps): ReactElement<any, any> => {
+}: FrameProps): JSX.Element => {
 	const classes = useStyles()
-	return variant === 'outlined' ? (
-		<Tooltip title={tip? tip:''} arrow disableInteractive>
-
+	return <div>{variant === 'outlined' ? (
+		<Tooltip title={tip ? tip : ''} arrow disableInteractive>
 			<div
 				className={`${classes.wrapper} ${className}`}
 				style={{
@@ -71,8 +69,7 @@ const Frame = ({
 					width: full ? '100%' : style.width,
 				}}
 			>
-				{/* eslint-disable-next-line */}
-      <label className={`MuiFormLabel-root${disabled ? ' Mui-disabled' : ''}  step-effect-${index}`}>
+				<label className={`MuiFormLabel-root${disabled ? ' Mui-disabled' : ''}  step-effect-${index}`}>
 					{title}
 					{required ? '*' : ''}
 				</label>
@@ -81,7 +78,8 @@ const Frame = ({
 		</Tooltip>
 	) : (
 		children
-	)
+	)}
+	</div>
 }
 
 Frame.defaultProps = {

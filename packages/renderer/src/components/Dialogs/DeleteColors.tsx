@@ -13,8 +13,8 @@ const DeleteColorsDialog = ({
 	dialogOpen,
 	setDialogOpen,
 }: {
-  dialogOpen: boolean;
-  setDialogOpen: React.Dispatch<React.SetStateAction<boolean>>;
+	dialogOpen: boolean;
+	setDialogOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }) => {
 	const theme = useTheme()
 	const MenuProps = {
@@ -66,7 +66,7 @@ const DeleteColorsDialog = ({
 			aria-labelledby="form-dialog-title"
 		>
 			<DialogTitle id="form-dialog-title">
-        Delete user-defined colors/gradients
+				Delete user-defined colors/gradients
 			</DialogTitle>
 			<DialogContent>
 				<FormControl
@@ -82,7 +82,7 @@ const DeleteColorsDialog = ({
 						sx={{ '&&&': { color: theme.palette.text.primary } }}
 						id="demo-multiple-checkbox-label"
 					>
-            Select to delete
+						Select to delete
 					</InputLabel>
 					<Select
 						labelId="demo-multiple-checkbox-label"
@@ -101,35 +101,35 @@ const DeleteColorsDialog = ({
 						MenuProps={MenuProps}
 					>
 						{colors.colors &&
-              colors.gradients &&
-              [
-              	...Object.keys(colors.colors.user),
-              	...Object.keys(colors.gradients.user),
-              ].map((color) => (
-              	<MenuItem
-              		key={color}
-              		value={color}
-              		sx={{
-              			background: theme.palette.background.paper,
-              			color: theme.palette.text.primary,
-              		}}
-              	>
-              		<Checkbox
-              			color="primary"
-              			checked={colorsToDelete.indexOf(color) > -1}
-              		/>
-              		<ListItemText primary={color} />
-              		<div
-              			style={{
-              				width: 150,
-              				height: 50,
-              				background:
-                        colors.colors.user[color] ||
-                        colors.gradients.user[color],
-              			}}
-              		/>
-              	</MenuItem>
-              ))}
+							colors.gradients &&
+							[
+								...Object.keys(colors.colors.user),
+								...Object.keys(colors.gradients.user),
+							].map((color) => (
+								<MenuItem
+									key={color}
+									value={color}
+									sx={{
+										background: theme.palette.background.paper,
+										color: theme.palette.text.primary,
+									}}
+								>
+									<Checkbox
+										color="primary"
+										checked={colorsToDelete.indexOf(color) > -1}
+									/>
+									<ListItemText primary={color} />
+									<div
+										style={{
+											width: 150,
+											height: 50,
+											background:
+												colors.colors.user[color] ||
+												colors.gradients.user[color],
+										}}
+									/>
+								</MenuItem>
+							))}
 					</Select>
 				</FormControl>
 			</DialogContent>

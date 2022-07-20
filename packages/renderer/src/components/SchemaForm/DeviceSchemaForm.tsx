@@ -3,9 +3,9 @@ import { Grid, Input } from '@mui/material'
 import Frame from './Frame'
 
 export const DeviceSchemaForm = (deviceType: string, id?: string) => {
-	const deviceSchema = useStore((store) => store.api.schema.device)
+	const deviceSchema = useStore((store: { api: { schema: { device: any } } }) => store.api.schema.device)
 
-	return (
+	return deviceSchema && deviceSchema.base_config && (
 		<Grid container>
 			<Grid item xs={6}>
 				<Frame
@@ -13,15 +13,15 @@ export const DeviceSchemaForm = (deviceType: string, id?: string) => {
 					tip={deviceSchema.base_config.name.description}
 				>
 					<Input
-						// value={config.name}
-						// error={!valid}
-						// onChange={(event) => {
-						//     setConfig({
-						//         ...config,
-						//         name: event.target.value
-						//     })
-						//     setValid(event.target.value !== "")
-						// }}
+					// value={config.name}
+					// error={!valid}
+					// onChange={(event) => {
+					//     setConfig({
+					//         ...config,
+					//         name: event.target.value
+					//     })
+					//     setValid(event.target.value !== "")
+					// }}
 					/>
 				</Frame>
 			</Grid>
@@ -31,15 +31,15 @@ export const DeviceSchemaForm = (deviceType: string, id?: string) => {
 					tip={deviceSchema.base_config.pixel_count.description}
 				>
 					<Input
-						// value={config.name}
-						// error={!valid}
-						// onChange={(event) => {
-						//     setConfig({
-						//         ...config,
-						//         name: event.target.value
-						//     })
-						//     setValid(event.target.value !== "")
-						// }}
+					// value={config.name}
+					// error={!valid}
+					// onChange={(event) => {
+					//     setConfig({
+					//         ...config,
+					//         name: event.target.value
+					//     })
+					//     setValid(event.target.value !== "")
+					// }}
 					/>
 				</Frame>
 			</Grid>

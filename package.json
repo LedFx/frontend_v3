@@ -15,7 +15,7 @@
     "build": "tsc --noEmit -p packages/renderer/tsconfig.json && node scripts/build.mjs",
     "dev": "node scripts/watch.mjs",
     "dist": "tsc --noEmit -p packages/renderer/tsconfig.json && node scripts/build.mjs && yarn electron-builder",
-    "lint": "yarn eslint ."
+    "lint": "eslint ."
   },
   "engines": {
     "node": ">=14.17.0"

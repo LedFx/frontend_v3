@@ -1,4 +1,5 @@
-import { app, BrowserWindow, shell, ipcMain, nativeTheme, Tray, Menu, Notification  } from 'electron'
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { app, BrowserWindow, shell, ipcMain, nativeTheme, Tray, Menu, Notification } from 'electron'
 import { release } from 'os'
 import { join } from 'path'
 import Store from 'electron-store'
@@ -7,7 +8,7 @@ import pkg from '../../package.json'
 
 
 // Conditionally include the dev tools installer to load React Dev Tools
-let installExtension:any, REACT_DEVELOPER_TOOLS:any, REDUX_DEVTOOLS:any // NEW!
+let installExtension: any, REACT_DEVELOPER_TOOLS: any, REDUX_DEVTOOLS: any // NEW!
 if (!app.isPackaged) {
 	const devTools = require('electron-devtools-installer')
 	installExtension = devTools.default
@@ -57,7 +58,7 @@ async function createWindow() {
 		const url = `http://${process.env['VITE_DEV_SERVER_HOST']}:${process.env['VITE_DEV_SERVER_PORT']}`
 
 		win.loadURL(url)
-		if (!app.isPackaged) win.webContents.openDevTools({mode: 'detach'})
+		if (!app.isPackaged) win.webContents.openDevTools({ mode: 'detach' })
 	}
 
 	// Test active push message to Renderer-process
@@ -95,8 +96,8 @@ let tray = null as any
 app.whenReady().then(createWindow).then(async () => {
 	if (!app.isPackaged) {
 		await installExtension([REACT_DEVELOPER_TOOLS, REDUX_DEVTOOLS], { loadExtensionOptions: { allowFileAccess: true }, forceDownload: false })
-			.then((name:any) => console.log(`Added Extension:  ${name}`))
-			.catch((error:any) => console.log(`An error occurred: , ${error}`))
+			.then((name: any) => console.log(`Added Extension:  ${name}`))
+			.catch((error: any) => console.log(`An error occurred: , ${error}`))
 	}
 	if (pkg.env.VITRON_TRAY && tray === null) {
 		const icon = join(__dirname, '../../resources/icon.png')
@@ -110,7 +111,7 @@ app.whenReady().then(createWindow).then(async () => {
 			{ label: 'seperator', type: 'separator' },
 			{ label: 'Dev', click: () => win?.webContents.openDevTools() },
 			{ label: 'seperator', type: 'separator' },
-			{ label: 'Restart ledfx_frontend_v3', click: () => { app.relaunch(); app.exit() }},
+			{ label: 'Restart ledfx_frontend_v3', click: () => { app.relaunch(); app.exit() } },
 			{ label: 'seperator', type: 'separator' },
 			{ label: 'Exit', click: () => app.quit() }
 		])
@@ -122,7 +123,7 @@ app.whenReady().then(createWindow).then(async () => {
 })
 
 app.on('window-all-closed', () => {
-	win = null      
+	win = null
 	if (tray !== null) tray.destroy()
 	if (process.platform !== 'darwin') app.quit()
 })
@@ -162,12 +163,12 @@ ipcMain.on('ping-pong-sync', (event, arg) => {
 	event.returnValue = `[ipcMain] "${arg}" received synchronously.`
 })
 
-ipcMain.on('get-darkmode', (event) => {  
+ipcMain.on('get-darkmode', (event) => {
 	event.returnValue = nativeTheme.shouldUseDarkColors ? 'yes' : 'no'
 })
 ipcMain.on('toggle-darkmode', (event) => {
-	const res = nativeTheme.themeSource === 'system' ? (nativeTheme.shouldUseDarkColors ?  'light' : 'dark'): nativeTheme.themeSource === 'dark' ? 'light' : 'dark' 
+	const res = nativeTheme.themeSource === 'system' ? (nativeTheme.shouldUseDarkColors ? 'light' : 'dark') : nativeTheme.themeSource === 'dark' ? 'light' : 'dark'
 	event.returnValue = res === 'dark'
-	nativeTheme.themeSource =  res
+	nativeTheme.themeSource = res
 	if (pkg.env.VITRON_CUSTOM_TITLEBAR) win?.reload()
 })

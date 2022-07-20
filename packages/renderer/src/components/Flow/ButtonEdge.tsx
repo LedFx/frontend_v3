@@ -16,16 +16,16 @@ export default function CustomEdge({
 	targetPosition,
 	style = {},
 	markerEnd,
-}:{
-  id: any,
-  sourceX: any,
-  sourceY: any,
-  targetX: any,
-  targetY: any,
-  sourcePosition: any,
-  targetPosition: any,
-  style?: any,
-  markerEnd?: any,
+}: {
+	id: any,
+	sourceX: any,
+	sourceY: any,
+	targetX: any,
+	targetY: any,
+	sourcePosition: any,
+	targetPosition: any,
+	style?: any,
+	markerEnd?: any,
 }) {
 	const reactFlowInstance = useReactFlow()
 	const edgePath = getBezierPath({
@@ -48,13 +48,13 @@ export default function CustomEdge({
 		const edge = reactFlowInstance.getEdge(id)
 		const sourceType = !!edge && reactFlowInstance.getNode(edge.source)?.type === 'effectNode' ? 'effect_id' : 'virtual_id'
 		const targetType = !!edge && reactFlowInstance.getNode(edge.target)?.type === 'virtualNode' ? 'virtual_id' : 'device_id'
-    interface dataProps {
-      'device_id':string|undefined, 'virtual_id':string|undefined,'effect_id':string|undefined
-    }
-    const data = {'device_id':'', 'virtual_id': '','effect_id':''} as dataProps
-    data[sourceType] = edge?.source
-    data[targetType] = edge?.target
-    await Ledfx('/api/virtuals/disconnect', 'POST', data)
+		interface dataProps {
+			'device_id': string | undefined, 'virtual_id': string | undefined, 'effect_id': string | undefined
+		}
+		const data = { 'device_id': '', 'virtual_id': '', 'effect_id': '' } as dataProps
+		data[sourceType] = edge?.source
+		data[targetType] = edge?.target
+		await Ledfx('/api/virtuals/disconnect', 'POST', data)
 	}
 
 	return (
@@ -75,7 +75,7 @@ export default function CustomEdge({
 				requiredExtensions="http://www.w3.org/1999/xhtml"
 			>
 				<button className="edgebutton" onClick={(event) => onEdgeClick(event, id)}>
-            ×
+					×
 				</button>
 			</foreignObject>
 		</>

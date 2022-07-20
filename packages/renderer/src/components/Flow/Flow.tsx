@@ -38,19 +38,19 @@ const Flow = () => {
 			showSnackbar('info' as VariantType, 'Use a virtual to join an effect to a device')
 			return
 		}
-        interface dataProps {
-            'device_id':string|undefined, 'virtual_id':string|undefined,'effect_id':string|undefined
-          }
-        const data = {} as dataProps
+		interface dataProps {
+			'device_id': string | undefined, 'virtual_id': string | undefined, 'effect_id': string | undefined
+		}
+		const data = {} as dataProps
 
-        if (sourceType === 'effectNode') {
-        	data.effect_id = params.source
-        	data.virtual_id = params.target
-        } else {
-        	data.virtual_id = params.source
-        	data.device_id = params.target
-        }
-        await Ledfx('/api/virtuals/connect', 'POST', data)
+		if (sourceType === 'effectNode') {
+			data.effect_id = params.source
+			data.virtual_id = params.target
+		} else {
+			data.virtual_id = params.source
+			data.device_id = params.target
+		}
+		await Ledfx('/api/virtuals/connect', 'POST', data)
 	}
 
 	useEffect(() => {

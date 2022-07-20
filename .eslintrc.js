@@ -21,7 +21,10 @@ module.exports = {
 		'react',
 		'@typescript-eslint'
 	],
+	'ignorePatterns': ['dist/*'],
 	'rules': {
+		'react/jsx-uses-react': 'off',
+		'react/react-in-jsx-scope': 'off',
 		'indent': [
 			'error',
 			'tab'

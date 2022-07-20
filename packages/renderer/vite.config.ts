@@ -15,21 +15,21 @@ export default defineConfig({
 		react(),
 		resolveElectron(
 			/**
-       * Here you can specify other modules
-       * 🚧 You have to make sure that your module is in `dependencies` and not in the` devDependencies`,
-       *    which will ensure that the electron-builder can package it correctly
-       * @example
-       * {
-       *   'electron-store': 'const Store = require("electron-store"); export default Store;',
-       * }
-       */
-      
+			 * Here you can specify other modules
+			 * 🚧 You have to make sure that your module is in `dependencies` and not in the` devDependencies`,
+			 *    which will ensure that the electron-builder can package it correctly
+			 * @example
+			 * {
+			 *   'electron-store': 'const Store = require("electron-store"); export default Store;',
+			 * }
+			 */
+
 			{
 				'electron-store': 'const Store = require("electron-store"); export default Store;',
 			}
 		),
 	],
-	base: process.env.GHPAGES==='TRUE' ?'/frontend_v3/':'./',
+	base: process.env.GHPAGES === 'TRUE' ? '/frontend_v3/' : './',
 	build: {
 		sourcemap: true,
 		outDir: '../../dist/renderer',
@@ -55,8 +55,8 @@ export function resolveElectron(
 	const builtins = builtinModules.filter((t) => !t.startsWith('_'))
 
 	/**
-   * @see https://github.com/caoxiemeihao/vite-plugins/tree/main/packages/resolve#readme
-   */
+	 * @see https://github.com/caoxiemeihao/vite-plugins/tree/main/packages/resolve#readme
+	 */
 	return optimizer({
 		electron: electronExport(),
 		...builtinModulesExport(builtins),
@@ -103,9 +103,9 @@ export {
 				const requireModule = `const M = require("${moduleId}");`
 				const exportDefault = 'export default M;'
 				const exportMembers =
-          Object.keys(nodeModule)
-          	.map((attr) => `export const ${attr} = M.${attr}`)
-          	.join(';\n') + ';'
+					Object.keys(nodeModule)
+						.map((attr) => `export const ${attr} = M.${attr}`)
+						.join(';\n') + ';'
 				const nodeModuleCode = `
 ${requireModule}
 

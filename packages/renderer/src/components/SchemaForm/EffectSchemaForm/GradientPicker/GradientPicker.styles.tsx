@@ -25,9 +25,9 @@ const useStyles = makeStyles((theme: Theme) => ({
 			flexDirection: 'column',
 		},
 		'& .color-picker-panel, & .popup_tabs-header, & .popup_tabs, & .colorpicker, & .colorpicker .color-picker-panel, & .popup_tabs-header .popup_tabs-header-label-active':
-      {
-      	backgroundColor: 'transparent',
-      },
+		{
+			backgroundColor: 'transparent',
+		},
 		'& .popup_tabs-header-label-active': {
 			color: theme.palette.text.primary,
 		},

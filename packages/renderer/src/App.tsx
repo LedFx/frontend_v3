@@ -57,9 +57,9 @@ const App = () => {
 				palette: {
 					primary: {
 						main:
-              pkg.env.VITRON_PRIMARY_COLOR === 'default'
-              	? '#1976d2'
-              	: pkg.env.VITRON_PRIMARY_COLOR,
+							pkg.env.VITRON_PRIMARY_COLOR === 'default'
+								? '#1976d2'
+								: pkg.env.VITRON_PRIMARY_COLOR,
 					},
 					mode: darkMode ? 'dark' : 'light',
 				},

@@ -70,20 +70,20 @@ const DevMenu = () => {
 				style={{
 					maxWidth: 450,
 					minHeight:
-            ipcRenderer && pkg.env.VITRON_CUSTOM_TITLEBAR
-            	? 'calc(100vh - 30px)'
-            	: '100vh',
+						ipcRenderer && pkg.env.VITRON_CUSTOM_TITLEBAR
+							? 'calc(100vh - 30px)'
+							: '100vh',
 				}}>
 				<p>Welcome to LedFx v3</p>
 				<Typography>
-          CORE:{' '}
+					CORE:{' '}
 					{`${import.meta.env.VITE_CORE_PROTOCOL || 'http'}://${import.meta.env.VITE_CORE_HOST || 'localhost'
 					}:${import.meta.env.VITE_CORE_PORT || '8080'}`}
 				</Typography>
 				<Stack spacing={1}>
 					<Button onClick={toggleDarkmode}>{darkMode ? <Brightness7 /> : <Brightness4 />}</Button>
 					<Button onClick={() => enqueueSnackbar('I love hooks')}>
-            Notification
+						Notification
 					</Button>
 					<Button onClick={() => getSettings()}>getSettings</Button>
 					<Button onClick={() => getSchema()}>getSchema</Button>
@@ -110,11 +110,11 @@ const DevMenu = () => {
 								},
 							}).then(() => getDevices())
 						}>
-            addDevice
+						addDevice
 					</Button>
 				</Stack>
 			</header>
-			<Box sx={{ textAlign: 'left'}}>
+			<Box sx={{ textAlign: 'left' }}>
 				<hr />
 				<Typography>Settings:</Typography>
 				<Typography component={'div'}><pre>{JSON.stringify(settings, null, 2)}</pre></Typography>
