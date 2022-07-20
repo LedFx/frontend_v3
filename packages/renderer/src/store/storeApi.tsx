@@ -2,6 +2,10 @@ import { Ledfx } from '@/api/ledfx'
 import { settings, effect, device, virtual, schema, connections, effectConfig } from './interfaces'
 import { useStore, produce } from './useStore'  
 
+export const PartialUpdate = (existing: object, update: object) => {
+  return {...JSON.parse(JSON.stringify(existing)), ...JSON.parse(JSON.stringify(update))}
+}
+
 export const storeApi = {
 	settings: {} as settings,
 	effects: {} as Record<string, effect>,
@@ -66,11 +70,15 @@ export const storeApi = {
 		}
 	},
 	getDevices: async () => {
-		const resp = await Ledfx('/api/devices')
+		const resp = await Ledfx('/api/devices') 
+    const states = await Ledfx('/api/devices/state')
 		if (resp) {
 			useStore.setState(
 				produce((state) => {
 					state.api.devices = resp
+          Object.entries(state.api.devices).map(([id, device]) => (
+            device.state = states[id]
+          ))
 				}),
 				false,
 				'api/getDevices'
@@ -137,7 +145,7 @@ export const storeApi = {
 	setEffect: async (newEffect: effect) => {
 		useStore.setState(
 			produce((state) => {
-				state.api.effects[newEffect.id] = { ...state.api.effects[newEffect.id], ...newEffect }
+				state.api.effects[newEffect.id] = PartialUpdate(state.api.effects[newEffect.id], newEffect)
 			}),
 			false,
 			'api/setEffect'
@@ -146,7 +154,7 @@ export const storeApi = {
 	setVirtual: async (newVirtual: virtual) => {
 		useStore.setState(
 			produce((state) => {
-				state.api.virtuals[newVirtual.id] = { ...state.api.virtuals[newVirtual.id], ...newVirtual }
+				state.api.virtuals[newVirtual.id] = PartialUpdate(state.api.virtuals[newVirtual.id], newVirtual)
 			}),
 			false,
 			'api/setVirtual'
@@ -156,7 +164,7 @@ export const storeApi = {
 		useStore.setState(
 			produce((state) => {
 				newDevice.id != null ?
-					state.api.devices[newDevice.id] = { ...state.api.devices[newDevice.id], ...newDevice } : null
+					state.api.devices[newDevice.id] = PartialUpdate(state.api.devices[newDevice.id], newDevice ) : null
 			}),
 			false,
 			'api/setDevice'

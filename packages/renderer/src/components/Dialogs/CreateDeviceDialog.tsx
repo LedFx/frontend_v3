@@ -13,34 +13,34 @@ export interface CreateDeviceDialogProps {
 }
 
 export const CreateDeviceDialog = (props: CreateDeviceDialogProps) => {
-	// const deviceSchema = useStore((store) => store.api.schema.device)
-	const devices = useStore((store) => store.api.devices)
-	const [device, setDevice] = useState({} as device)
-	const { id, open, handleClose } = props
-	const [valid, setValid] = useState(id !== undefined)
+    // const deviceSchema = useStore((store) => store.api.schema.device)
+    const { id, open, handleClose } = props
+    const devices = useStore((store) => store.api.devices)
+    const [device, setDevice] = useState({} as device)
+    const [valid, setValid] = useState(id !== undefined)
 
-	const applyDefaults = () => {
-		if (id == undefined) {
-			// setDevice({            })
-		} else {
-			setDevice(devices[id])
-		}
-	}
+    const applyDefaults = () => {
+        if (id == undefined) {
+            // setDevice({            })
+        } else {
+            setDevice(devices[id])
+        }
+    }
 
-	useEffect(applyDefaults, [])
+    useEffect(applyDefaults, [])
 
-	return (
-		<Dialog open={open} onClose={handleClose} >
-			<DialogTitle>{id === undefined ? 'Create' : 'Configure'} Device</DialogTitle>
-			<DialogContent>
-				{DeviceSchemaForm('UDP Stream')}
-			</DialogContent>
-			<DialogActions>
-				<Button disabled={!valid} variant="outlined" onClick={async () => {
-					// await Ledfx("/api/devices", "POST", { "id": id, "base_config": config })
-					handleClose()
-				}}>{id === undefined ? 'Create' : 'Update'}</Button>
-			</DialogActions>
-		</Dialog>
-	)
+    return (
+        <Dialog open={open} onClose={handleClose} >
+            <DialogTitle>{id === undefined ? 'Create' : 'Configure'} Device</DialogTitle>
+            <DialogContent>
+                {DeviceSchemaForm('UDP Stream')}
+            </DialogContent>
+            <DialogActions>
+                <Button disabled={!valid} variant="outlined" onClick={async () => {
+                    await Ledfx("/api/devices", "POST", { "id": id, "base_config": config })
+                    handleClose()
+                }}>{id === undefined ? 'Create' : 'Update'}</Button>
+            </DialogActions>
+        </Dialog>
+    )
 }

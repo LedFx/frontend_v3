@@ -1,4 +1,5 @@
 import { Ledfx } from '@/api/ledfx'
+import { effectInfo, effectSchema } from '@/store/interfaces'
 import { useStore } from '@/store/useStore'
 import { Dialog, DialogTitle, DialogContent, Card, CardContent, Typography, Grid, CardActions, Button } from '@mui/material'
 
@@ -12,24 +13,29 @@ export const CreateEffectDialog = (props: CreateEffectDialogProps) => {
 	const {open, handleClose} = props
 
 	const effectCard = (effectType: string) => {
+        const effectInfo = effects.types[effectType as keyof effectSchema["types"]]
 		return (
 			<Card variant="outlined">
 				<CardContent>
 					<Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
-                        Category
+                        {effectInfo.category}
 					</Typography>
-					<Typography variant="h5">{effectType}</Typography>
+					<Typography variant="h5" text-transform="capitalize">{effectType}</Typography>
 					<Typography sx={{ mb: 1.5 }} color="text.secondary">
                         preview
 					</Typography>
 					<Typography variant="body2">
-                        description
+                        {effectInfo.description}
+					</Typography>
+					<Typography variant="body2" color="text.secondary">
+                        {effectInfo.good_for}
 					</Typography>
 				</CardContent>
 				<CardActions disableSpacing>
-					<Button variant="outlined" onClick={async ()=>(
+					<Button variant="outlined" onClick={async ()=>{
 						await Ledfx('/api/effects', 'POST', {'type': effectType})
-					)}>Create</Button>
+                        handleClose()
+                    }}>Create</Button>
 				</CardActions>
 			</Card>
 		)
@@ -40,7 +46,7 @@ export const CreateEffectDialog = (props: CreateEffectDialogProps) => {
 			<DialogTitle>Create Effect</DialogTitle>
 			<DialogContent>
 				<Grid container spacing={2}>
-					{Object.entries(effects.types).map(([_, effectType],i:number) => (
+					{Object.entries(effects.types).map(([effectType, _],i:number) => (
 						<Grid item xs={4} key={i}>
 							{effectCard(effectType)}
 						</Grid>

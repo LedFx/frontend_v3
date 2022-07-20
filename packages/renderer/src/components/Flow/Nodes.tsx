@@ -112,7 +112,7 @@ export const DeviceNode = (node: { data: device; }) => {
 			</CardContent>
 			<CardActions disableSpacing>
 				<IconButton aria-label="Status">
-					{!!device.state && ConnectionIcon(device.state)}
+					{device.state===undefined? null : ConnectionIcon(device.state)}
 				</IconButton>
 				<Tooltip title="Configure">
 					<IconButton aria-label="Configure">

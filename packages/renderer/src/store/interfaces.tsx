@@ -72,6 +72,13 @@ export interface schema {
     setting: Record<string, schemaEntry>
 }
 
+export interface effectInfo {
+    description: string
+    good_for: string
+    category: string
+    preview: string // todo
+}
+
 export interface schemaEntry {
     default: any
     description: string
@@ -83,7 +90,7 @@ export interface schemaEntry {
 
 export interface effectSchema {
     base: Record<string, schemaEntry>
-    types: string[]
+    types: Record<string, effectInfo>
 }
 
 export interface deviceSchema {
