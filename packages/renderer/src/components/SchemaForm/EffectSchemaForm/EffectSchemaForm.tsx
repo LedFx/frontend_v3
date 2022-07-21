@@ -23,7 +23,7 @@ export const EffectSchemaForm = (effect: effect) => {
 	const [config, setConfig] = useState(effect.base_config)
 
 	const floatSlider = (key: string, StartIcon: any, EndIcon: any) => {
-		return (
+		return ( effect && // this prevents global effects from working
 			<Frame
 				title={schema.base[key].title}
 				tip={schema.base[key].description}

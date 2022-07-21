@@ -16,6 +16,7 @@ const ipcRenderer = window.ipcRenderer || false
 const Home = () => {
 	const snackbar = useStore((state) => state.ui.snackbar)
 	const { enqueueSnackbar } = useSnackbar()
+  const hydrate = hydrateStore()
 
 	useEffect(() => {
 		enqueueSnackbar(snackbar.message, { variant: snackbar.variant })
@@ -38,7 +39,7 @@ const Home = () => {
 
 				<TopBar />
 				<Flow />
-				<Fab color="primary" aria-label="add" sx={{ position: 'fixed', right: '1.3rem', bottom: '1.3rem' }} onClick={hydrateStore}>
+				<Fab color="primary" aria-label="add" sx={{ position: 'fixed', right: '1.3rem', bottom: '1.3rem' }} onClick={hydrate}>
 					<Refresh />
 				</Fab>
 				<DrawerRight />

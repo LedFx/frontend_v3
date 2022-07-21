@@ -9,51 +9,51 @@ export interface CreateEffectDialogProps {
 }
 
 export const CreateEffectDialog = (props: CreateEffectDialogProps) => {
-	const effects = useStore((store) => store.api.schema.effect)
-	const {open, handleClose} = props
+    const effects = useStore((store) => store.api.schema.effect)
+    const { open, handleClose } = props
 
-	const effectCard = (effectType: string) => {
+    const effectCard = (effectType: string) => {
         const effectInfo = effects.types[effectType as keyof effectSchema["types"]]
-		return (
-			<Card variant="outlined">
-				<CardContent>
-					<Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
+        return (
+            <Card variant="outlined" style={{"height": "100%"}}>
+                <CardContent>
+                    <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
                         {effectInfo.category}
-					</Typography>
-					<Typography variant="h5" text-transform="capitalize">{effectType}</Typography>
-					<Typography sx={{ mb: 1.5 }} color="text.secondary">
-                        preview
-					</Typography>
-					<Typography variant="body2">
+                    </Typography>
+                    <Typography variant="h5">{effectType}</Typography>
+                    <Typography sx={{ mb: 1.5 }} color="text.secondary">
                         {effectInfo.description}
-					</Typography>
-					<Typography variant="body2" color="text.secondary">
+                    </Typography>
+                    <Typography variant="body2">
+                        Preview
+                    </Typography>
+                    <Typography variant="body2" color="text.secondary">
                         {effectInfo.good_for}
-					</Typography>
-				</CardContent>
-				<CardActions disableSpacing>
-					<Button variant="outlined" onClick={async ()=>{
-						await Ledfx('/api/effects', 'POST', {'type': effectType})
+                    </Typography>
+                </CardContent>
+                <CardActions disableSpacing>
+                    <Button variant="outlined" onClick={async () => {
+                        await Ledfx('/api/effects', 'POST', { 'type': effectType })
                         handleClose()
                     }}>Create</Button>
-				</CardActions>
-			</Card>
-		)
-	}
+                </CardActions>
+            </Card>
+        )
+    }
 
-	return (
-		<Dialog open={open} onClose={handleClose}>
-			<DialogTitle>Create Effect</DialogTitle>
-			<DialogContent>
-				<Grid container spacing={2}>
-					{Object.entries(effects.types).map(([effectType, _],i:number) => (
-						<Grid item xs={4} key={i}>
-							{effectCard(effectType)}
-						</Grid>
-					))}
-				</Grid>
-			</DialogContent>
-		</Dialog>
-	)
+    return (
+        <Dialog open={open} onClose={handleClose} maxWidth="lg">
+            <DialogTitle>Create Effect</DialogTitle>
+            <DialogContent>
+                <Grid container spacing={2}>
+                    {Object.entries(effects.types).map(([effectType, _], i: number) => (
+                        <Grid item xs={6} key={i}>
+                            {effectCard(effectType)}
+                        </Grid>
+                    ))}
+                </Grid>
+            </DialogContent>
+        </Dialog>
+    )
 
 }

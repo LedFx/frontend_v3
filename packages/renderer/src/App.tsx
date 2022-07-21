@@ -16,24 +16,27 @@ export const hydrateStore = () => {
 	const getConnections = useStore((state) => state.api.getConnections)
 	const getGlobalEffectConfig = useStore((state) => state.api.getGlobalEffectConfig)
 
-	Promise.all([
-		getSchema(),
-		getEffects(),
-		getSettings(),
-		getDevices(),
-		getVirtuals(),
-		getConnections(),
-		getGlobalEffectConfig(),
-	])
-	console.log('hydrated store!')
+	const hydrate = () => {
+		Promise.all([
+			getSchema(),
+			getEffects(),
+			getSettings(),
+			getDevices(),
+			getVirtuals(),
+			getConnections(),
+			getGlobalEffectConfig(),
+		])
+		console.log('hydrated store!')
+	}
 
+	return hydrate
 }
 
 const App = () => {
 	const darkMode = useStore((state) => state.ui.darkMode)
 	const showSnackbar = useStore((state) => state.ui.showSnackbar)
-
-	hydrateStore()
+	const hydrate = hydrateStore()
+	hydrate()
 
 	const theme = useMemo(
 		() =>

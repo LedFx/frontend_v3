@@ -64,8 +64,7 @@ export const VirtualNode = (node: { data: virtual; }) => {
 	const toggle = async () => {
 		const data = {} as any
 		data[virtual.id] = !virtual.active
-		console.log(data)
-		await Ledfx('/api/virtuals/state', 'POST', data)
+        await Ledfx('/api/virtuals/state', 'POST', data)
 	}
 	const [open, setOpen] = useState(false)
 	return (
@@ -86,7 +85,7 @@ export const VirtualNode = (node: { data: virtual; }) => {
 					</IconButton>
 				</Tooltip>
 				<Tooltip title="Delete">
-					<IconButton aria-label="Delete" onClick={async () => Ledfx('/api/virtuals', 'DELETE', { id: virtual.id })}>
+					<IconButton aria-label="Delete" onClick={async () => Ledfx(`/api/virtuals?id=${virtual.id}`, 'DELETE')}>
 						<DeleteIcon />
 					</IconButton>
 				</Tooltip>
