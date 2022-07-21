@@ -19,10 +19,10 @@ export const CreateDeviceDialog = (props: CreateDeviceDialogProps) => {
     const [valid, setValid] = useState(id !== undefined)
 
     return (
-        <Dialog open={open} onClose={handleClose} >
+        <Dialog open={open} onClose={handleClose} maxWidth="lg">
             <DialogTitle>{id === undefined ? 'Create' : 'Configure'} Device</DialogTitle>
             <DialogContent>
-                {DeviceSchemaForm(id)}
+                <DeviceSchemaForm id={id}/>
             </DialogContent>
             <DialogActions>
                 <Button disabled={!valid} variant="outlined" onClick={async () => {

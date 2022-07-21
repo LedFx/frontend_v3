@@ -9,7 +9,7 @@ export interface controller {
 
 export interface device {
     id?: string
-    type: string
+    type?: string
     base_config: {
         name: string
         pixel_count: number
@@ -79,6 +79,12 @@ export interface effectInfo {
     preview: string // todo
 }
 
+export interface deviceInfo {
+    name: string
+    info: string
+    protocols: string[]
+}
+
 export interface schemaEntry {
     default: any
     description: string
@@ -94,7 +100,7 @@ export interface effectSchema {
 }
 
 export interface deviceSchema {
-    base_config: Record<string, schemaEntry>
-    impl_config: Record<string, schemaEntry>
-    types: string[]
+    base: Record<string, schemaEntry>
+    impl: Record<string, schemaEntry>
+    types: Record<string, deviceInfo>
 }

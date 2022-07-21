@@ -19,11 +19,11 @@ const freqRange = (schemaEntryMax: schemaEntry, schemaEntryMin: schemaEntry) => 
 }
 
 export const EffectSchemaForm = (effect: effect) => {
-	const schema = useStore((state) => state.api.schema.effect)
+	const schema = useStore((store) => store.api.schema.effect)
 	const [config, setConfig] = useState(effect.base_config)
 
 	const floatSlider = (key: string, StartIcon: any, EndIcon: any) => {
-		return ( effect && // this prevents global effects from working
+		return ( effect && // this prevents global effects from working?
 			<Frame
 				title={schema.base[key].title}
 				tip={schema.base[key].description}
@@ -35,10 +35,10 @@ export const EffectSchemaForm = (effect: effect) => {
 					max={schema.base[key].validation.max}
 					step={0.01}
 					value={config[key]}
-					onChange={async (event) => {
+					onChange={async (_: Event, newValue: number|number[]) => {
 						setConfig({
 							...config,
-							[key]: event.target.value
+							[key]: newValue
 						})
 					}}
 					onChangeCommitted={async (event) => {

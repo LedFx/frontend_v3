@@ -20,7 +20,7 @@ export const CreateControllerDialog = (props: CreateControllerDialogProps) => {
 
 	const applyDefaults = () => {
 		if (controllerSchema) {            
-			if (id == undefined) {
+			if (id === undefined) {
 				setConfig({
 					name: controllerSchema['name'].default,
 					framerate: controllerSchema['framerate'].default
@@ -29,7 +29,7 @@ export const CreateControllerDialog = (props: CreateControllerDialogProps) => {
 				const controller = controllers[id]
 				setConfig({
 					name: controller.base_config?.name,
-					framerate: controller.base_config.framerate
+					framerate: controller.base_config?.framerate 
 				})
 			}
 		}
