@@ -159,7 +159,6 @@ export const storeApi = {
   setController: async (newController: controller) => {
     useStore.setState(
       produce((state) => {
-        console.log(newController)
         state.api.controllers[newController.id] = PartialUpdate(state.api.controllers[newController.id], newController)
       }),
       false,

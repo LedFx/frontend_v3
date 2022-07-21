@@ -5,7 +5,7 @@ import Box from '@mui/material/Box'
 import { useSnackbar } from 'notistack'
 import { useEffect } from 'react'
 import DrawerRight from '@/components/Drawer/DrawerRight'
-import { Fab } from '@mui/material'
+import { Fab, Tooltip } from '@mui/material'
 import { Refresh } from '@mui/icons-material'
 import Flow from '../components/Flow/Flow'
 import TopBar from '@/components/Bars/TopBar'
@@ -16,7 +16,7 @@ const ipcRenderer = window.ipcRenderer || false
 const Home = () => {
 	const snackbar = useStore((state) => state.ui.snackbar)
 	const { enqueueSnackbar } = useSnackbar()
-  const hydrate = hydrateStore()
+	const hydrate = hydrateStore()
 
 	useEffect(() => {
 		enqueueSnackbar(snackbar.message, { variant: snackbar.variant })
@@ -39,9 +39,11 @@ const Home = () => {
 
 				<TopBar />
 				<Flow />
-				<Fab color="primary" aria-label="add" sx={{ position: 'fixed', right: '1.3rem', bottom: '1.3rem' }} onClick={hydrate}>
-					<Refresh />
-				</Fab>
+				<Tooltip arrow placement='left' title="If the interface is not updating, you can try to refresh it">
+					<Fab color="primary" aria-label="add" sx={{ position: 'fixed', right: '1.3rem', bottom: '1.3rem' }} onClick={hydrate}>
+						<Refresh />
+					</Fab>
+				</Tooltip>
 				<DrawerRight />
 			</div>
 		</Box>

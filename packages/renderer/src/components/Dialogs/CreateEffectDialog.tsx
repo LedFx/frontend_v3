@@ -1,7 +1,7 @@
 import { Ledfx } from '@/api/ledfx'
 import { effectInfo, effectSchema } from '@/store/interfaces'
 import { useStore } from '@/store/useStore'
-import { Dialog, DialogTitle, DialogContent, Card, CardContent, Typography, Grid, CardActions, Button, Chip, Stack } from '@mui/material'
+import { Dialog, DialogTitle, DialogContent, Card, CardContent, Typography, Grid, CardActions, Button, Chip, Stack, Box } from '@mui/material'
 
 export interface CreateEffectDialogProps {
     open: boolean
@@ -27,17 +27,20 @@ export const CreateEffectDialog = (props: CreateEffectDialogProps) => {
                     <Typography variant="body2">
                         Preview will go here
                     </Typography>
+
+                </CardContent>
+                <CardActions>
                     <Stack direction="row" spacing={1} alignItems="center">
                         {Object.entries(effectInfo.good_for).map(([_, tip], i: number) => (
                             <Chip key={i} label={tip} variant="outlined" />
                         ))}
                     </Stack>
-                </CardContent>
-                <CardActions disableSpacing>
-                    <Button variant="outlined" onClick={async () => {
-                        await Ledfx('/api/effects', 'POST', { 'type': effectType })
-                        handleClose()
-                    }}>Create</Button>
+                    <Box sx={{ justifyContent: 'flex-end', display: 'flex', width: "100%" }}>
+                        <Button variant="outlined" onClick={async () => {
+                            await Ledfx('/api/effects', 'POST', { 'type': effectType })
+                            handleClose()
+                        }}>Create</Button>
+                    </Box>
                 </CardActions>
             </Card>
         )

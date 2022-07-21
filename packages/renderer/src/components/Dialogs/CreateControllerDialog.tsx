@@ -67,7 +67,7 @@ export const CreateControllerDialog = (props: CreateControllerDialogProps) => {
 						valueLabelDisplay="auto"
 						step={5}
 						marks
-						value={config.framerate || 0}
+						value={config.framerate}
 						onChange={(_event: Event, newValue: number | number[], _activeThumb: number) => {
 							setConfig({
 								...config,

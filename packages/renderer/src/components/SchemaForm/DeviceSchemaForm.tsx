@@ -6,9 +6,8 @@ import Frame from './Frame'
 
 export const DeviceSchemaForm = (id?: string) => {
 	const deviceSchema = useStore((store: { api: { schema: { device: any } } }) => store.api.schema.device)
-    const [device, setDevice] = useState({} as device)
-    const newDevice = id ? false : true
     const storeDevice = id? useStore((store) => store.api.devices[id]) : {} as device
+    const [device, setDevice] = useState(storeDevice)
 
 	return deviceSchema && deviceSchema.base_config && (
         <Grid container>
