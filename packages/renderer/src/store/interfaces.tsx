@@ -74,7 +74,7 @@ export interface schema {
 
 export interface effectInfo {
     description: string
-    good_for: string
+    good_for: string[]
     category: string
     preview: string // todo
 }
