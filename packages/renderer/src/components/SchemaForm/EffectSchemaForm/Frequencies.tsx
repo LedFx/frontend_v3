@@ -48,15 +48,15 @@ function ValueLabelComponent(props: any) {
 	)
 }
 
-const FrequenciesCard = ({ virtual, style }: any) => {
+const FrequenciesCard = ({ controller, style }: any) => {
 	const classes = useStyles()
-	const addVirtual = useStore((state) => state.addVirtual)
-	const getVirtuals = useStore((state) => state.getVirtuals)
+	const addController = useStore((state) => state.addController)
+	const getControllers = useStore((state) => state.getControllers)
 	const config = useStore((state) => state.config)
 
 	const [value, setValue] = useState([
-		logIt(virtual.config.frequency_min),
-		logIt(virtual.config.frequency_max),
+		logIt(controller.config.frequency_min),
+		logIt(controller.config.frequency_max),
 	])
 
 	const freq_max = config.melbanks?.max_frequencies.map((f: number) => ({
@@ -125,14 +125,14 @@ const FrequenciesCard = ({ virtual, style }: any) => {
 							style={{ color: '#aaa' }}
 							onChangeCommitted={() => {
 								// Backend cannot do partial updates yet, sending whole config
-								addVirtual({
-									id: virtual.id,
+								addController({
+									id: controller.id,
 									config: {
-										...virtual.config,
+										...controller.config,
 										frequency_min: Math.round(hzIt(value[0])),
 										frequency_max: Math.round(hzIt(value[1])),
 									},
-								}).then(() => getVirtuals())
+								}).then(() => getControllers())
 							}}
 						/>
 					</Frame>

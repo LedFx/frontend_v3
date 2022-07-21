@@ -1,5 +1,5 @@
 import { Ledfx } from '@/api/ledfx'
-import { device, virtual } from '@/store/interfaces'
+import { device, controller } from '@/store/interfaces'
 import { useStore } from '@/store/useStore'
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle, Input, Slider } from '@mui/material'
 import { useEffect, useState } from 'react'

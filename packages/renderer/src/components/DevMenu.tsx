@@ -15,7 +15,7 @@ const DevMenu = () => {
 
 	const snackbar = useStore((state) => state.ui.snackbar)
 	const devices = useStore((state) => state.api.devices)
-	const virtuals = useStore((state) => state.api.virtuals)
+	const controllers = useStore((state) => state.api.controllers)
 	const effects = useStore((state) => state.api.effects)
 	const connections = useStore((state) => state.api.connections)
 	const settings = useStore((state) => state.api.settings)
@@ -27,7 +27,7 @@ const DevMenu = () => {
 	const getEffects = useStore((state) => state.api.getEffects)
 	const getSettings = useStore((state) => state.api.getSettings)
 	const getDevices = useStore((state) => state.api.getDevices)
-	const getVirtuals = useStore((state) => state.api.getVirtuals)
+	const getControllers = useStore((state) => state.api.getControllers)
 	const getConnections = useStore((state) => state.api.getConnections)
 	const getGlobalEffectConfig = useStore((state) => state.api.getGlobalEffectConfig)
 	const addDevice = useStore((state) => state.api.addDevice)
@@ -89,7 +89,7 @@ const DevMenu = () => {
 					<Button onClick={() => getSchema()}>getSchema</Button>
 					<Button onClick={() => getDevices()}>getDevices</Button>
 					<Button onClick={() => getEffects()}>getEffects</Button>
-					<Button onClick={() => getVirtuals()}>getVirtuals</Button>
+					<Button onClick={() => getControllers()}>getControllers</Button>
 					<Button onClick={() => getConnections()}>getConnections</Button>
 					<Button onClick={() => getGlobalEffectConfig()}>getGlobalEffectConfig</Button>
 					<TextField
@@ -122,8 +122,8 @@ const DevMenu = () => {
 				<Typography>Effects:</Typography>
 				<Typography component={'div'}><pre>{JSON.stringify(effects, null, 2)}</pre></Typography>
 				<hr />
-				<Typography>Virtuals:</Typography>
-				<Typography component={'div'}><pre>{JSON.stringify(virtuals, null, 2)}</pre></Typography>
+				<Typography>Controllers:</Typography>
+				<Typography component={'div'}><pre>{JSON.stringify(controllers, null, 2)}</pre></Typography>
 				<hr />
 				<Typography>Devices:</Typography>
 				<Typography component={'div'}><pre>{JSON.stringify(devices, null, 2)}</pre></Typography>

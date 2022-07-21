@@ -8,7 +8,7 @@ export interface GradientPickerProps {
   wrapperStyle: CSSProperties;
   colors?: any;
   handleAddGradient?: any;
-  sendColorToVirtuals?: any;
+  sendColorToControllers?: any;
 }
 
 export const GradientPickerDefaultProps = {
@@ -19,5 +19,5 @@ export const GradientPickerDefaultProps = {
 	wrapperStyle: {},
 	colors: undefined,
 	handleAddGradient: undefined,
-	sendColorToVirtuals: undefined,
+	sendColorToControllers: undefined,
 }

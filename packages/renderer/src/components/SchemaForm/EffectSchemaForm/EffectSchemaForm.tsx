@@ -78,7 +78,7 @@ export const EffectSchemaForm = (effect: effect) => {
 					solid
 					onChange={(c) => {
 						//   setPickerBgColorInt(c);
-						//   return sendColorToVirtuals(c);
+						//   return sendColorToControllers(c);
 					}}
 					popupWidth={288}
 					showAlpha={false}

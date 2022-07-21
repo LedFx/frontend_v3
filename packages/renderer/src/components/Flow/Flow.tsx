@@ -1,7 +1,7 @@
 import { useEffect } from 'react'
 import ReactFlow, { useNodesState, useEdgesState, addEdge, Background, Edge, Position } from 'react-flow-renderer'
 import { useStore } from '../../store/useStore'
-import { EffectNode, VirtualNode, DeviceNode, AddEffectNode, AddDeviceNode, AddVirtualNode } from './Nodes'
+import { EffectNode, ControllerNode, DeviceNode, AddEffectNode, AddDeviceNode, AddControllerNode } from './Nodes'
 import ButtonEdge from './ButtonEdge'
 import { VariantType } from 'notistack'
 import { Ledfx } from '@/api/ledfx'
@@ -9,11 +9,11 @@ import { Ledfx } from '@/api/ledfx'
 const edgeTypes = { buttonedge: ButtonEdge }
 const nodeTypes = {
 	effectNode: EffectNode,
-	virtualNode: VirtualNode,
+	controllerNode: ControllerNode,
 	deviceNode: DeviceNode,
 	addEffectNode: AddEffectNode,
 	addDeviceNode: AddDeviceNode,
-	addVirtualNode: AddVirtualNode
+	addControllerNode: AddControllerNode
 }
 
 const initialNodes: never[] = []
@@ -23,7 +23,7 @@ const initialEdges: Edge<any>[] = []
 const Flow = () => {
 
 	const effects = useStore((state) => state.api.effects)
-	const virtuals = useStore((state) => state.api.virtuals)
+	const controllers = useStore((state) => state.api.controllers)
 	const devices = useStore((state) => state.api.devices)
 	const connections = useStore((state) => state.api.connections)
 	const showSnackbar = useStore((state) => state.ui.showSnackbar)
@@ -35,45 +35,45 @@ const Flow = () => {
 		const sourceType = nodes.find(x => x.id === params.source)?.type
 		const targetType = nodes.find(x => x.id === params.target)?.type
 		if (sourceType === 'effectNode' && targetType == 'deviceNode') {
-			showSnackbar('info' as VariantType, 'Use a virtual to join an effect to a device')
+			showSnackbar('info' as VariantType, 'Use a controller to join an effect to a device')
 			return
 		}
 		interface dataProps {
-			'device_id': string | undefined, 'virtual_id': string | undefined, 'effect_id': string | undefined
+			'device_id': string | undefined, 'controller_id': string | undefined, 'effect_id': string | undefined
 		}
 		const data = {} as dataProps
 
 		if (sourceType === 'effectNode') {
 			data.effect_id = params.source
-			data.virtual_id = params.target
+			data.controller_id = params.target
 		} else {
-			data.virtual_id = params.source
+			data.controller_id = params.source
 			data.device_id = params.target
 		}
-		await Ledfx('/api/virtuals/connect', 'POST', data)
+		await Ledfx('/api/controllers/connect', 'POST', data)
 	}
 
 	useEffect(() => {
 		setEdges((edges) => {
 			edges = []
 			for (const effect_id in connections.effects) {
-				const virtual_id = connections.effects[effect_id]
+				const controller_id = connections.effects[effect_id]
 				edges.push(
 					{
-						id: effect_id + virtual_id,
+						id: effect_id + controller_id,
 						source: effect_id,
 						type: 'buttonedge',
-						target: virtual_id,
+						target: controller_id,
 						animated: true,
 					}
 				)
 			}
 			for (const device_id in connections.devices) {
-				const virtual_id = connections.devices[device_id]
+				const controller_id = connections.devices[device_id]
 				edges.push(
 					{
-						id: virtual_id + device_id,
-						source: virtual_id,
+						id: controller_id + device_id,
+						source: controller_id,
 						type: 'buttonedge',
 						target: device_id,
 						animated: true,
@@ -97,8 +97,8 @@ const Flow = () => {
 					data: {}
 				},
 				{
-					id: 'add_virtual',
-					type: 'addVirtualNode',
+					id: 'add_controller',
+					type: 'addControllerNode',
 					position: { x: 0, y: -200 },
 					data: {}
 				},
@@ -124,15 +124,15 @@ const Flow = () => {
 				i += dy
 			}
 			i = 0
-			for (const virtual_id in virtuals) {
+			for (const controller_id in controllers) {
 				nodes.push(
 					{
-						id: virtual_id,
-						type: 'virtualNode',
+						id: controller_id,
+						type: 'controllerNode',
 						targetPosition: Position.Left,
 						sourcePosition: Position.Right,
 						position: { x: 0, y: i },
-						data: virtuals[virtual_id]
+						data: controllers[controller_id]
 					},
 				)
 				i += dy
@@ -153,7 +153,7 @@ const Flow = () => {
 			return nodes
 		}
 		)
-	}, [effects, virtuals, devices])
+	}, [effects, controllers, devices])
 
 
 	return (

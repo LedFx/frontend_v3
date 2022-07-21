@@ -1,5 +1,5 @@
 import { Ledfx } from '@/api/ledfx'
-import { settings, effect, device, virtual, schema, connections, effectConfig } from './interfaces'
+import { settings, effect, device, controller, schema, connections, effectConfig } from './interfaces'
 import { useStore, produce } from './useStore'
 
 // little trick uses json to trim all undefined props
@@ -15,7 +15,7 @@ export const storeApi = {
   settings: {} as settings,
   effects: {} as Record<string, effect>,
   devices: {} as Record<string, device>,
-  virtuals: {} as Record<string, virtual>,
+  controllers: {} as Record<string, controller>,
   schema: {} as schema,
   connections: {} as connections,
   globalEffectConfig: {} as effectConfig,
@@ -41,14 +41,14 @@ export const storeApi = {
         'api/getDeviceSchema'
       )
     }
-    resp = await Ledfx('/api/virtuals/schema')
+    resp = await Ledfx('/api/controllers/schema')
     if (resp) {
       useStore.setState(
         produce((state) => {
-          state.api.schema.virtual = resp as schema['virtual']
+          state.api.schema.controller = resp as schema['controller']
         }),
         false,
-        'api/getVirtualSchema'
+        'api/getControllerSchema'
       )
     }
     resp = await Ledfx('/api/settings/schema')
@@ -102,29 +102,29 @@ export const storeApi = {
       )
     }
   },
-  getVirtuals: async () => {
-    const configs = await Ledfx('/api/virtuals')
-    const states = await Ledfx('/api/virtuals/state')
+  getControllers: async () => {
+    const configs = await Ledfx('/api/controllers')
+    const states = await Ledfx('/api/controllers/state')
     if (configs && states) {
       useStore.setState(
         produce((state) => {
-          const virts = {} as Record<string, virtual>
+          const virts = {} as Record<string, controller>
           for (const id in configs) {
-            const v = {} as virtual
+            const v = {} as controller
             v.id = id
             v.base_config = configs[id].base_config
             v.active = states[id]
             virts[id] = v
           }
-          state.api.virtuals = virts
+          state.api.controllers = virts
         }),
         false,
-        'api/getVirtuals'
+        'api/getControllers'
       )
     }
   },
   getConnections: async () => {
-    const resp = await Ledfx('/api/virtuals/connect')
+    const resp = await Ledfx('/api/controllers/connect')
     if (resp) {
       useStore.setState(
         produce((state) => {
@@ -156,14 +156,14 @@ export const storeApi = {
       'api/setEffect'
     )
   },
-  setVirtual: async (newVirtual: virtual) => {
+  setController: async (newController: controller) => {
     useStore.setState(
       produce((state) => {
-        console.log(newVirtual)
-        state.api.virtuals[newVirtual.id] = PartialUpdate(state.api.virtuals[newVirtual.id], newVirtual)
+        console.log(newController)
+        state.api.controllers[newController.id] = PartialUpdate(state.api.controllers[newController.id], newController)
       }),
       false,
-      'api/setVirtual'
+      'api/setController'
     )
   },
   setDevice: async (newDevice: device) => {

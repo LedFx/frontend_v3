@@ -1,4 +1,4 @@
-import { device, effect, virtual, deviceState } from '@/store/interfaces'
+import { device, effect, controller, deviceState } from '@/store/interfaces'
 import { CardActions, IconButton, Tooltip, Typography, useTheme } from '@mui/material'
 import Card from '@mui/material/Card'
 import CardContent from '@mui/material/CardContent'
@@ -17,7 +17,7 @@ import { useState } from 'react'
 import Popover from '../Popover/Popover'
 import { EffectSchemaDialog } from '../Dialogs/EffectSchemaDialog'
 import { CreateEffectDialog } from '../Dialogs/CreateEffectDialog'
-import { CreateVirtualDialog } from '../Dialogs/CreateVirtualDialog'
+import { CreateControllerDialog } from '../Dialogs/CreateControllerDialog'
 import { CreateDeviceDialog } from '../Dialogs/CreateDeviceDialog'
 
 const nodeWidth = '300px'
@@ -59,24 +59,24 @@ export const EffectNode = (node: { data: effect; }) => {
 	)
 }
 
-export const VirtualNode = (node: { data: virtual; }) => {
-	const virtual = node.data as virtual
+export const ControllerNode = (node: { data: controller; }) => {
+	const controller = node.data as controller
 	const toggle = async () => {
 		const data = {} as any
-		data[virtual.id] = !virtual.active
-        await Ledfx('/api/virtuals/state', 'POST', data)
+		data[controller.id] = !controller.active
+        await Ledfx('/api/controllers/state', 'POST', data)
 	}
 	const [open, setOpen] = useState(false)
 	return (
-		<Card variant="outlined" sx={{ 'width': nodeWidth, 'height': nodeHeight, 'borderColor': virtual.active ? 'primary' : '' }}>
+		<Card variant="outlined" sx={{ 'width': nodeWidth, 'height': nodeHeight, 'borderColor': controller.active ? 'primary' : '' }}>
 			<CardContent>
-				<Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>{virtual.id}</Typography>
-				<Typography variant="h5">{virtual.base_config.name}</Typography>
+				<Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>{controller.id}</Typography>
+				<Typography variant="h5">{controller.base_config.name}</Typography>
 			</CardContent>
 			<CardActions disableSpacing>
 				<Tooltip title="Toggle Activation">
 					<IconButton aria-label="Toggle Activation" onClick={toggle}>
-						{virtual.active ? <ToggleOnIcon color='primary' /> : <ToggleOffIcon />}
+						{controller.active ? <ToggleOnIcon color='primary' /> : <ToggleOffIcon />}
 					</IconButton>
 				</Tooltip>
 				<Tooltip title="Configure">
@@ -85,15 +85,15 @@ export const VirtualNode = (node: { data: virtual; }) => {
 					</IconButton>
 				</Tooltip>
 				<Tooltip title="Delete">
-					<IconButton aria-label="Delete" onClick={async () => Ledfx(`/api/virtuals?id=${virtual.id}`, 'DELETE')}>
+					<IconButton aria-label="Delete" onClick={async () => Ledfx(`/api/controllers?id=${controller.id}`, 'DELETE')}>
 						<DeleteIcon />
 					</IconButton>
 				</Tooltip>
 			</CardActions>
 			<Handle type="source" position={Position.Right} />
 			<Handle type="target" position={Position.Left} />
-			<CreateVirtualDialog
-				id={virtual.id}
+			<CreateControllerDialog
+				id={controller.id}
 				open={open}
 				handleClose={() => setOpen(false)}
 			/>
@@ -175,7 +175,7 @@ export const AddEffectNode = (_: any) => {
 	)
 }
 
-export const AddVirtualNode = (_: any) => {
+export const AddControllerNode = (_: any) => {
 	const [toggleState, setToggleState] = useState(false)
 	const toggle = async () => {
 		setToggleState(!toggleState as boolean)
@@ -184,7 +184,7 @@ export const AddVirtualNode = (_: any) => {
 	return (
 		<Card variant="outlined" sx={{ 'width': nodeWidth, 'height': '150px' }}>
 			<CardContent>
-				<Typography variant="h5">Virtuals</Typography>
+				<Typography variant="h5">Controllers</Typography>
 				<Typography variant="body2">Manage and distribute pixel data</Typography>
 			</CardContent>
 			<CardActions disableSpacing>
@@ -193,13 +193,13 @@ export const AddVirtualNode = (_: any) => {
 						{toggleState ? <ToggleOffIcon /> : <ToggleOnIcon color='primary' />}
 					</IconButton>
 				</Tooltip>
-				<Tooltip title="Add Virtual">
-					<IconButton aria-label="Add Virtual" onClick={() => setOpen(!open)}>
+				<Tooltip title="Add Controller">
+					<IconButton aria-label="Add Controller" onClick={() => setOpen(!open)}>
 						<AddCircleIcon />
 					</IconButton>
 				</Tooltip>
 			</CardActions>
-			<CreateVirtualDialog
+			<CreateControllerDialog
 				open={open}
 				handleClose={() => setOpen(false)}
 			/>

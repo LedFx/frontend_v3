@@ -1,35 +1,35 @@
 import { Ledfx } from '@/api/ledfx'
-import { virtual } from '@/store/interfaces'
+import { controller } from '@/store/interfaces'
 import { useStore } from '@/store/useStore'
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle, Input, Slider } from '@mui/material'
 import { useEffect, useState } from 'react'
 import Frame from '../SchemaForm/Frame'
 
-export interface CreateVirtualDialogProps {
+export interface CreateControllerDialogProps {
     id?: string
     open: boolean
     handleClose: () => void
 }
 
-export const CreateVirtualDialog = (props: CreateVirtualDialogProps) => {
-	const virtualSchema = useStore((store) => store.api.schema.virtual)
-	const virtuals = useStore((store) => store.api.virtuals)
-	const [config, setConfig] = useState({} as virtual['base_config'])
+export const CreateControllerDialog = (props: CreateControllerDialogProps) => {
+	const controllerSchema = useStore((store) => store.api.schema.controller)
+	const controllers = useStore((store) => store.api.controllers)
+	const [config, setConfig] = useState({} as controller['base_config'])
 	const { id, open, handleClose } = props
 	const [valid, setValid] = useState(id!==undefined)
 
 	const applyDefaults = () => {
-		if (virtualSchema) {            
+		if (controllerSchema) {            
 			if (id == undefined) {
 				setConfig({
-					name: virtualSchema['name'].default,
-					framerate: virtualSchema['framerate'].default
+					name: controllerSchema['name'].default,
+					framerate: controllerSchema['framerate'].default
 				})
 			} else {
-				const virtual = virtuals[id]
+				const controller = controllers[id]
 				setConfig({
-					name: virtual.base_config?.name,
-					framerate: virtual.base_config.framerate
+					name: controller.base_config?.name,
+					framerate: controller.base_config.framerate
 				})
 			}
 		}
@@ -37,13 +37,13 @@ export const CreateVirtualDialog = (props: CreateVirtualDialogProps) => {
 
 	useEffect(applyDefaults, [])
 
-	return virtualSchema && (
+	return controllerSchema && (
 		<Dialog open={open} onClose={handleClose} >
-			<DialogTitle>{id===undefined?'Create':'Configure'} Virtual</DialogTitle>
+			<DialogTitle>{id===undefined?'Create':'Configure'} Controller</DialogTitle>
 			<DialogContent>
 				<Frame
-					title={virtualSchema['name'].title}
-					tip={virtualSchema['name'].description}
+					title={controllerSchema['name'].title}
+					tip={controllerSchema['name'].description}
 				>
 					<Input
 						value={config.name || ''}
@@ -58,12 +58,12 @@ export const CreateVirtualDialog = (props: CreateVirtualDialogProps) => {
 					/>
 				</Frame>
 				<Frame
-					title={virtualSchema['framerate'].title}
-					tip={virtualSchema['framerate'].description}
+					title={controllerSchema['framerate'].title}
+					tip={controllerSchema['framerate'].description}
 				>
 					<Slider
-						min={virtualSchema['framerate'].validation.min}
-						max={virtualSchema['framerate'].validation.max}
+						min={controllerSchema['framerate'].validation.min}
+						max={controllerSchema['framerate'].validation.max}
 						valueLabelDisplay="auto"
 						step={5}
 						marks
@@ -79,7 +79,7 @@ export const CreateVirtualDialog = (props: CreateVirtualDialogProps) => {
 			</DialogContent>
 			<DialogActions>
 				<Button disabled={!valid} variant="outlined" onClick={async () => {
-					await Ledfx('/api/virtuals', 'POST', { 'id': id, 'base_config': config })
+					await Ledfx('/api/controllers', 'POST', { 'id': id, 'base_config': config })
 					handleClose()
 				}}>{id===undefined?'Create':'Update'}</Button>
 			</DialogActions>

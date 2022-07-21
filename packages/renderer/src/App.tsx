@@ -12,7 +12,7 @@ export const hydrateStore = () => {
 	const getEffects = useStore((state) => state.api.getEffects)
 	const getSettings = useStore((state) => state.api.getSettings)
 	const getDevices = useStore((state) => state.api.getDevices)
-	const getVirtuals = useStore((state) => state.api.getVirtuals)
+	const getControllers = useStore((state) => state.api.getControllers)
 	const getConnections = useStore((state) => state.api.getConnections)
 	const getGlobalEffectConfig = useStore((state) => state.api.getGlobalEffectConfig)
 
@@ -22,7 +22,7 @@ export const hydrateStore = () => {
 			getEffects(),
 			getSettings(),
 			getDevices(),
-			getVirtuals(),
+			getControllers(),
 			getConnections(),
 			getGlobalEffectConfig(),
 		])

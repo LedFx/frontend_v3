@@ -1,4 +1,4 @@
-export interface virtual {
+export interface controller {
     id: string
     base_config: {
         name: string
@@ -68,7 +68,7 @@ export interface settings {
 export interface schema {
     effect: effectSchema
     device: deviceSchema
-    virtual: Record<string, schemaEntry>
+    controller: Record<string, schemaEntry>
     setting: Record<string, schemaEntry>
 }
 

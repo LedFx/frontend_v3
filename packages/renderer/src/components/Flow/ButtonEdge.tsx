@@ -46,15 +46,15 @@ export default function CustomEdge({
 	const onEdgeClick = async (evt: React.MouseEvent<HTMLButtonElement, MouseEvent>, id: any) => {
 		evt.stopPropagation()
 		const edge = reactFlowInstance.getEdge(id)
-		const sourceType = !!edge && reactFlowInstance.getNode(edge.source)?.type === 'effectNode' ? 'effect_id' : 'virtual_id'
-		const targetType = !!edge && reactFlowInstance.getNode(edge.target)?.type === 'virtualNode' ? 'virtual_id' : 'device_id'
+		const sourceType = !!edge && reactFlowInstance.getNode(edge.source)?.type === 'effectNode' ? 'effect_id' : 'controller_id'
+		const targetType = !!edge && reactFlowInstance.getNode(edge.target)?.type === 'controllerNode' ? 'controller_id' : 'device_id'
 		interface dataProps {
-			'device_id': string | undefined, 'virtual_id': string | undefined, 'effect_id': string | undefined
+			'device_id': string | undefined, 'controller_id': string | undefined, 'effect_id': string | undefined
 		}
-		const data = { 'device_id': '', 'virtual_id': '', 'effect_id': '' } as dataProps
+		const data = { 'device_id': '', 'controller_id': '', 'effect_id': '' } as dataProps
 		data[sourceType] = edge?.source
 		data[targetType] = edge?.target
-		await Ledfx('/api/virtuals/disconnect', 'POST', data)
+		await Ledfx('/api/controllers/disconnect', 'POST', data)
 	}
 
 	return (

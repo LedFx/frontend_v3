@@ -19,7 +19,7 @@ const GradientPicker = ({
 	wrapperStyle = {},
 	colors,
 	handleAddGradient,
-	sendColorToVirtuals,
+	sendColorToControllers,
 }: GradientPickerProps) => {
 	// const classes = useStyles();
 	const popover = useRef(null)
@@ -98,7 +98,7 @@ const GradientPicker = ({
 						solid
 						onChange={(c) => {
 							setPickerBgColorInt(c)
-							return sendColorToVirtuals(c)
+							return sendColorToControllers(c)
 						}}
 						popupWidth={288}
 						showAlpha={false}

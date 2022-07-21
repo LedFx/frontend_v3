@@ -7,7 +7,7 @@ import { useStore } from '../store/useStore'
 import { useLocation } from 'react-router-dom'
 import Sockette from 'sockette'
 import { VariantType } from 'notistack'
-import { virtual, device, effect, effectConfig, connections, settings } from '@/store/interfaces'
+import { controller, device, effect, effectConfig, connections, settings } from '@/store/interfaces'
 
 enum eventType {
   Log,
@@ -16,8 +16,8 @@ enum eventType {
   EffectUpdate,
   EffectDelete,
   GlobalEffectUpdate,
-  VirtualUpdate,
-  VirtualDelete,
+  ControllerUpdate,
+  ControllerDelete,
   DeviceUpdate,
   DeviceDelete,
   ConnectionsUpdate,
@@ -33,12 +33,12 @@ interface LedFxEvent {
 
 function handleMessage(e: MessageEvent) {
 	const showSnackbar = useStore.getState().ui.showSnackbar
-	const setVirtual = useStore.getState().api.setVirtual
+	const setController = useStore.getState().api.setController
 	const setDevice = useStore.getState().api.setDevice
 	const setEffect = useStore.getState().api.setEffect
 	const getEffects = useStore.getState().api.getEffects
 	const getDevices = useStore.getState().api.getDevices
-	const getVirtuals = useStore.getState().api.getVirtuals
+	const getControllers = useStore.getState().api.getControllers
 	const setGlobalEffectConfig = useStore.getState().api.setGlobalEffectConfig
 	const setConnections = useStore.getState().api.setConnections
 	const setSettings = useStore.getState().api.setSettings
@@ -53,8 +53,8 @@ function handleMessage(e: MessageEvent) {
 	case eventType.DeviceUpdate:
 		setDevice(event.Data as device)
 		break
-	case eventType.VirtualUpdate:
-		setVirtual(event.Data as virtual)
+	case eventType.ControllerUpdate:
+		setController(event.Data as controller)
 		break
 	case eventType.EffectDelete:
 		getEffects()
@@ -62,8 +62,8 @@ function handleMessage(e: MessageEvent) {
 	case eventType.DeviceDelete:
 		getDevices()
 		break
-	case eventType.VirtualDelete:
-		getVirtuals()
+	case eventType.ControllerDelete:
+		getControllers()
 		break
 	case eventType.GlobalEffectUpdate:
 		setGlobalEffectConfig(event.Data.config as effectConfig)

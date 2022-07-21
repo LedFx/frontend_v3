@@ -12,32 +12,32 @@ const GradientPickerWrapper = ({
 	isGradient = false,
 	wrapperStyle,
 }: any) => {
-	const updateVirtualEffect = useStore((state) => state.updateVirtualEffect)
-	const getVirtuals = useStore((state) => state.getVirtuals)
-	const virtuals = useStore((state) => state.virtuals)
+	const updateControllerEffect = useStore((state) => state.updateControllerEffect)
+	const getControllers = useStore((state) => state.getControllers)
+	const controllers = useStore((state) => state.controllers)
 	const colors = useStore((state) => state.colors)
 	const getColors = useStore((state) => state.getColors)
 	const addColor = useStore((state) => state.addColor)
 
 	const getV = () => {
-		for (const prop in virtuals) {
-			if (virtuals[prop].id === virtId) {
-				return virtuals[prop]
+		for (const prop in controllers) {
+			if (controllers[prop].id === virtId) {
+				return controllers[prop]
 			}
 		}
 	}
 
-	const virtual = getV()
+	const controller = getV()
 
-	const sendColorToVirtuals = (e: any) => {
-		if (virtual && virtual.effect && virtual.effect.type) {
-			updateVirtualEffect(
-				virtual.id,
-				virtual.effect.type,
+	const sendColorToControllers = (e: any) => {
+		if (controller && controller.effect && controller.effect.type) {
+			updateControllerEffect(
+				controller.id,
+				controller.effect.type,
 				{ [title]: e },
 				false
 			).then(() => {
-				getVirtuals()
+				getControllers()
 			})
 		}
 	}
@@ -61,7 +61,7 @@ const GradientPickerWrapper = ({
 			wrapperStyle={wrapperStyle}
 			colors={colors}
 			handleAddGradient={handleAddGradient}
-			sendColorToVirtuals={sendColorToVirtuals}
+			sendColorToControllers={sendColorToControllers}
 		/>
 	)
 }
