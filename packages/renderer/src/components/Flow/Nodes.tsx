@@ -19,7 +19,7 @@ import { EffectSchemaDialog } from '../Dialogs/EffectSchemaDialog'
 import { CreateEffectDialog } from '../Dialogs/CreateEffectDialog'
 import { CreateControllerDialog } from '../Dialogs/CreateControllerDialog'
 import { CreateDeviceDialog } from '../Dialogs/CreateDeviceDialog'
-import { ArrowCircleRight } from '@mui/icons-material'
+import { ArrowCircleRight, CellTower, CellTowerOutlined, Send } from '@mui/icons-material'
 
 const nodeWidth = '300px'
 const nodeHeight = '160px'
@@ -236,6 +236,9 @@ export const AddDeviceNode = (_: any) => {
                         <AddCircleIcon />
                     </IconButton>
                 </Tooltip>
+                <Box sx={{ justifyContent: 'flex-end', display: 'flex', width: "100%" }}>
+                    <Chip label="Output" onDelete={() => { }} variant="filled" disabled deleteIcon={<CellTower/>} />
+                </Box>
             </CardActions>
             <CreateDeviceDialog
                 open={open}
