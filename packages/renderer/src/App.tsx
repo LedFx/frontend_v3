@@ -9,6 +9,7 @@ import ws, { WsContext } from './api/Websocket'
 
 export const hydrateStore = () => {
 	const getSchema = useStore((state) => state.api.getSchema)
+	const getColorsPalettes = useStore((state) => state.api.getColorsPalettes)
 	const getEffects = useStore((state) => state.api.getEffects)
 	const getSettings = useStore((state) => state.api.getSettings)
 	const getDevices = useStore((state) => state.api.getDevices)
@@ -19,6 +20,7 @@ export const hydrateStore = () => {
 	const hydrate = () => {
 		Promise.all([
 			getSchema(),
+			getColorsPalettes(),
 			getEffects(),
 			getSettings(),
 			getDevices(),

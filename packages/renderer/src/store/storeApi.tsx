@@ -16,6 +16,8 @@ export const storeApi = {
   effects: {} as Record<string, effect>,
   devices: {} as Record<string, device>,
   controllers: {} as Record<string, controller>,
+  colors: {} as Record<string, string>,
+  palettes: {} as Record<string, string>,
   schema: {} as schema,
   connections: {} as connections,
   globalEffectConfig: {} as effectConfig,
@@ -59,6 +61,19 @@ export const storeApi = {
         }),
         false,
         'api/getSettingSchema'
+      )
+    }
+  },
+  getColorsPalettes: async () => {
+    const resp = await Ledfx('/api/color')
+    if (resp) {
+      useStore.setState(
+        produce((state) => {
+          state.api.colors = resp["colors"]
+          state.api.palettes = resp["palettes"]
+        }),
+        false,
+        'api/getColorsPalettes'
       )
     }
   },

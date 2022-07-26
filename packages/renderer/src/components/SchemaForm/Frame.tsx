@@ -61,7 +61,7 @@ const Frame = ({
 }: FrameProps): JSX.Element => {
 	const classes = useStyles()
 	return <div>{variant === 'outlined' ? (
-		<Tooltip arrow title={tip ? tip : ''} arrow disableInteractive>
+		<Tooltip arrow title={tip ? tip : ''} disableInteractive>
 			<div
 				className={`${classes.wrapper} ${className}`}
 				style={{

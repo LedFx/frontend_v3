@@ -20,10 +20,14 @@ const freqRange = (schemaEntryMax: schemaEntry, schemaEntryMin: schemaEntry) => 
 
 export const EffectSchemaForm = (effect: effect) => {
 	const schema = useStore((store) => store.api.schema.effect)
+	const colors = useStore((store) => store.api.colors)
+	const palettes = useStore((store) => store.api.palettes)
 	const [config, setConfig] = useState(effect.base_config)
 
+	console.log(Object.values(palettes).slice(0, 5))
+
 	const floatSlider = (key: string, StartIcon: any, EndIcon: any) => {
-		return ( effect && // this prevents global effects from working?
+		return (effect && // this prevents global effects from working?
 			<Frame
 				title={schema.base[key].title}
 				tip={schema.base[key].description}
@@ -35,7 +39,7 @@ export const EffectSchemaForm = (effect: effect) => {
 					max={schema.base[key].validation.max}
 					step={0.01}
 					value={config[key]}
-					onChange={async (_: Event, newValue: number|number[]) => {
+					onChange={async (_: Event, newValue: number | number[]) => {
 						setConfig({
 							...config,
 							[key]: newValue
@@ -63,28 +67,28 @@ export const EffectSchemaForm = (effect: effect) => {
 			</Frame>)
 	}
 
-	const gradientPicker = (schemaEntry: schemaEntry) => {
+	const gradientPicker = (key: string) => {
 		return (
 			<Frame
-				title={schemaEntry.title}
-				tip={schemaEntry.description}
+				title={schema.base[key].title}
+				tip={schema.base[key].description}
 			>
 				<ReactGPicker
+					showGradientAngle={false}
+					showGradientMode={false}
+					showGradientPosition={false}
+					showGradientStops
 					colorBoardHeight={150}
 					debounce
 					debounceMS={300}
 					format="hex"
 					gradient={true}
-					solid
-					onChange={(c) => {
-						//   setPickerBgColorInt(c);
-						//   return sendColorToControllers(c);
-					}}
+					solid={false}
+					onChange={(c) => { }}
 					popupWidth={288}
 					showAlpha={false}
-					value={''}
-					// value={pickerBgColorInt}
-					// defaultColors={Object.values(defaultColors)}
+					value={config[key]}
+					defaultColors={Object.values(palettes)}
 				/>
 			</Frame>)
 	}
@@ -135,7 +139,7 @@ export const EffectSchemaForm = (effect: effect) => {
 					{floatSlider('saturation', InvertColorsOff, InvertColors)}
 				</Grid>
 				<Grid item xs={6}>
-					{gradientPicker(schema.base.palette)}
+					<gradientPicker key="palette"/>
 				</Grid>
 				<Grid item xs={3}>
 					{boolEntry('flip')}
