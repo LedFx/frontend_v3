@@ -151,8 +151,8 @@ export const EffectSchemaForm = (effect: effect) => {
 					onChange={(_: Event, v: any) => setValue(v)}
 					onChangeCommitted={async (_: any, v: number | number[]) => {
 						const val = v as number[]
-						const hzmin = hzIt(v[0])
-						const hzmax = hzIt(v[1])
+						const hzmin = hzIt(val[0])
+						const hzmax = hzIt(val[1])
 						setConfig({
 							...config,
 							"freq_min": hzmin,
