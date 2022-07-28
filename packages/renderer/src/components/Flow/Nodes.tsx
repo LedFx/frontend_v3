@@ -72,7 +72,7 @@ export const ControllerNode = (node: { data: controller; }) => {
         <Card variant="outlined" sx={{ 'width': nodeWidth, 'height': nodeHeight, 'borderColor': controller.active ? 'primary' : '' }}>
             <CardContent>
                 <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>{controller.id}</Typography>
-                <Typography variant="h5">{controller.base_config.name}</Typography>
+                <Typography noWrap variant="h5">{controller.base_config.name}</Typography>
             </CardContent>
             <CardActions disableSpacing>
                 <Tooltip arrow title="Toggle Activation">
@@ -109,7 +109,7 @@ export const DeviceNode = (node: { data: device; }) => {
         <Card variant="outlined" sx={{ 'width': nodeWidth, 'height': nodeHeight }}>
             <CardContent>
                 <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>{device.id}</Typography>
-                <Typography variant="h5">{device.base_config.name}</Typography>
+                <Typography noWrap variant="h5">{device.base_config.name}</Typography>
             </CardContent>
             <CardActions disableSpacing>
                 <IconButton aria-label="Status">

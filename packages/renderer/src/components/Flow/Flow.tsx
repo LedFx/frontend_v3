@@ -166,6 +166,12 @@ const Flow = () => {
 			nodeTypes={nodeTypes}
 			edgeTypes={edgeTypes}
 			fitView
+			zoomOnScroll={false}
+			panOnDrag={false}
+			panOnScroll={true}
+			panOnScrollMode='vertical'
+			zoomOnPinch={false}
+			zoomOnDoubleClick={false}
 			nodesDraggable={false}
 			elementsSelectable={true}
 			attributionPosition="top-right"

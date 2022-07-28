@@ -1,22 +1,36 @@
 import { Ledfx } from '@/api/ledfx'
 import { effect, schemaEntry } from '@/store/interfaces'
 import { useStore } from '@/store/useStore'
-import { Grid, Slider, Switch, Typography } from '@mui/material'
+import { Avatar, Button, Dialog, Grid, Slider, Switch, Typography, typographyClasses } from '@mui/material'
 import { useState } from 'react'
 import Frame from '../Frame'
-import { BlurOff, BlurOn, DoNotDisturb, TimerOff, Timer, InvertColorsOff, InvertColors, BrightnessLow, BrightnessHigh, FlashOff, FlashOn, AutoMode } from '@mui/icons-material'
+import { BlurOff, BlurOn, DoNotDisturb, TimerOff, Timer, InvertColorsOff, InvertColors, BrightnessLow, BrightnessHigh, FlashOff, FlashOn, AutoMode, Edit } from '@mui/icons-material'
 import ReactGPicker from 'react-gcolor-picker'
+import { Box } from '@mui/system'
 
-const freqRange = (schemaEntryMax: schemaEntry, schemaEntryMin: schemaEntry) => {
-	return (
-		<Frame
-			title="Frequency Range"
-			tip="Reactive audio frequency range"
-		>
-			<Typography>Frequency Range</Typography>
-		</Frame>
-	)
-}
+// frequency slider consts
+const log13 = (x: number) => Math.log(x) / Math.log(13)
+const logIt = (x: number) => 3700.0 * log13(1 + x / 200.0)
+const hzIt = (x: number) => Math.round(200.0 * 13 ** (x / 3700.0) - 200.0)
+
+const freqMarks = [
+	{
+		value: logIt(60),
+		label: 'Beat',
+	},
+	{
+		value: logIt(350),
+		label: 'Bass',
+	},
+	{
+		value: logIt(2000),
+		label: 'Vocals, Instruments',
+	},
+	{
+		value: logIt(10000),
+		label: 'Highs, Percussion',
+	},
+];
 
 export const EffectSchemaForm = (effect: effect) => {
 	const schema = useStore((store) => store.api.schema.effect)
@@ -24,10 +38,8 @@ export const EffectSchemaForm = (effect: effect) => {
 	const palettes = useStore((store) => store.api.palettes)
 	const [config, setConfig] = useState(effect.base_config)
 
-	console.log(Object.values(palettes).slice(0, 5))
-
 	const floatSlider = (key: string, StartIcon: any, EndIcon: any) => {
-		return (effect && // this prevents global effects from working?
+		return (effect && schema.base[key] &&// this prevents global effects from working?
 			<Frame
 				title={schema.base[key].title}
 				tip={schema.base[key].description}
@@ -57,44 +69,110 @@ export const EffectSchemaForm = (effect: effect) => {
 			</Frame>)
 	}
 
-	const colorPicker = (schemaEntry: schemaEntry) => {
-		return (
+	const Picker = (props: { type: "palette" | "background_color" }) => {
+		const { type } = props
+		const [open, setOpen] = useState(false)
+		const predefs = type == "palette" ? palettes : colors
+
+		return (schema.base[type] &&
 			<Frame
-				title={schemaEntry.title}
-				tip={schemaEntry.description}
+				title={schema.base[type].title}
+				tip={schema.base[type].description}
 			>
-				<Typography>Color Picker</Typography>
-			</Frame>)
+				<Button
+					style={{
+						width: "100%",
+						height: "40px",
+						background: predefs[config[type].toLowerCase()] || config[type]
+					}}
+					onClick={() => { setOpen(true) }}
+					startIcon={<Edit />}
+				/>
+				<Dialog
+					open={open}
+					onClose={() => { setOpen(false) }}
+				>
+					<ReactGPicker
+						showGradientAngle={false}
+						showGradientMode={false}
+						showGradientPosition={false}
+						showGradientStops={true}
+						colorBoardHeight={150}
+						debounce
+						debounceMS={200}
+						format="rgb"
+						gradient={type == "palette"}
+						solid={type == "background_color"}
+						onChange={async (c) => {
+							setConfig({
+								...config,
+								[type]: c
+							})
+							await Ledfx('/api/effects', 'PUT', {
+								'id': effect.id,
+								'base_config': { [type]: c }
+							})
+						}}
+						popupWidth={288}
+						showAlpha={false}
+						value={predefs[config[type].toLowerCase()] || config[type]}
+						defaultColors={type == "palette" ? Object.values(palettes) : Object.values(colors)}
+					/>
+				</Dialog>
+			</Frame>
+		)
 	}
 
-	const gradientPicker = (key: string) => {
+	const freqRange = () => {
+		const [value, setValue] = useState([
+			logIt(config.freq_min),
+			logIt(config.freq_max),
+		]);
+
+		const formatFreq = (f: number) => {
+			let hz = hzIt(f)
+			return `${hz > 1000 ? `${Math.round(hz / 1000)} kHz` : `${Math.round(hz)} Hz`}`
+		}
 		return (
 			<Frame
-				title={schema.base[key].title}
-				tip={schema.base[key].description}
+				title="Frequency Range"
+				tip="Reactive audio frequency range"
 			>
-				<ReactGPicker
-					showGradientAngle={false}
-					showGradientMode={false}
-					showGradientPosition={false}
-					showGradientStops
-					colorBoardHeight={150}
-					debounce
-					debounceMS={300}
-					format="hex"
-					gradient={true}
-					solid={false}
-					onChange={(c) => { }}
-					popupWidth={288}
-					showAlpha={false}
-					value={config[key]}
-					defaultColors={Object.values(palettes)}
+				<Slider
+					value={[value[0], value[1]]}
+					aria-labelledby="discrete-slider-custom"
+					step={0.001}
+					valueLabelDisplay="auto"
+					marks={freqMarks}
+					min={logIt(schema.base.freq_min.validation.min)}
+					max={logIt(schema.base.freq_max.validation.max)}
+					valueLabelFormat={formatFreq}
+					getAriaValueText={formatFreq}
+					onChange={(_: Event, v: any) => setValue(v)}
+					onChangeCommitted={async (_: any, v: number | number[]) => {
+						const val = v as number[]
+						const hzmin = hzIt(v[0])
+						const hzmax = hzIt(v[1])
+						setConfig({
+							...config,
+							"freq_min": hzmin,
+							"freq_max": hzmax
+						})
+						await Ledfx('/api/effects', 'PUT', {
+							'id': effect.id,
+							'base_config': {
+								"freq_min": hzmin,
+								"freq_max": hzmax
+							}
+						})
+					}}
 				/>
-			</Frame>)
+			</Frame>
+		)
 	}
 
 	const boolEntry = (key: string) => {
-		return (
+		return (schema.base[key] &&
 			<Frame
 				title={schema.base[key].title}
 				tip={schema.base[key].description}
@@ -138,8 +216,11 @@ export const EffectSchemaForm = (effect: effect) => {
 				<Grid item xs={6}>
 					{floatSlider('saturation', InvertColorsOff, InvertColors)}
 				</Grid>
+				<Grid item xs={12}>
+					{freqRange()}
+				</Grid>
 				<Grid item xs={6}>
-					<gradientPicker key="palette"/>
+					{Picker({ type: "palette" })}
 				</Grid>
 				<Grid item xs={3}>
 					{boolEntry('flip')}
@@ -147,14 +228,11 @@ export const EffectSchemaForm = (effect: effect) => {
 				<Grid item xs={3}>
 					{boolEntry('mirror')}
 				</Grid>
-				<Grid item xs={12}>
-					{freqRange(schema.base.freq_max, schema.base.freq_min)}
+				<Grid item xs={6}>
+					{Picker({ type: "background_color" })}
 				</Grid>
 				<Grid item xs={6}>
-					{colorPicker(schema.base.bkg_color)}
-				</Grid>
-				<Grid item xs={6}>
-					{floatSlider('bkg_brightness', BrightnessLow, BrightnessHigh)}
+					{floatSlider('background_brightness', BrightnessLow, BrightnessHigh)}
 				</Grid>
 			</Grid>
 		</>
