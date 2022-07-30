@@ -202,7 +202,8 @@ export const storeApi = {
   setGlobalEffectConfig: async (config: effectConfig) => {
     useStore.setState(
       produce((state) => {
-        state.api.globalEffectConfig = config
+        state.api.globalEffectConfig = PartialUpdate(state.api.globalEffectConfig, config)
+        console.log(state.api.globalEffectConfig, config)
       }),
       false,
       'api/setGlobalEffectConfig'

@@ -3,7 +3,7 @@ import { Dialog, DialogContent, DialogTitle } from '@mui/material'
 import { EffectSchemaForm } from '../SchemaForm/EffectSchemaForm/EffectSchemaForm'
 
 export interface EffectSchemaProps {
-    effect: effect
+    effect?: effect
     open: boolean
     handleclose: () => void
 }
@@ -13,7 +13,7 @@ export const EffectSchemaDialog = (props: EffectSchemaProps) => {
 
 	return (
 		<Dialog open={open} onClose={handleclose}>
-			<DialogTitle>{effect.type} settings</DialogTitle>
+			<DialogTitle textTransform="capitalize">{effect? `${effect.type} effect - settings` : "Modify settings for all effects"}</DialogTitle>
 			<DialogContent>
 				{EffectSchemaForm(effect)}
 			</DialogContent>

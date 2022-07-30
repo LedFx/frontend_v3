@@ -27,35 +27,36 @@ const nodeHeight = '160px'
 export const EffectNode = (node: { data: effect; }) => {
     const effect = node.data as effect
     const [open, setOpen] = useState(false)
-    const theme = useTheme()
     return (
-        <Card variant="outlined" sx={{ 'width': nodeWidth, 'height': nodeHeight }}>
-            <CardContent>
-                <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>{effect.id}</Typography>
-                <Typography variant="h5">{effect.type}</Typography>
-                <Typography variant="body2">Pixel visualisation goes here</Typography>
-            </CardContent>
-            <CardActions disableSpacing>
-                <Tooltip arrow title="Adjust Settings">
-                    <IconButton aria-label="Adjust Settings" onClick={() => setOpen(true)}>
-                        <TuneIcon />
-                    </IconButton>
-                </Tooltip>
-                <Tooltip arrow title="Delete">
-                    <IconButton aria-label="Delete">
-                        <DeleteIcon />
-                    </IconButton>
-                </Tooltip>
-                <Popover onConfirm={async () => { await Ledfx(`/api/effects?id=${effect.id}`, 'DELETE') }} variant="text" />
+        <>
+            <Card variant="outlined" sx={{ 'width': nodeWidth, 'height': nodeHeight, cursor: 'pointer' }} onClick={() => setOpen(!open)}>
+                <CardContent>
+                    <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>{effect.id}</Typography>
+                    <Typography variant="h5" textTransform="capitalize">{effect.type}</Typography>
+                    <Typography variant="body2">Pixel visualisation goes here</Typography>
+                </CardContent>
+                <CardActions disableSpacing>
+                    <Tooltip arrow title="Adjust Settings">
+                        <IconButton aria-label="Adjust Settings" onClick={() => setOpen(true)}>
+                            <TuneIcon />
+                        </IconButton>
+                    </Tooltip>
+                    <Tooltip arrow title="Delete">
+                        <IconButton aria-label="Delete" onClick={async (event: any) => { event.stopPropagation(); await Ledfx(`/api/effects?id=${effect.id}`, 'DELETE') }}>
+                            <DeleteIcon />
+                        </IconButton>
+                    </Tooltip>
+                    {/* <Popover onConfirm={async () => { event.stopPropagation(); await Ledfx(`/api/effects?id=${effect.id}`, 'DELETE') }} variant="text" /> */}
 
-            </CardActions>
-            <Handle type="source" position={Position.Right} />
+                </CardActions>
+                <Handle type="source" position={Position.Right} />
+            </Card>
             <EffectSchemaDialog
                 effect={effect}
                 open={open}
                 handleclose={() => setOpen(false)}
             />
-        </Card>
+        </>
 
     )
 }
@@ -69,36 +70,38 @@ export const ControllerNode = (node: { data: controller; }) => {
     }
     const [open, setOpen] = useState(false)
     return (
-        <Card variant="outlined" sx={{ 'width': nodeWidth, 'height': nodeHeight, 'borderColor': controller.active ? 'primary' : '' }}>
-            <CardContent>
-                <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>{controller.id}</Typography>
-                <Typography noWrap variant="h5">{controller.base_config.name}</Typography>
-            </CardContent>
-            <CardActions disableSpacing>
-                <Tooltip arrow title="Toggle Activation">
-                    <IconButton aria-label="Toggle Activation" onClick={toggle}>
-                        {controller.active ? <ToggleOnIcon color='primary' /> : <ToggleOffIcon />}
-                    </IconButton>
-                </Tooltip>
-                <Tooltip arrow title="Configure">
-                    <IconButton aria-label="Configure" onClick={() => setOpen(!open)}>
-                        <SettingsIcon />
-                    </IconButton>
-                </Tooltip>
-                <Tooltip arrow title="Delete">
-                    <IconButton aria-label="Delete" onClick={async () => Ledfx(`/api/controllers?id=${controller.id}`, 'DELETE')}>
-                        <DeleteIcon />
-                    </IconButton>
-                </Tooltip>
-            </CardActions>
-            <Handle type="source" position={Position.Right} />
-            <Handle type="target" position={Position.Left} />
+        <>
+            <Card variant="outlined" onClick={toggle} sx={{ 'width': nodeWidth, 'height': nodeHeight, cursor: 'pointer', 'borderColor': controller.active ? "blue" : '' }}>
+                <CardContent>
+                    <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>{controller.id}</Typography>
+                    <Typography noWrap variant="h5">{controller.base_config.name}</Typography>
+                </CardContent>
+                <CardActions disableSpacing>
+                    <Tooltip arrow title="Toggle Activation">
+                        <IconButton aria-label="Toggle Activation" onClick={toggle}>
+                            {controller.active ? <ToggleOnIcon color='primary' /> : <ToggleOffIcon />}
+                        </IconButton>
+                    </Tooltip>
+                    <Tooltip arrow title="Configure">
+                        <IconButton aria-label="Configure" onClick={(event: any) => { event.stopPropagation(); setOpen(!open) }}>
+                            <SettingsIcon />
+                        </IconButton>
+                    </Tooltip>
+                    <Tooltip arrow title="Delete">
+                        <IconButton aria-label="Delete" onClick={async (event: any) => { event.stopPropagation(); Ledfx(`/api/controllers?id=${controller.id}`, 'DELETE') }}>
+                            <DeleteIcon />
+                        </IconButton>
+                    </Tooltip>
+                </CardActions>
+                <Handle type="source" position={Position.Right} />
+                <Handle type="target" position={Position.Left} />
+            </Card>
             <CreateControllerDialog
                 id={controller.id}
                 open={open}
                 handleClose={() => setOpen(false)}
             />
-        </Card>
+        </>
     )
 }
 
@@ -106,7 +109,7 @@ export const DeviceNode = (node: { data: device; }) => {
     const [open, setOpen] = useState(false)
     const device = node.data as device
     return (
-        <Card variant="outlined" sx={{ 'width': nodeWidth, 'height': nodeHeight }}>
+        <Card variant="outlined" sx={{ 'width': nodeWidth, 'height': nodeHeight, cursor: 'default' }}>
             <CardContent>
                 <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>{device.id}</Typography>
                 <Typography noWrap variant="h5">{device.base_config.name}</Typography>
@@ -155,33 +158,40 @@ function ConnectionIcon(state: deviceState) {
 
 export const AddEffectNode = (_: any) => {
     const [open, setOpen] = useState(false)
+    const [globalOpen, setGlobalOpen] = useState(false)
 
     return (
-        <Card variant="outlined" sx={{ 'width': nodeWidth, 'height': '150px' }}>
-            <CardContent>
-                <Typography variant="h5">Effects</Typography>
-                <Typography variant="body2">Generate pixel data</Typography>
-            </CardContent>
-            <CardActions disableSpacing>
-                <Tooltip arrow title="Adjust settings of all effects">
-                    <IconButton aria-label="Adjust Settings">
-                        <TuneIcon />
-                    </IconButton>
-                </Tooltip>
-                <Tooltip arrow title="Add Effect">
-                    <IconButton aria-label="Add Effect" onClick={() => setOpen(!open)}>
-                        <AddCircleIcon />
-                    </IconButton>
-                </Tooltip>
-                <Box sx={{ justifyContent: 'flex-end', display: 'flex', width: "100%" }}>
-                    <Chip label="Sends pixels to" onDelete={() => { }} variant="filled" disabled deleteIcon={<ArrowCircleRight />} />
-                </Box>
-            </CardActions>
+        <>
+            <Card variant="outlined" sx={{ 'width': nodeWidth, 'height': '150px', cursor: 'pointer' }} onClick={() => setGlobalOpen(!globalOpen)}>
+                <CardContent>
+                    <Typography variant="h5">Effects</Typography>
+                    <Typography variant="body2">Generate pixel data</Typography>
+                </CardContent>
+                <CardActions disableSpacing>
+                    <Tooltip arrow title="Adjust settings of all effects">
+                        <IconButton aria-label="Adjust Settings" onClick={() => setGlobalOpen(!globalOpen)}>
+                            <TuneIcon />
+                        </IconButton>
+                    </Tooltip>
+                    <Tooltip arrow title="Add Effect">
+                        <IconButton aria-label="Add Effect" onClick={(event: any) => { event.stopPropagation(); setOpen(!open) }}>
+                            <AddCircleIcon />
+                        </IconButton>
+                    </Tooltip>
+                    <Box sx={{ justifyContent: 'flex-end', display: 'flex', width: "100%" }}>
+                        <Chip label="Sends pixels to" onDelete={() => { }} variant="filled" disabled deleteIcon={<ArrowCircleRight />} />
+                    </Box>
+                </CardActions>
+            </Card>
             <CreateEffectDialog
                 open={open}
                 handleClose={() => setOpen(false)}
             />
-        </Card>
+            <EffectSchemaDialog
+                open={globalOpen}
+                handleclose={() => setGlobalOpen(false)}
+            />
+        </>
     )
 }
 
@@ -192,7 +202,7 @@ export const AddControllerNode = (_: any) => {
     }
     const [open, setOpen] = useState(false)
     return (
-        <Card variant="outlined" sx={{ 'width': nodeWidth, 'height': '150px' }}>
+        <Card variant="outlined" sx={{ 'width': nodeWidth, 'height': '150px', cursor: 'default' }}>
             <CardContent>
                 <Typography variant="h5">Controllers</Typography>
                 <Typography variant="body2">Manage and distribute pixel data</Typography>
@@ -224,7 +234,7 @@ export const AddDeviceNode = (_: any) => {
     const [open, setOpen] = useState(false)
 
     return (
-        <Card variant="outlined" sx={{ 'width': nodeWidth, 'height': '150px' }}>
+        <Card variant="outlined" sx={{ 'width': nodeWidth, 'height': '150px', cursor: 'default' }}>
             <CardContent>
                 <Typography variant="h5">Devices</Typography>
                 <Typography variant="body2">Send pixel data to your hardware</Typography>
@@ -237,7 +247,7 @@ export const AddDeviceNode = (_: any) => {
                     </IconButton>
                 </Tooltip>
                 <Box sx={{ justifyContent: 'flex-end', display: 'flex', width: "100%" }}>
-                    <Chip label="Output" onDelete={() => { }} variant="filled" disabled deleteIcon={<CellTower/>} />
+                    <Chip label="Output" onDelete={() => { }} variant="filled" disabled deleteIcon={<CellTower />} />
                 </Box>
             </CardActions>
             <CreateDeviceDialog

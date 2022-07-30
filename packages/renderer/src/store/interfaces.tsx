@@ -37,19 +37,19 @@ export interface connections {
 }
 
 export interface effectConfig {
-    bkg_brightness: number
-    bkg_color: string
-    blur: number
-    brightness: number
-    decay: number
-    flip: boolean
-    freq_max: number
-    freq_min: number
-    hue_shift: number
-    intensity: number
-    mirror: boolean
-    palette: string
-    saturation: number
+    background_brightness?: number
+    background_color?: string
+    blur?: number
+    brightness?: number
+    decay?: number
+    flip?: boolean
+    freq_max?: number
+    freq_min?: number
+    hue_shift?: number
+    intensity?: number
+    mirror?: boolean
+    palette?: string
+    saturation?: number
 }
 
 export interface settings {

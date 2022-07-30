@@ -1,5 +1,5 @@
 import { Ledfx } from '@/api/ledfx'
-import { effect, schemaEntry } from '@/store/interfaces'
+import { effect, effectConfig, schemaEntry } from '@/store/interfaces'
 import { useStore } from '@/store/useStore'
 import { Avatar, Button, Dialog, Grid, Slider, Switch, Typography, typographyClasses } from '@mui/material'
 import { useState } from 'react'
@@ -32,14 +32,28 @@ const freqMarks = [
 	},
 ];
 
-export const EffectSchemaForm = (effect: effect) => {
+export const EffectSchemaForm = (effect: effect | undefined) => {
+	const defaultEffectConfig = () => {
+		return Object.entries(schema.base).reduce(
+			(acc, [key, value]) => ({ ...acc, [key]: value.default }),
+			{}
+		)
+	}
+
 	const schema = useStore((store) => store.api.schema.effect)
 	const colors = useStore((store) => store.api.colors)
 	const palettes = useStore((store) => store.api.palettes)
-	const [config, setConfig] = useState(effect.base_config)
+	const config = useStore((store) => effect ?
+		store.api.effects.hasOwnProperty(effect.id) && store.api.effects[effect.id].base_config :
+		store.api.globalEffectConfig
+	)
+	const setConfig = useStore((store) => effect ?
+		(newConfig: object) => store.api.setEffect({ ...effect, "base_config": { ...config, ...newConfig } }) :
+		store.api.setGlobalEffectConfig
+	)
 
-	const floatSlider = (key: string, StartIcon: any, EndIcon: any) => {
-		return (effect && schema.base[key] &&// this prevents global effects from working?
+	const floatSlider = (key: keyof effectConfig, StartIcon: any, EndIcon: any) => {
+		return (schema && schema.base[key] &&// this prevents global effects from working?
 			<Frame
 				title={schema.base[key].title}
 				tip={schema.base[key].description}
@@ -50,18 +64,23 @@ export const EffectSchemaForm = (effect: effect) => {
 					min={schema.base[key].validation.min}
 					max={schema.base[key].validation.max}
 					step={0.01}
-					value={config[key]}
-					onChange={async (_: Event, newValue: number | number[]) => {
+					value={config[key] as number}
+					onChange={(_: Event, newValue: number | number[]) => {
 						setConfig({
-							...config,
 							[key]: newValue
 						})
 					}}
 					onChangeCommitted={async (event) => {
-						await Ledfx('/api/effects', 'PUT', {
-							'id': effect.id,
-							'base_config': { [key]: config[key] }
-						})
+						if (effect === undefined) {
+							await Ledfx("/api/effects/global", "PUT", {
+								[key]: config[key]
+							})
+						} else {
+							await Ledfx('/api/effects', 'PUT', {
+								'id': effect.id,
+								'base_config': { [key]: config[key] }
+							})
+						}
 					}}
 
 				/>
@@ -83,7 +102,7 @@ export const EffectSchemaForm = (effect: effect) => {
 					style={{
 						width: "100%",
 						height: "40px",
-						background: predefs[config[type].toLowerCase()] || config[type]
+						background: config.hasOwnProperty(type) && (predefs[config[type].toLowerCase()] || config[type])
 					}}
 					onClick={() => { setOpen(true) }}
 					startIcon={<Edit />}
@@ -105,17 +124,18 @@ export const EffectSchemaForm = (effect: effect) => {
 						solid={type == "background_color"}
 						onChange={async (c) => {
 							setConfig({
-								...config,
 								[type]: c
 							})
-							await Ledfx('/api/effects', 'PUT', {
+							effect !== undefined ? await Ledfx('/api/effects', 'PUT', {
 								'id': effect.id,
 								'base_config': { [type]: c }
+							}) : await Ledfx("/api/effects/global", "PUT", {
+								[type]: c
 							})
 						}}
 						popupWidth={288}
 						showAlpha={false}
-						value={predefs[config[type].toLowerCase()] || config[type]}
+						value={config.hasOwnProperty(type) && (predefs[config[type].toLowerCase()] || config[type])}
 						defaultColors={type == "palette" ? Object.values(palettes) : Object.values(colors)}
 					/>
 				</Dialog>
@@ -135,11 +155,11 @@ export const EffectSchemaForm = (effect: effect) => {
 		}
 		return (
 			<Frame
-				title="Frequency Range"
+				title="Audio Range"
 				tip="Reactive audio frequency range"
 			>
 				<Slider
-					value={[value[0], value[1]]}
+					value={[logIt(config.freq_min), logIt(config.freq_max)]}
 					aria-labelledby="discrete-slider-custom"
 					step={0.001}
 					valueLabelDisplay="auto"
@@ -148,22 +168,32 @@ export const EffectSchemaForm = (effect: effect) => {
 					max={logIt(schema.base.freq_max.validation.max)}
 					valueLabelFormat={formatFreq}
 					getAriaValueText={formatFreq}
-					onChange={(_: Event, v: any) => setValue(v)}
+					onChange={(_: Event, v: any) => {
+						const val = v as number[]
+						const hzmin = hzIt(val[0])
+						const hzmax = hzIt(val[1])
+						setConfig({
+							"freq_min": hzmin,
+							"freq_max": hzmax
+						})
+					}}
 					onChangeCommitted={async (_: any, v: number | number[]) => {
 						const val = v as number[]
 						const hzmin = hzIt(val[0])
 						const hzmax = hzIt(val[1])
 						setConfig({
-							...config,
 							"freq_min": hzmin,
 							"freq_max": hzmax
 						})
-						await Ledfx('/api/effects', 'PUT', {
+						effect !== undefined ? await Ledfx('/api/effects', 'PUT', {
 							'id': effect.id,
 							'base_config': {
 								"freq_min": hzmin,
 								"freq_max": hzmax
 							}
+						}) : await Ledfx("/api/effects/global", "PUT", {
+							"freq_min": hzmin,
+							"freq_max": hzmax
 						})
 					}}
 				/>
@@ -183,13 +213,13 @@ export const EffectSchemaForm = (effect: effect) => {
 						console.log(event)
 						console.log(config)
 						setConfig({
-							...config,
 							[key]: !config[key]
 						})
-						console.log(config)
-						await Ledfx('/api/effects', 'PUT', {
+						effect !== undefined ? await Ledfx('/api/effects', 'PUT', {
 							'id': effect.id,
 							'base_config': { [key]: config[key] },
+						}) : await Ledfx("/api/effects/global", "PUT", {
+							[key]: config[key]
 						})
 					}} />
 			</Frame>)
@@ -216,9 +246,11 @@ export const EffectSchemaForm = (effect: effect) => {
 				<Grid item xs={6}>
 					{floatSlider('saturation', InvertColorsOff, InvertColors)}
 				</Grid>
-				<Grid item xs={12}>
-					{freqRange()}
-				</Grid>
+				{(!effect || (effect && schema.types[effect.type].category == "Audio Reactive")) &&
+					<Grid item xs={12}>
+						{freqRange()}
+					</Grid>
+				}
 				<Grid item xs={6}>
 					{Picker({ type: "palette" })}
 				</Grid>
