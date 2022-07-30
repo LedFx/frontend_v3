@@ -1,25 +1,24 @@
-import { device, effect, controller, deviceState } from '@/store/interfaces'
-import { CardActions, Chip, IconButton, Tooltip, Typography, useTheme, Box } from '@mui/material'
-import Card from '@mui/material/Card'
-import CardContent from '@mui/material/CardContent'
-import TuneIcon from '@mui/icons-material/Tune'
+import { Ledfx } from '@/api/ledfx'
+import { controller, device, deviceState, effect } from '@/store/interfaces'
+import { ArrowCircleRight, CellTower } from '@mui/icons-material'
+import AddCircleIcon from '@mui/icons-material/AddCircle'
 import DeleteIcon from '@mui/icons-material/Delete'
 import SettingsIcon from '@mui/icons-material/Settings'
 import SignalWifiBadIcon from '@mui/icons-material/SignalWifiBad'
 import SignalWifiStatusbar4BarIcon from '@mui/icons-material/SignalWifiStatusbar4Bar'
-import WifiFindIcon from '@mui/icons-material/WifiFind'
-import AddCircleIcon from '@mui/icons-material/AddCircle'
 import ToggleOffIcon from '@mui/icons-material/ToggleOff'
 import ToggleOnIcon from '@mui/icons-material/ToggleOn'
-import { Handle, Position } from 'react-flow-renderer'
-import { Ledfx } from '@/api/ledfx'
+import TuneIcon from '@mui/icons-material/Tune'
+import WifiFindIcon from '@mui/icons-material/WifiFind'
+import { Box, CardActions, Chip, IconButton, Tooltip, Typography } from '@mui/material'
+import Card from '@mui/material/Card'
+import CardContent from '@mui/material/CardContent'
 import { useState } from 'react'
-import Popover from '../Popover/Popover'
-import { EffectSchemaDialog } from '../Dialogs/EffectSchemaDialog'
-import { CreateEffectDialog } from '../Dialogs/CreateEffectDialog'
+import { Handle, Position } from 'react-flow-renderer'
 import { CreateControllerDialog } from '../Dialogs/CreateControllerDialog'
 import { CreateDeviceDialog } from '../Dialogs/CreateDeviceDialog'
-import { ArrowCircleRight, CellTower, CellTowerOutlined, Send } from '@mui/icons-material'
+import { CreateEffectDialog } from '../Dialogs/CreateEffectDialog'
+import { EffectSchemaDialog } from '../Dialogs/EffectSchemaDialog'
 
 const nodeWidth = '300px'
 const nodeHeight = '160px'
@@ -51,11 +50,7 @@ export const EffectNode = (node: { data: effect; }) => {
 				</CardActions>
 				<Handle type="source" position={Position.Right} />
 			</Card>
-			<EffectSchemaDialog
-				effect={effect}
-				open={open}
-				handleclose={() => setOpen(false)}
-			/>
+			{EffectSchemaDialog({ effect: effect, open: open, handleclose: () => setOpen(false) })}
 		</>
 
 	)
@@ -96,11 +91,11 @@ export const ControllerNode = (node: { data: controller; }) => {
 				<Handle type="source" position={Position.Right} />
 				<Handle type="target" position={Position.Left} />
 			</Card>
-			<CreateControllerDialog
-				id={controller.id}
-				open={open}
-				handleClose={() => setOpen(false)}
-			/>
+			{CreateControllerDialog({
+				id: controller.id,
+				open: open,
+				handleClose: () => setOpen(false)
+			})}
 		</>
 	)
 }
@@ -130,11 +125,11 @@ export const DeviceNode = (node: { data: device; }) => {
 				</Tooltip>
 			</CardActions>
 			<Handle type="target" position={Position.Left} />
-			<CreateDeviceDialog
-				id={device.id}
-				open={open}
-				handleClose={() => setOpen(false)}
-			/>
+			{CreateDeviceDialog({
+				id: device.id,
+				open: open,
+				handleClose: () => setOpen(false)
+			})}
 		</Card>
 	)
 }
@@ -156,7 +151,7 @@ function ConnectionIcon(state: deviceState) {
 	}
 }
 
-export const AddEffectNode = (_: any) => {
+export const AddEffectNode = () => {
 	const [open, setOpen] = useState(false)
 	const [globalOpen, setGlobalOpen] = useState(false)
 
@@ -183,19 +178,19 @@ export const AddEffectNode = (_: any) => {
 					</Box>
 				</CardActions>
 			</Card>
-			<CreateEffectDialog
-				open={open}
-				handleClose={() => setOpen(false)}
-			/>
-			<EffectSchemaDialog
-				open={globalOpen}
-				handleclose={() => setGlobalOpen(false)}
-			/>
+			{CreateEffectDialog({
+				open: open,
+				handleClose: () => setOpen(false)
+			})}
+			{EffectSchemaDialog({
+				open: globalOpen,
+				handleclose: () => setGlobalOpen(false)
+			})}
 		</>
 	)
 }
 
-export const AddControllerNode = (_: any) => {
+export const AddControllerNode = () => {
 	const [toggleState, setToggleState] = useState(false)
 	const toggle = async () => {
 		setToggleState(!toggleState as boolean)
@@ -222,15 +217,15 @@ export const AddControllerNode = (_: any) => {
 					<Chip label="Sends pixels to" onDelete={() => { }} variant="filled" disabled deleteIcon={<ArrowCircleRight />} />
 				</Box>
 			</CardActions>
-			<CreateControllerDialog
-				open={open}
-				handleClose={() => setOpen(false)}
-			/>
+			{CreateControllerDialog({
+				open: open,
+				handleClose: () => setOpen(false)
+			})}
 		</Card>
 	)
 }
 
-export const AddDeviceNode = (_: any) => {
+export const AddDeviceNode = () => {
 	const [open, setOpen] = useState(false)
 
 	return (
@@ -247,13 +242,13 @@ export const AddDeviceNode = (_: any) => {
 					</IconButton>
 				</Tooltip>
 				<Box sx={{ justifyContent: 'flex-end', display: 'flex', width: '100%' }}>
-					<Chip label="Output" onDelete={() => { }} variant="filled" disabled deleteIcon={<CellTower />} />
+					<Chip label="Output" onDelete={} variant="filled" disabled deleteIcon={<CellTower />} />
 				</Box>
 			</CardActions>
-			<CreateDeviceDialog
-				open={open}
-				handleClose={() => setOpen(false)}
-			/>
+			{CreateDeviceDialog({
+				open: open,
+				handleClose: () => setOpen(false)
+			})}
 		</Card>
 	)
 }

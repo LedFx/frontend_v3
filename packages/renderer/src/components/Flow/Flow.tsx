@@ -1,10 +1,10 @@
-import { useEffect } from 'react'
-import ReactFlow, { useNodesState, useEdgesState, addEdge, Background, Edge, Position } from 'react-flow-renderer'
-import { useStore } from '../../store/useStore'
-import { EffectNode, ControllerNode, DeviceNode, AddEffectNode, AddDeviceNode, AddControllerNode } from './Nodes'
-import ButtonEdge from './ButtonEdge'
-import { VariantType } from 'notistack'
 import { Ledfx } from '@/api/ledfx'
+import { VariantType } from 'notistack'
+import { useEffect } from 'react'
+import ReactFlow, { Background, Edge, Position, useEdgesState, useNodesState } from 'react-flow-renderer'
+import { useStore } from '../../store/useStore'
+import ButtonEdge from './ButtonEdge'
+import { AddControllerNode, AddDeviceNode, AddEffectNode, ControllerNode, DeviceNode, EffectNode } from './Nodes'
 
 const edgeTypes = { buttonedge: ButtonEdge }
 const nodeTypes = {

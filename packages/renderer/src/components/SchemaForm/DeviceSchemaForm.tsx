@@ -1,8 +1,7 @@
-import { Ledfx } from '@/api/ledfx'
 import { device, deviceInfo } from '@/store/interfaces'
 import { useStore } from '@/store/useStore'
 import { Info } from '@mui/icons-material'
-import { Autocomplete, Box, Button, Card, CardActions, CardContent, Chip, Grid, IconButton, Input, keyframes, Link, MenuItem, Select, Slider, Stack, Switch, TextField, Tooltip, Typography } from '@mui/material'
+import { Autocomplete, Box, Button, Card, CardActions, CardContent, Chip, Grid, IconButton, Input, MenuItem, Select, Switch, TextField, Tooltip, Typography } from '@mui/material'
 import { useEffect, useState } from 'react'
 import Frame from './Frame'
 
@@ -325,7 +324,7 @@ export const DeviceSchemaForm = (props: DeviceSchemaFormProps) => {
 			{
 				Object.entries(deviceSchema.types).map(([type, info], i: number) => (
 					<Grid item xs={3} key={i}>
-						<DeviceTypeCard type={type} info={info} selected={device.type} onSelect={onSelect} />
+						{DeviceTypeCard({type:type, info:info, selected:device.type, onSelect:onSelect})}
 					</Grid>
 				))
 			}

@@ -69,7 +69,7 @@ export const CreateControllerDialog = (props: CreateControllerDialogProps) => {
 						step={5}
 						marks
 						value={config.framerate}
-						onChange={(_event: Event, newValue: number | number[], _activeThumb: number) => {
+						onChange={(_event: Event, newValue: number | number[]) => {
 							setConfig({
 								...config,
 								framerate: typeof newValue === 'number' ? newValue : 0,

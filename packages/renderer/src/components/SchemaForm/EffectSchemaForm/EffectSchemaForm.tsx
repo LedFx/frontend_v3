@@ -1,12 +1,11 @@
 import { Ledfx } from '@/api/ledfx'
-import { effect, effectConfig, schemaEntry } from '@/store/interfaces'
+import { effect, effectConfig } from '@/store/interfaces'
 import { useStore } from '@/store/useStore'
-import { Avatar, Button, Dialog, Grid, Slider, Switch, Typography, typographyClasses } from '@mui/material'
+import { AutoMode, BlurOff, BlurOn, BrightnessHigh, BrightnessLow, DoNotDisturb, Edit, FlashOff, FlashOn, InvertColors, InvertColorsOff, Timer, TimerOff } from '@mui/icons-material'
+import { Button, Dialog, Grid, Slider, Switch } from '@mui/material'
 import { useState } from 'react'
-import Frame from '../Frame'
-import { BlurOff, BlurOn, DoNotDisturb, TimerOff, Timer, InvertColorsOff, InvertColors, BrightnessLow, BrightnessHigh, FlashOff, FlashOn, AutoMode, Edit } from '@mui/icons-material'
 import ReactGPicker from 'react-gcolor-picker'
-import { Box } from '@mui/system'
+import Frame from '../Frame'
 
 // frequency slider consts
 const log13 = (x: number) => Math.log(x) / Math.log(13)
@@ -70,7 +69,7 @@ export const EffectSchemaForm = (effect: effect | undefined) => {
 							[key]: newValue
 						})
 					}}
-					onChangeCommitted={async (event) => {
+					onChangeCommitted={async () => {
 						if (effect === undefined) {
 							await Ledfx('/api/effects/global', 'PUT', {
 								[key]: config[key]
@@ -144,11 +143,6 @@ export const EffectSchemaForm = (effect: effect | undefined) => {
 	}
 
 	const freqRange = () => {
-		const [value, setValue] = useState([
-			logIt(config.freq_min),
-			logIt(config.freq_max),
-		])
-
 		const formatFreq = (f: number) => {
 			const hz = hzIt(f)
 			return `${hz > 1000 ? `${Math.round(hz / 1000)} kHz` : `${Math.round(hz)} Hz`}`

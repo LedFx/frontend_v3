@@ -1,29 +1,26 @@
 import { Ledfx } from '@/api/ledfx'
-import { device, controller } from '@/store/interfaces'
+import { device } from '@/store/interfaces'
 import { useStore } from '@/store/useStore'
-import { Button, Dialog, DialogActions, DialogContent, DialogTitle, Input, Slider, Box, Stepper, Step, StepLabel, StepContent, Paper, Typography } from '@mui/material'
-import { useEffect, useState } from 'react'
-import { DeviceSchemaForm } from '../SchemaForm/DeviceSchemaForm'
-import Frame from '../SchemaForm/Frame'
+import { Box, Button, Dialog, DialogActions, DialogContent, DialogTitle, Paper, Step, StepContent, StepLabel, Stepper, Typography } from '@mui/material'
 import * as React from 'react'
-        
+import { useState } from 'react'
+import { DeviceSchemaForm } from '../SchemaForm/DeviceSchemaForm'
+
 export interface CreateDeviceDialogProps {
-    id?: string
-    open: boolean
-    handleClose: () => void
+	id?: string
+	open: boolean
+	handleClose: () => void
 }
 
 export const CreateDeviceDialog = (props: CreateDeviceDialogProps) => {
 	const { id, open, handleClose } = props
-	const devices = useStore((store) => store.api.devices)
-	const [device, setDevice] = useState({} as device)
-	const [valid, setValid] = useState(id !== undefined)
+	const [valid, _] = useState(id !== undefined)
 
 	return (
 		<Dialog open={open} onClose={handleClose} maxWidth="xl">
 			<DialogTitle>{id === undefined ? 'Create' : 'Configure'} Device</DialogTitle>
 			<DialogContent>
-				<DeviceSchemaForm id={id}/>
+				{DeviceSchemaForm({ id: id })}
 			</DialogContent>
 			<DialogActions>
 				<Button disabled={!valid} variant="outlined" onClick={async () => {
@@ -46,7 +43,7 @@ const steps = [
 	{
 		label: 'Create an ad group',
 		description:
-      'An ad group contains one or more ads which target a shared set of keywords.',
+			'An ad group contains one or more ads which target a shared set of keywords.',
 	},
 	{
 		label: 'Create an ad',
@@ -102,7 +99,7 @@ export default function VerticalLinearStepper() {
 										onClick={handleBack}
 										sx={{ mt: 1, mr: 1 }}
 									>
-                    Back
+										Back
 									</Button>
 								</div>
 							</Box>
@@ -114,7 +111,7 @@ export default function VerticalLinearStepper() {
 				<Paper square elevation={0} sx={{ p: 3 }}>
 					<Typography>All steps completed - you&apos;re finished</Typography>
 					<Button onClick={handleReset} sx={{ mt: 1, mr: 1 }}>
-            Reset
+						Reset
 					</Button>
 				</Paper>
 			)}

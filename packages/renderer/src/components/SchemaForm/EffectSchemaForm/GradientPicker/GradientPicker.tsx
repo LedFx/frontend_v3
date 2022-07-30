@@ -25,7 +25,6 @@ const GradientPicker = ({
 	const popover = useRef(null)
 	const [anchorEl, setAnchorEl] = useState(null)
 	const [name, setName] = useState('')
-	const [dialogOpen, setDialogOpen] = useState(false)
 	const [pickerBgColorInt, setPickerBgColorInt] = useState(pickerBgColor)
 
 	const defaultColors: any = {}
@@ -52,10 +51,10 @@ const GradientPicker = ({
 
 	useClickOutside(popover, handleClose)
 
-	const handleDeleteDialog = () => {
-		setAnchorEl(null)
-		setDialogOpen(true)
-	}
+	// const handleDeleteDialog = () => {
+	// 	setAnchorEl(null)
+	// 	setDialogOpen(true)
+	// }
 	const open = Boolean(anchorEl)
 	const id = open ? 'simple-popper' : undefined
 
@@ -184,10 +183,6 @@ const GradientPicker = ({
 					</div>
 				</div>
 			</Popper>
-			{/* <DeleteColorsDialog
-        setDialogOpen={setDialogOpen}
-        dialogOpen={dialogOpen}
-      /> */}
 		</div>
 	)
 }
