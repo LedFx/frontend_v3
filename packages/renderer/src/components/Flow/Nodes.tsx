@@ -242,7 +242,7 @@ export const AddDeviceNode = () => {
 					</IconButton>
 				</Tooltip>
 				<Box sx={{ justifyContent: 'flex-end', display: 'flex', width: '100%' }}>
-					<Chip label="Output" onDelete={} variant="filled" disabled deleteIcon={<CellTower />} />
+					<Chip label="Output" onDelete={()=>{}} variant="filled" disabled deleteIcon={<CellTower />} />
 				</Box>
 			</CardActions>
 			{CreateDeviceDialog({
