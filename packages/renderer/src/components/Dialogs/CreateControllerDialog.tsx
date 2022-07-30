@@ -64,6 +64,7 @@ export const CreateControllerDialog = (props: CreateControllerDialogProps) => {
 					<Slider
 						min={controllerSchema['framerate'].validation.min}
 						max={controllerSchema['framerate'].validation.max}
+						defaultValue={60}
 						valueLabelDisplay="auto"
 						step={5}
 						marks
