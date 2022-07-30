@@ -30,7 +30,7 @@ const freqMarks = [
 		value: logIt(10000),
 		label: 'Highs, Percussion',
 	},
-];
+]
 
 export const EffectSchemaForm = (effect: effect | undefined) => {
 	const defaultEffectConfig = () => {
@@ -48,7 +48,7 @@ export const EffectSchemaForm = (effect: effect | undefined) => {
 		store.api.globalEffectConfig
 	)
 	const setConfig = useStore((store) => effect ?
-		(newConfig: object) => store.api.setEffect({ ...effect, "base_config": { ...config, ...newConfig } }) :
+		(newConfig: object) => store.api.setEffect({ ...effect, 'base_config': { ...config, ...newConfig } }) :
 		store.api.setGlobalEffectConfig
 	)
 
@@ -72,7 +72,7 @@ export const EffectSchemaForm = (effect: effect | undefined) => {
 					}}
 					onChangeCommitted={async (event) => {
 						if (effect === undefined) {
-							await Ledfx("/api/effects/global", "PUT", {
+							await Ledfx('/api/effects/global', 'PUT', {
 								[key]: config[key]
 							})
 						} else {
@@ -88,10 +88,10 @@ export const EffectSchemaForm = (effect: effect | undefined) => {
 			</Frame>)
 	}
 
-	const Picker = (props: { type: "palette" | "background_color" }) => {
+	const Picker = (props: { type: 'palette' | 'background_color' }) => {
 		const { type } = props
 		const [open, setOpen] = useState(false)
-		const predefs = type == "palette" ? palettes : colors
+		const predefs = type == 'palette' ? palettes : colors
 
 		return (schema.base[type] &&
 			<Frame
@@ -100,8 +100,8 @@ export const EffectSchemaForm = (effect: effect | undefined) => {
 			>
 				<Button
 					style={{
-						width: "100%",
-						height: "40px",
+						width: '100%',
+						height: '40px',
 						background: config.hasOwnProperty(type) && (predefs[config[type].toLowerCase()] || config[type])
 					}}
 					onClick={() => { setOpen(true) }}
@@ -120,8 +120,8 @@ export const EffectSchemaForm = (effect: effect | undefined) => {
 						debounce
 						debounceMS={200}
 						format="rgb"
-						gradient={type == "palette"}
-						solid={type == "background_color"}
+						gradient={type == 'palette'}
+						solid={type == 'background_color'}
 						onChange={async (c) => {
 							setConfig({
 								[type]: c
@@ -129,14 +129,14 @@ export const EffectSchemaForm = (effect: effect | undefined) => {
 							effect !== undefined ? await Ledfx('/api/effects', 'PUT', {
 								'id': effect.id,
 								'base_config': { [type]: c }
-							}) : await Ledfx("/api/effects/global", "PUT", {
+							}) : await Ledfx('/api/effects/global', 'PUT', {
 								[type]: c
 							})
 						}}
 						popupWidth={288}
 						showAlpha={false}
 						value={config.hasOwnProperty(type) && (predefs[config[type].toLowerCase()] || config[type])}
-						defaultColors={type == "palette" ? Object.values(palettes) : Object.values(colors)}
+						defaultColors={type == 'palette' ? Object.values(palettes) : Object.values(colors)}
 					/>
 				</Dialog>
 			</Frame>
@@ -147,10 +147,10 @@ export const EffectSchemaForm = (effect: effect | undefined) => {
 		const [value, setValue] = useState([
 			logIt(config.freq_min),
 			logIt(config.freq_max),
-		]);
+		])
 
 		const formatFreq = (f: number) => {
-			let hz = hzIt(f)
+			const hz = hzIt(f)
 			return `${hz > 1000 ? `${Math.round(hz / 1000)} kHz` : `${Math.round(hz)} Hz`}`
 		}
 		return (
@@ -173,8 +173,8 @@ export const EffectSchemaForm = (effect: effect | undefined) => {
 						const hzmin = hzIt(val[0])
 						const hzmax = hzIt(val[1])
 						setConfig({
-							"freq_min": hzmin,
-							"freq_max": hzmax
+							'freq_min': hzmin,
+							'freq_max': hzmax
 						})
 					}}
 					onChangeCommitted={async (_: any, v: number | number[]) => {
@@ -182,18 +182,18 @@ export const EffectSchemaForm = (effect: effect | undefined) => {
 						const hzmin = hzIt(val[0])
 						const hzmax = hzIt(val[1])
 						setConfig({
-							"freq_min": hzmin,
-							"freq_max": hzmax
+							'freq_min': hzmin,
+							'freq_max': hzmax
 						})
 						effect !== undefined ? await Ledfx('/api/effects', 'PUT', {
 							'id': effect.id,
 							'base_config': {
-								"freq_min": hzmin,
-								"freq_max": hzmax
+								'freq_min': hzmin,
+								'freq_max': hzmax
 							}
-						}) : await Ledfx("/api/effects/global", "PUT", {
-							"freq_min": hzmin,
-							"freq_max": hzmax
+						}) : await Ledfx('/api/effects/global', 'PUT', {
+							'freq_min': hzmin,
+							'freq_max': hzmax
 						})
 					}}
 				/>
@@ -218,7 +218,7 @@ export const EffectSchemaForm = (effect: effect | undefined) => {
 						effect !== undefined ? await Ledfx('/api/effects', 'PUT', {
 							'id': effect.id,
 							'base_config': { [key]: config[key] },
-						}) : await Ledfx("/api/effects/global", "PUT", {
+						}) : await Ledfx('/api/effects/global', 'PUT', {
 							[key]: config[key]
 						})
 					}} />
@@ -246,13 +246,13 @@ export const EffectSchemaForm = (effect: effect | undefined) => {
 				<Grid item xs={6}>
 					{floatSlider('saturation', InvertColorsOff, InvertColors)}
 				</Grid>
-				{(!effect || (effect && schema.types[effect.type].category == "Audio Reactive")) &&
+				{(!effect || (effect && schema.types[effect.type].category == 'Audio Reactive')) &&
 					<Grid item xs={12}>
 						{freqRange()}
 					</Grid>
 				}
 				<Grid item xs={6}>
-					{Picker({ type: "palette" })}
+					{Picker({ type: 'palette' })}
 				</Grid>
 				<Grid item xs={3}>
 					{boolEntry('flip')}
@@ -261,7 +261,7 @@ export const EffectSchemaForm = (effect: effect | undefined) => {
 					{boolEntry('mirror')}
 				</Grid>
 				<Grid item xs={6}>
-					{Picker({ type: "background_color" })}
+					{Picker({ type: 'background_color' })}
 				</Grid>
 				<Grid item xs={6}>
 					{floatSlider('background_brightness', BrightnessLow, BrightnessHigh)}

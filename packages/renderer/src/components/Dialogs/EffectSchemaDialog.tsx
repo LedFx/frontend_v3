@@ -13,7 +13,7 @@ export const EffectSchemaDialog = (props: EffectSchemaProps) => {
 
 	return (
 		<Dialog open={open} onClose={handleclose}>
-			<DialogTitle textTransform="capitalize">{effect? `${effect.type} effect - settings` : "Modify settings for all effects"}</DialogTitle>
+			<DialogTitle textTransform="capitalize">{effect? `${effect.type} effect - settings` : 'Modify settings for all effects'}</DialogTitle>
 			<DialogContent>
 				{EffectSchemaForm(effect)}
 			</DialogContent>
