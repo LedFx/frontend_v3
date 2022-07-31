@@ -50,6 +50,7 @@ export const EffectSchemaForm = (effect: effect | undefined) => {
 		(newConfig: object) => store.api.setEffect({ ...effect, 'base_config': { ...config, ...newConfig } }) :
 		store.api.setGlobalEffectConfig
 	)
+	const [pickerOpen, setPickerOpen] = useState(false)
 
 	const floatSlider = (key: keyof effectConfig, StartIcon: any, EndIcon: any) => {
 		return (schema && schema.base[key] &&// this prevents global effects from working?
@@ -89,7 +90,6 @@ export const EffectSchemaForm = (effect: effect | undefined) => {
 
 	const Picker = (props: { type: 'palette' | 'background_color' }) => {
 		const { type } = props
-		const [open, setOpen] = useState(false)
 		const predefs = type == 'palette' ? palettes : colors
 
 		return (schema.base[type] &&
@@ -103,12 +103,12 @@ export const EffectSchemaForm = (effect: effect | undefined) => {
 						height: '40px',
 						background: config.hasOwnProperty(type) && (predefs[config[type].toLowerCase()] || config[type])
 					}}
-					onClick={() => { setOpen(true) }}
+					onClick={() => { setPickerOpen(true) }}
 					startIcon={<Edit />}
 				/>
 				<Dialog
-					open={open}
-					onClose={() => { setOpen(false) }}
+					pickerOpen={pickerOpen}
+					onClose={() => { setPickerOpen(false) }}
 				>
 					<ReactGPicker
 						showGradientAngle={false}
@@ -219,7 +219,7 @@ export const EffectSchemaForm = (effect: effect | undefined) => {
 			</Frame>)
 	}
 
-	return (
+	return ( schema &&
 		<>
 			<Grid container alignItems="stretch" spacing={2}>
 				<Grid item xs={6}>

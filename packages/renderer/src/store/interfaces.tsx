@@ -104,3 +104,16 @@ export interface deviceSchema {
     impl: Record<string, schemaEntry>
     types: Record<string, deviceInfo>
 }
+
+// audio
+
+export interface audioDevice {
+    "id": string
+    "hostapi": string
+    "sample_rate": number
+    "name": string
+    "channels_in": number
+    "channels_out": number
+    "is_default": boolean
+    "source": string
+}

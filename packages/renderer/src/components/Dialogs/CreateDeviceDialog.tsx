@@ -2,7 +2,6 @@ import { Ledfx } from '@/api/ledfx'
 import { device } from '@/store/interfaces'
 import { useStore } from '@/store/useStore'
 import { Box, Button, Dialog, DialogActions, DialogContent, DialogTitle, Paper, Step, StepContent, StepLabel, Stepper, Typography } from '@mui/material'
-import * as React from 'react'
 import { useState } from 'react'
 import { DeviceSchemaForm } from '../SchemaForm/DeviceSchemaForm'
 
@@ -20,7 +19,7 @@ export const CreateDeviceDialog = (props: CreateDeviceDialogProps) => {
 		<Dialog open={open} onClose={handleClose} maxWidth="xl">
 			<DialogTitle>{id === undefined ? 'Create' : 'Configure'} Device</DialogTitle>
 			<DialogContent>
-				{DeviceSchemaForm({ id: id })}
+				{/* {DeviceSchemaForm({ id: id })} */}
 			</DialogContent>
 			<DialogActions>
 				<Button disabled={!valid} variant="outlined" onClick={async () => {
@@ -55,7 +54,7 @@ const steps = [
 ]
 
 export default function VerticalLinearStepper() {
-	const [activeStep, setActiveStep] = React.useState(0)
+	const [activeStep, setActiveStep] = useState(0)
 
 	const handleNext = () => {
 		setActiveStep((prevActiveStep) => prevActiveStep + 1)
