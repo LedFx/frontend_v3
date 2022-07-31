@@ -2,7 +2,8 @@ import { Ledfx } from '@/api/ledfx'
 import { effect, effectConfig } from '@/store/interfaces'
 import { useStore } from '@/store/useStore'
 import { AutoMode, BlurOff, BlurOn, BrightnessHigh, BrightnessLow, DoNotDisturb, Edit, FlashOff, FlashOn, InvertColors, InvertColorsOff, Timer, TimerOff } from '@mui/icons-material'
-import { Button, Dialog, Grid, Slider, Switch } from '@mui/material'
+import { Button, Dialog, Grid, IconButton, Slider, Switch } from '@mui/material'
+import { palette } from '@mui/system'
 import { useState } from 'react'
 import ReactGPicker from 'react-gcolor-picker'
 import Frame from '../Frame'
@@ -38,6 +39,8 @@ export const EffectSchemaForm = (effect: effect | undefined) => {
 			{}
 		)
 	}
+	const [paletteOpen, setPaletteOpen] = useState(false)
+	const [bkgOpen, setBkgOpen] = useState(false)
 
 	const schema = useStore((store) => store.api.schema.effect)
 	const colors = useStore((store) => store.api.colors)
@@ -50,7 +53,6 @@ export const EffectSchemaForm = (effect: effect | undefined) => {
 		(newConfig: object) => store.api.setEffect({ ...effect, 'base_config': { ...config, ...newConfig } }) :
 		store.api.setGlobalEffectConfig
 	)
-	const [pickerOpen, setPickerOpen] = useState(false)
 
 	const floatSlider = (key: keyof effectConfig, StartIcon: any, EndIcon: any) => {
 		return (schema && schema.base[key] &&// this prevents global effects from working?
@@ -59,7 +61,23 @@ export const EffectSchemaForm = (effect: effect | undefined) => {
 				tip={schema.base[key].description}
 				style={{ columnGap: 15 }}
 			>
-				<StartIcon />
+				<IconButton onClick={async () => {
+					setConfig({
+						[key]: schema.base[key].validation.min
+					})
+					if (effect === undefined) {
+						await Ledfx('/api/effects/global', 'PUT', {
+							[key]: schema.base[key].validation.min
+						})
+					} else {
+						await Ledfx('/api/effects', 'PUT', {
+							'id': effect.id,
+							'base_config': { [key]: schema.base[key].validation.min }
+						})
+					}
+				}}>
+					<StartIcon />
+				</IconButton>
 				<Slider
 					min={schema.base[key].validation.min}
 					max={schema.base[key].validation.max}
@@ -84,12 +102,28 @@ export const EffectSchemaForm = (effect: effect | undefined) => {
 					}}
 
 				/>
-				<EndIcon />
+				<IconButton onClick={async () => {
+					setConfig({
+						[key]: schema.base[key].validation.max
+					})
+					if (effect === undefined) {
+						await Ledfx('/api/effects/global', 'PUT', {
+							[key]: schema.base[key].validation.max
+						})
+					} else {
+						await Ledfx('/api/effects', 'PUT', {
+							'id': effect.id,
+							'base_config': { [key]: schema.base[key].validation.max }
+						})
+					}
+				}}>
+					<EndIcon />
+				</IconButton>
 			</Frame>)
 	}
 
-	const Picker = (props: { type: 'palette' | 'background_color' }) => {
-		const { type } = props
+	const Picker = (props: { type: 'palette' | 'background_color', open: boolean, setOpen }) => {
+		const { type, open, setOpen } = props
 		const predefs = type == 'palette' ? palettes : colors
 
 		return (schema.base[type] &&
@@ -103,18 +137,19 @@ export const EffectSchemaForm = (effect: effect | undefined) => {
 						height: '40px',
 						background: config.hasOwnProperty(type) && (predefs[config[type].toLowerCase()] || config[type])
 					}}
-					onClick={() => { setPickerOpen(true) }}
+					onClick={() => { setOpen(true) }}
 					startIcon={<Edit />}
 				/>
 				<Dialog
-					pickerOpen={pickerOpen}
-					onClose={() => { setPickerOpen(false) }}
+					open={open}
+					onClose={() => { setOpen(false) }}
 				>
 					<ReactGPicker
 						showGradientAngle={false}
 						showGradientMode={false}
 						showGradientPosition={false}
 						showGradientStops={true}
+						showInputs={false}
 						colorBoardHeight={150}
 						debounce
 						debounceMS={200}
@@ -219,7 +254,7 @@ export const EffectSchemaForm = (effect: effect | undefined) => {
 			</Frame>)
 	}
 
-	return ( schema &&
+	return (schema &&
 		<>
 			<Grid container alignItems="stretch" spacing={2}>
 				<Grid item xs={6}>
@@ -246,7 +281,7 @@ export const EffectSchemaForm = (effect: effect | undefined) => {
 					</Grid>
 				}
 				<Grid item xs={6}>
-					{Picker({ type: 'palette' })}
+					{Picker({ type: 'palette', open: paletteOpen, setOpen: setPaletteOpen })}
 				</Grid>
 				<Grid item xs={3}>
 					{boolEntry('flip')}
@@ -255,7 +290,7 @@ export const EffectSchemaForm = (effect: effect | undefined) => {
 					{boolEntry('mirror')}
 				</Grid>
 				<Grid item xs={6}>
-					{Picker({ type: 'background_color' })}
+					{Picker({ type: 'background_color', open: bkgOpen, setOpen: setBkgOpen })}
 				</Grid>
 				<Grid item xs={6}>
 					{floatSlider('background_brightness', BrightnessLow, BrightnessHigh)}
