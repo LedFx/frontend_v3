@@ -39,7 +39,7 @@ jobs:
         env:
           release_version: ${{ steps.package-version.outputs.current-version}}
           REACT_APP_VERSION: ${{ steps.package-version.outputs.current-version}}
-        run: GH_TOKEN=${{secrets.GH_TOKEN}} yarn dist -p "never"
+        run: yarn build
       - name: Preparing Archive
         run: |
           mv dist frontend_v3
