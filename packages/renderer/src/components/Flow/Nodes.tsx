@@ -135,18 +135,18 @@ export const DeviceNode = (node: { data: device; }) => {
 
 function ConnectionIcon(state: deviceState) {
 	switch (state) {
-	case deviceState.Connected:
-		return <Tooltip arrow title="Connected" color='primary'>
-			<SignalWifiStatusbar4BarIcon />
-		</Tooltip>
-	case deviceState.Connecting:
-		return <Tooltip arrow title="Connecting" color='disabled'>
-			<WifiFindIcon />
-		</Tooltip>
-	default:
-		return <Tooltip arrow title="Disconnected" color='disabled'>
-			<SignalWifiBadIcon />
-		</Tooltip>
+		case deviceState.Connected:
+			return <Tooltip arrow title="Connected" color='primary'>
+				<SignalWifiStatusbar4BarIcon />
+			</Tooltip>
+		case deviceState.Connecting:
+			return <Tooltip arrow title="Connecting" color='disabled'>
+				<WifiFindIcon />
+			</Tooltip>
+		default:
+			return <Tooltip arrow title="Disconnected" color='disabled'>
+				<SignalWifiBadIcon />
+			</Tooltip>
 	}
 }
 
@@ -173,7 +173,7 @@ export const AddEffectNode = () => {
 						</IconButton>
 					</Tooltip>
 					<Box sx={{ justifyContent: 'flex-end', display: 'flex', width: '100%' }}>
-						<Chip label="Sends pixels to" onDelete={() => { }} variant="filled" disabled deleteIcon={<ArrowCircleRight />} />
+						<Chip label="Sends pixels to" onDelete={() => { null }} variant="filled" disabled deleteIcon={<ArrowCircleRight />} />
 					</Box>
 				</CardActions>
 			</Card>
@@ -213,7 +213,7 @@ export const AddControllerNode = () => {
 					</IconButton>
 				</Tooltip>
 				<Box sx={{ justifyContent: 'flex-end', display: 'flex', width: '100%' }}>
-					<Chip label="Sends pixels to" onDelete={() => { }} variant="filled" disabled deleteIcon={<ArrowCircleRight />} />
+					<Chip label="Sends pixels to" onDelete={() => { null }} variant="filled" disabled deleteIcon={<ArrowCircleRight />} />
 				</Box>
 			</CardActions>
 			{CreateControllerDialog({
@@ -240,7 +240,7 @@ export const AddDeviceNode = () => {
 					</IconButton>
 				</Tooltip>
 				<Box sx={{ justifyContent: 'flex-end', display: 'flex', width: '100%' }}>
-					<Chip label="Output" onDelete={() => { }} variant="filled" disabled deleteIcon={<CellTower />} />
+					<Chip label="Output" onDelete={() => { null }} variant="filled" disabled deleteIcon={<CellTower />} />
 				</Box>
 			</CardActions>
 			{CreateDeviceDialog(dialogOpen, () => setDialogOpen(false))}
