@@ -18,6 +18,7 @@ import { Handle, Position } from 'react-flow-renderer'
 import { CreateControllerDialog } from '../Dialogs/CreateControllerDialog'
 import { CreateDeviceDialog } from '../Dialogs/CreateDeviceDialog'
 import { CreateEffectDialog } from '../Dialogs/CreateEffectDialog'
+import { EditDeviceDialog } from '../Dialogs/EditDeviceDialog'
 import { EffectSchemaDialog } from '../Dialogs/EffectSchemaDialog'
 
 const nodeWidth = '300px'
@@ -104,33 +105,31 @@ export const DeviceNode = (node: { data: device; }) => {
 	const [open, setOpen] = useState(false)
 	const device = node.data as device
 	return (
-		<Card variant="outlined" sx={{ 'width': nodeWidth, 'height': nodeHeight, cursor: 'default' }}>
-			<CardContent>
-				<Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>{device.id}</Typography>
-				<Typography noWrap variant="h5">{device.base_config.name}</Typography>
-			</CardContent>
-			<CardActions disableSpacing>
-				<IconButton aria-label="Status">
-					{device.state === undefined ? null : ConnectionIcon(device.state)}
-				</IconButton>
-				<Tooltip arrow title="Configure">
-					<IconButton aria-label="Configure" onClick={() => setOpen(!open)}>
-						<SettingsIcon />
+		<>
+			<Card variant="outlined" sx={{ 'width': nodeWidth, 'height': nodeHeight, cursor: 'default' }}>
+				<CardContent>
+					<Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>{device.id}</Typography>
+					<Typography noWrap variant="h5">{device.base_config.name}</Typography>
+				</CardContent>
+				<CardActions disableSpacing>
+					<IconButton aria-label="Status">
+						{device.state === undefined ? null : ConnectionIcon(device.state)}
 					</IconButton>
-				</Tooltip>
-				<Tooltip arrow title="Delete">
-					<IconButton aria-label="Delete">
-						<DeleteIcon />
-					</IconButton>
-				</Tooltip>
-			</CardActions>
-			<Handle type="target" position={Position.Left} />
-			{CreateDeviceDialog({
-				id: device.id,
-				open: open,
-				handleClose: () => setOpen(false)
-			})}
-		</Card>
+					<Tooltip arrow title="Configure">
+						<IconButton aria-label="Configure" onClick={() => setOpen(!open)}>
+							<SettingsIcon />
+						</IconButton>
+					</Tooltip>
+					<Tooltip arrow title="Delete">
+						<IconButton aria-label="Delete" onClick={async (event: any) => { event.stopPropagation(); Ledfx(`/api/devices?id=${device.id}`, 'DELETE') }}>
+							<DeleteIcon />
+						</IconButton>
+					</Tooltip>
+				</CardActions>
+				<Handle type="target" position={Position.Left} />
+			</Card>
+			{EditDeviceDialog(open, () => { setOpen(false) }, device)}
+		</>
 	)
 }
 
@@ -226,7 +225,7 @@ export const AddControllerNode = () => {
 }
 
 export const AddDeviceNode = () => {
-	const [open, setOpen] = useState(false)
+	const [dialogOpen, setDialogOpen] = useState(false)
 
 	return (
 		<Card variant="outlined" sx={{ 'width': nodeWidth, 'height': '150px', cursor: 'default' }}>
@@ -236,19 +235,15 @@ export const AddDeviceNode = () => {
 			</CardContent>
 			<CardActions disableSpacing>
 				<Tooltip arrow title="Add Device">
-
-					<IconButton aria-label="Add Device" onClick={() => setOpen(!open)}>
+					<IconButton aria-label="Add Device" onClick={() => setDialogOpen(true)}>
 						<AddCircleIcon />
 					</IconButton>
 				</Tooltip>
 				<Box sx={{ justifyContent: 'flex-end', display: 'flex', width: '100%' }}>
-					<Chip label="Output" onDelete={()=>{}} variant="filled" disabled deleteIcon={<CellTower />} />
+					<Chip label="Output" onDelete={() => { }} variant="filled" disabled deleteIcon={<CellTower />} />
 				</Box>
 			</CardActions>
-			{CreateDeviceDialog({
-				open: open,
-				handleClose: () => setOpen(false)
-			})}
+			{CreateDeviceDialog(dialogOpen, () => setDialogOpen(false))}
 		</Card>
 	)
 }

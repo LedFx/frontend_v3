@@ -237,7 +237,7 @@ export const EffectSchemaForm = (effect: effect | undefined) => {
 				tip={schema.base[key].description}
 			>
 				<Switch
-					value={!config[key]}
+					value={config[key]}
 					onChange={async (event) => {
 						console.log(event)
 						console.log(config)
@@ -246,9 +246,9 @@ export const EffectSchemaForm = (effect: effect | undefined) => {
 						})
 						effect !== undefined ? await Ledfx('/api/effects', 'PUT', {
 							'id': effect.id,
-							'base_config': { [key]: config[key] },
+							'base_config': { [key]: !config[key] },
 						}) : await Ledfx('/api/effects/global', 'PUT', {
-							[key]: config[key]
+							[key]: !config[key]
 						})
 					}} />
 			</Frame>)

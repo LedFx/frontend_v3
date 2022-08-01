@@ -41,18 +41,18 @@ export const Ledfx = async (
 					state.disconnected = false
 				})
 			)
-			return response.data || response
+		} else {
+			setState(
+				produce((state) => {
+					state.ui.snackbar = {
+						isOpen: true,
+						variant: 'error',
+						message: response.error || JSON.stringify(response),
+					}
+				})
+			)
 		}
-		// console.log('5:', response);
-		return setState(
-			produce((state) => {
-				state.ui.snackbar = {
-					isOpen: true,
-					variant: 'error',
-					message: response.error || JSON.stringify(response),
-				}
-			})
-		)
+		return response.data || response
 	} catch (error: any) {
 		if (error.message) {
 			return setState(
