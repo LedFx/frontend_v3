@@ -135,18 +135,18 @@ export const DeviceNode = (node: { data: device; }) => {
 
 function ConnectionIcon(state: deviceState) {
 	switch (state) {
-		case deviceState.Connected:
-			return <Tooltip arrow title="Connected" color='primary'>
-				<SignalWifiStatusbar4BarIcon />
-			</Tooltip>
-		case deviceState.Connecting:
-			return <Tooltip arrow title="Connecting" color='disabled'>
-				<WifiFindIcon />
-			</Tooltip>
-		default:
-			return <Tooltip arrow title="Disconnected" color='disabled'>
-				<SignalWifiBadIcon />
-			</Tooltip>
+	case deviceState.Connected:
+		return <Tooltip arrow title="Connected" color='primary'>
+			<SignalWifiStatusbar4BarIcon />
+		</Tooltip>
+	case deviceState.Connecting:
+		return <Tooltip arrow title="Connecting" color='disabled'>
+			<WifiFindIcon />
+		</Tooltip>
+	default:
+		return <Tooltip arrow title="Disconnected" color='disabled'>
+			<SignalWifiBadIcon />
+		</Tooltip>
 	}
 }
 

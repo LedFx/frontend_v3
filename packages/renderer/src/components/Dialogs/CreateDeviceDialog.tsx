@@ -53,7 +53,7 @@ const DeviceTypeCard = (props: DeviceTypeCardProps) => {
 				<Box sx={{ width: '100%', display: 'inline-flex' }}>
 					<Box sx={{ width: '100%', flexWrap: 'wrap', mr: 2 }}>
 						{Object.entries(info.protocols).map(([_, tip], i: number) => (
-							<Chip size='small' key={i} label={tip} icon={tip=='WLED' && <CheckCircle />} color={tip=='WLED'? 'success':'default'} variant="outlined" />
+							<Chip size='small' key={i} label={tip} icon={(tip=='WLED' && <CheckCircle />) || undefined} color={tip=='WLED'? 'success':'default'} variant="outlined" />
 						))}
 					</Box>
 					<Box sx={{ alignSelf: 'flex-end' }}>

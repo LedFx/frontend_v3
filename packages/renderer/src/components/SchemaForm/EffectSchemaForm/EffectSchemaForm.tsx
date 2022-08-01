@@ -5,6 +5,7 @@ import { AutoMode, BlurOff, BlurOn, BrightnessHigh, BrightnessLow, DoNotDisturb,
 import { Button, Dialog, Grid, IconButton, Slider, Switch } from '@mui/material'
 import { useState } from 'react'
 import ReactGPicker from 'react-gcolor-picker'
+import { DeepCopy } from '../DeviceSchemaForm'
 import Frame from '../Frame'
 
 // frequency slider consts
@@ -39,8 +40,7 @@ export const EffectSchemaForm = (effect: effect | undefined) => {
 	const colors = useStore((store) => store.api.colors)
 	const palettes = useStore((store) => store.api.palettes)
 	const config = useStore((store) => effect ?
-		Object.prototype.hasOwnProperty.call(store.api.effects, effect.id) && store.api.effects[effect.id].base_config :
-		store.api.globalEffectConfig
+		store.api.effects[effect.id].base_config : store.api.globalEffectConfig
 	)
 	const setConfig = useStore((store) => effect ?
 		(newConfig: object) => store.api.setEffect({ ...effect, 'base_config': { ...config, ...newConfig } }) :
@@ -55,9 +55,10 @@ export const EffectSchemaForm = (effect: effect | undefined) => {
 				style={{ columnGap: 15 }}
 			>
 				<IconButton onClick={async () => {
-					setConfig({
-						[key]: schema.base[key].validation.min
-					})
+					const newConfig = DeepCopy(config)
+					newConfig[key] = schema.base[key].validation.min
+					setConfig(newConfig)
+
 					if (effect === undefined) {
 						await Ledfx('/api/effects/global', 'PUT', {
 							[key]: schema.base[key].validation.min
@@ -77,9 +78,9 @@ export const EffectSchemaForm = (effect: effect | undefined) => {
 					step={0.01}
 					value={config[key] as number}
 					onChange={(_: Event, newValue: number | number[]) => {
-						setConfig({
-							[key]: newValue
-						})
+						const newConfig = DeepCopy(config)
+						newConfig[key] = newValue
+						setConfig(newConfig)
 					}}
 					onChangeCommitted={async () => {
 						if (effect === undefined) {
@@ -96,9 +97,9 @@ export const EffectSchemaForm = (effect: effect | undefined) => {
 
 				/>
 				<IconButton onClick={async () => {
-					setConfig({
-						[key]: schema.base[key].validation.max
-					})
+					const newConfig = DeepCopy(config)
+					newConfig[key] = schema.base[key].validation.max
+					setConfig(newConfig)
 					if (effect === undefined) {
 						await Ledfx('/api/effects/global', 'PUT', {
 							[key]: schema.base[key].validation.max
@@ -112,14 +113,15 @@ export const EffectSchemaForm = (effect: effect | undefined) => {
 				}}>
 					<EndIcon />
 				</IconButton>
-			</Frame>)
+			</Frame >
+		)
 	}
 
-	const Picker = (props: { type: 'palette' | 'background_color', open: boolean, setOpen }) => {
+	const Picker = (props: { type: 'palette' | 'background_color', open: boolean, setOpen: (open: boolean) => void }) => {
 		const { type, open, setOpen } = props
 		const predefs = type == 'palette' ? palettes : colors
 
-		return (schema.base[type] &&
+		return (schema.base[type] && config && Object.prototype.hasOwnProperty.call(config, type) &&
 			<Frame
 				title={schema.base[type].title}
 				tip={schema.base[type].description}
@@ -128,7 +130,7 @@ export const EffectSchemaForm = (effect: effect | undefined) => {
 					style={{
 						width: '100%',
 						height: '40px',
-						background: Object.prototype.hasOwnProperty.call(config, type) && (predefs[config[type].toLowerCase()] || config[type])
+						background: (predefs[(config && config[type] || '').toLowerCase()]) || config[type] || ''
 					}}
 					onClick={() => { setOpen(true) }}
 					startIcon={<Edit />}
@@ -150,9 +152,9 @@ export const EffectSchemaForm = (effect: effect | undefined) => {
 						gradient={type == 'palette'}
 						solid={type == 'background_color'}
 						onChange={async (c) => {
-							setConfig({
-								[type]: c
-							})
+							const newConfig = DeepCopy(config)
+							newConfig[type] = c
+							setConfig(newConfig)
 							effect !== undefined ? await Ledfx('/api/effects', 'PUT', {
 								'id': effect.id,
 								'base_config': { [type]: c }
@@ -162,7 +164,7 @@ export const EffectSchemaForm = (effect: effect | undefined) => {
 						}}
 						popupWidth={288}
 						showAlpha={false}
-						value={Object.prototype.hasOwnProperty.call(config, type) && (predefs[config[type].toLowerCase()] || config[type])}
+						value={(predefs[(config && config[type] || '').toLowerCase()] || config[type] || '')}
 						defaultColors={type == 'palette' ? Object.values(palettes) : Object.values(colors)}
 					/>
 				</Dialog>
@@ -175,7 +177,7 @@ export const EffectSchemaForm = (effect: effect | undefined) => {
 			const hz = hzIt(f)
 			return `${hz > 1000 ? `${Math.round(hz / 1000)} kHz` : `${Math.round(hz)} Hz`}`
 		}
-		return (
+		return (config &&
 			<Frame
 				title="Audio Range"
 				tip="Reactive audio frequency range"
@@ -192,21 +194,19 @@ export const EffectSchemaForm = (effect: effect | undefined) => {
 					getAriaValueText={formatFreq}
 					onChange={(_: Event, v: any) => {
 						const val = v as number[]
-						const hzmin = hzIt(val[0])
-						const hzmax = hzIt(val[1])
-						setConfig({
-							'freq_min': hzmin,
-							'freq_max': hzmax
-						})
+						const newConfig = DeepCopy(config)
+						newConfig['freq_min'] = hzIt(val[0])
+						newConfig['freq_min'] = hzIt(val[1])
+						setConfig(newConfig)
 					}}
 					onChangeCommitted={async (_: any, v: number | number[]) => {
 						const val = v as number[]
 						const hzmin = hzIt(val[0])
 						const hzmax = hzIt(val[1])
-						setConfig({
-							'freq_min': hzmin,
-							'freq_max': hzmax
-						})
+						const newConfig = DeepCopy(config)
+						newConfig['freq_min'] = hzmin
+						newConfig['freq_min'] = hzmax
+						setConfig(newConfig)
 						effect !== undefined ? await Ledfx('/api/effects', 'PUT', {
 							'id': effect.id,
 							'base_config': {
@@ -223,7 +223,7 @@ export const EffectSchemaForm = (effect: effect | undefined) => {
 		)
 	}
 
-	const boolEntry = (key: string) => {
+	const boolEntry = (key: keyof effectConfig) => {
 		return (schema.base[key] &&
 			<Frame
 				title={schema.base[key].title}
@@ -231,12 +231,10 @@ export const EffectSchemaForm = (effect: effect | undefined) => {
 			>
 				<Switch
 					value={config[key]}
-					onChange={async (event) => {
-						console.log(event)
-						console.log(config)
-						setConfig({
-							[key]: !config[key]
-						})
+					onChange={async () => {
+						const newConfig = DeepCopy(config)
+						newConfig[key] = !config[key]
+						setConfig(newConfig)
 						effect !== undefined ? await Ledfx('/api/effects', 'PUT', {
 							'id': effect.id,
 							'base_config': { [key]: !config[key] },

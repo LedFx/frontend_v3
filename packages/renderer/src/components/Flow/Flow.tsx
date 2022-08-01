@@ -1,7 +1,7 @@
 import { Ledfx } from '@/api/ledfx'
 import { VariantType } from 'notistack'
 import { useEffect } from 'react'
-import ReactFlow, { Background, Edge, Position, useEdgesState, useNodesState } from 'react-flow-renderer'
+import ReactFlow, { Background, Edge, PanOnScrollMode, Position, useEdgesState, useNodesState } from 'react-flow-renderer'
 import { useStore } from '../../store/useStore'
 import ButtonEdge from './ButtonEdge'
 import { AddControllerNode, AddDeviceNode, AddEffectNode, ControllerNode, DeviceNode, EffectNode } from './Nodes'
@@ -169,7 +169,7 @@ const Flow = () => {
 			zoomOnScroll={false}
 			panOnDrag={false}
 			panOnScroll={true}
-			panOnScrollMode='vertical'
+			panOnScrollMode={PanOnScrollMode.Vertical}
 			zoomOnPinch={false}
 			zoomOnDoubleClick={false}
 			nodesDraggable={false}
