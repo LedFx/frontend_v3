@@ -40,15 +40,19 @@ export const EffectSchemaForm = (effect: effect | undefined) => {
 	const colors = useStore((store) => store.api.colors)
 	const palettes = useStore((store) => store.api.palettes)
 	const config = useStore((store) => effect ?
-		store.api.effects[effect.id].base_config : store.api.globalEffectConfig
+		Object.prototype.hasOwnProperty.call(store.api.effects, effect.id) && store.api.effects[effect.id].base_config : store.api.globalEffectConfig
 	)
 	const setConfig = useStore((store) => effect ?
-		(newConfig: object) => store.api.setEffect({ ...effect, 'base_config': { ...config, ...newConfig } }) :
+		(newConfig: effectConfig) => store.api.setEffect({ ...effect, 'base_config': newConfig }) :
 		store.api.setGlobalEffectConfig
 	)
 
+	if (config == false) {
+		return 
+	}
+
 	const floatSlider = (key: keyof effectConfig, StartIcon: any, EndIcon: any) => {
-		return (schema && schema.base[key] &&// this prevents global effects from working?
+		return (schema && schema.base[key] && 
 			<Frame
 				title={schema.base[key].title}
 				tip={schema.base[key].description}
@@ -245,7 +249,7 @@ export const EffectSchemaForm = (effect: effect | undefined) => {
 			</Frame>)
 	}
 
-	return (schema &&
+	return (schema && 
 		<>
 			<Grid container alignItems="stretch" spacing={2}>
 				<Grid item xs={6}>

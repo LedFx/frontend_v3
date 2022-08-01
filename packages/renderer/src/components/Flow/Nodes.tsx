@@ -13,6 +13,7 @@ import WifiFindIcon from '@mui/icons-material/WifiFind'
 import { Box, CardActions, Chip, IconButton, Tooltip, Typography } from '@mui/material'
 import Card from '@mui/material/Card'
 import CardContent from '@mui/material/CardContent'
+import './edge.css'
 import { useState } from 'react'
 import { Handle, Position } from 'react-flow-renderer'
 import { CreateControllerDialog } from '../Dialogs/CreateControllerDialog'
@@ -49,7 +50,7 @@ export const EffectNode = (node: { data: effect; }) => {
 					{/* <Popover onConfirm={async () => { event.stopPropagation(); await Ledfx(`/api/effects?id=${effect.id}`, 'DELETE') }} variant="text" /> */}
 
 				</CardActions>
-				<Handle type="source" position={Position.Right} />
+				<Handle type="source" position={Position.Right}/>
 			</Card>
 			{EffectSchemaDialog({ effect: effect, open: open, handleclose: () => setOpen(false) })}
 		</>
@@ -89,8 +90,8 @@ export const ControllerNode = (node: { data: controller; }) => {
 						</IconButton>
 					</Tooltip>
 				</CardActions>
-				<Handle type="source" position={Position.Right} />
-				<Handle type="target" position={Position.Left} />
+				<Handle type="source" position={Position.Right}/>
+				<Handle type="target" position={Position.Left}/>
 			</Card>
 			{CreateControllerDialog({
 				id: controller.id,
@@ -126,7 +127,7 @@ export const DeviceNode = (node: { data: device; }) => {
 						</IconButton>
 					</Tooltip>
 				</CardActions>
-				<Handle type="target" position={Position.Left} />
+				<Handle type="target" position={Position.Left}/>
 			</Card>
 			{EditDeviceDialog(open, () => { setOpen(false) }, device)}
 		</>
