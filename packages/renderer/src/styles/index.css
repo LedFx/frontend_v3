@@ -53,12 +53,12 @@ p {
 }
 
 .react-flow__handle {
-  width: 30px;
-  height: 30px;
-  background: #eee;
-  border: 2px solid rgb(135, 135, 135);
+  width: 30px !important;
+  height: 30px !important;
+  background: #eee !important;
+  border: 2px solid rgb(135, 135, 135) !important;
 }
 
 .react-flow__handle:hover {
-  box-shadow: 0 0 10px 10px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 0 10px 10px rgba(0, 0, 0, 0.08) !important;
 }
