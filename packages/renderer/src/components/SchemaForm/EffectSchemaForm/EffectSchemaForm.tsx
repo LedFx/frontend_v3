@@ -3,7 +3,6 @@ import { effect, effectConfig } from '@/store/interfaces'
 import { useStore } from '@/store/useStore'
 import { AutoMode, BlurOff, BlurOn, BrightnessHigh, BrightnessLow, DoNotDisturb, Edit, FlashOff, FlashOn, InvertColors, InvertColorsOff, Timer, TimerOff } from '@mui/icons-material'
 import { Button, Dialog, Grid, IconButton, Slider, Switch } from '@mui/material'
-import { palette } from '@mui/system'
 import { useState } from 'react'
 import ReactGPicker from 'react-gcolor-picker'
 import Frame from '../Frame'
@@ -33,12 +32,6 @@ const freqMarks = [
 ]
 
 export const EffectSchemaForm = (effect: effect | undefined) => {
-	const defaultEffectConfig = () => {
-		return Object.entries(schema.base).reduce(
-			(acc, [key, value]) => ({ ...acc, [key]: value.default }),
-			{}
-		)
-	}
 	const [paletteOpen, setPaletteOpen] = useState(false)
 	const [bkgOpen, setBkgOpen] = useState(false)
 

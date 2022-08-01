@@ -21,12 +21,12 @@ export const AudioDeviceDialog = (open: boolean, handleClose: () => void) => {
 					<List>
 						{
 							audioDevices.map((ad, i) => ((ad.channels_in == 1 || ad.channels_in == 2) &&
-                                <ListItem key={i} >
-                                	<ListItemText primary={ad.name} />
-                                	<Button variant="outlined" onClick={
-                                		async () => { await Ledfx('/api/bridge/set/input/local', 'PUT', { 'device_id': ad.id }); handleClose() }}
-                                	>Select</Button>
-                                </ListItem>
+								<ListItem key={i} >
+									<ListItemText primary={ad.name} />
+									<Button variant="outlined" onClick={
+										async () => { await Ledfx('/api/bridge/set/input/local', 'PUT', { 'device_id': ad.id }); handleClose() }}
+									>Select</Button>
+								</ListItem>
 							))
 						}
 					</List>

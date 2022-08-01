@@ -7,9 +7,9 @@ import { useEffect, useState } from 'react'
 import { DeviceSchemaForm } from '../SchemaForm/DeviceSchemaForm'
 
 interface DeviceTypeCardProps {
-	type: string
-	info: deviceInfo
-	onSelect: (deviceType: string) => void
+    type: string
+    info: deviceInfo
+    onSelect: (deviceType: string) => void
 }
 
 export const infoURIs: Record<string, string> = {

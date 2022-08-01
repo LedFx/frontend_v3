@@ -1,7 +1,6 @@
 import { Ledfx } from '@/api/ledfx'
 import { device } from '@/store/interfaces'
-import { useStore } from '@/store/useStore'
-import { Button, Dialog, DialogActions, DialogContent, DialogTitle, Step, Stepper } from '@mui/material'
+import { Button, Dialog, DialogActions, DialogContent, DialogTitle } from '@mui/material'
 import { useState } from 'react'
 import { DeepCopy, DeviceSchemaForm } from '../SchemaForm/DeviceSchemaForm'
 
@@ -21,24 +20,24 @@ export const EditDeviceDialog = (dialogOpen: boolean, handleClose: () => void, f
 	}
 
 	return ( device.type &&
-        <Dialog open={dialogOpen} onClose={handleClose} maxWidth="lg" fullWidth>
-        	<DialogTitle>Create Device</DialogTitle>
-        	<DialogContent>
-        		{
-        			DeviceSchemaForm({
-        				type: device.type,
-        				baseConfig: device.base_config,
-        				setBaseConfig: setBaseConfig,
-        				implConfig: device.impl_config,
-        				setImplConfig: setImplConfig,
-        			})
-        		}
-        	</DialogContent>
-        	<DialogActions>
-        		<Button variant="outlined" onClick={async () => {
-        			Ledfx('/api/devices', 'POST', device).then(response => { response && handleClose() })
-        		}}>Submit</Button>
-        	</DialogActions>
-        </Dialog>
+		<Dialog open={dialogOpen} onClose={handleClose} maxWidth="lg" fullWidth>
+			<DialogTitle>Create Device</DialogTitle>
+			<DialogContent>
+				{
+					DeviceSchemaForm({
+						type: device.type,
+						baseConfig: device.base_config,
+						setBaseConfig: setBaseConfig,
+						implConfig: device.impl_config,
+						setImplConfig: setImplConfig,
+					})
+				}
+			</DialogContent>
+			<DialogActions>
+				<Button variant="outlined" onClick={async () => {
+					Ledfx('/api/devices', 'POST', device).then(response => { response && handleClose() })
+				}}>Submit</Button>
+			</DialogActions>
+		</Dialog>
 	)
 }

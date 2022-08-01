@@ -35,16 +35,16 @@ const useStyles = makeStyles(() => ({
 }))
 
 interface FrameProps {
-	title?: string;
-	index?: number;
-	children?: React.ReactNode;
-	full?: boolean;
-	style?: React.CSSProperties;
-	required?: boolean;
-	variant?: 'outlined' | 'contained' | 'inherit';
-	className?: string;
-	disabled?: boolean;
-	tip?: string;
+    title?: string;
+    index?: number;
+    children?: React.ReactNode;
+    full?: boolean;
+    style?: React.CSSProperties;
+    required?: boolean;
+    variant?: 'outlined' | 'contained' | 'inherit';
+    className?: string;
+    disabled?: boolean;
+    tip?: string;
 }
 
 const Frame = ({
