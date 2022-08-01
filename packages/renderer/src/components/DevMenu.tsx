@@ -43,6 +43,7 @@ const DevMenu = () => {
 
 	useEffect(() => {
 		if (ipcRenderer) {
+			// eslint-disable-next-line
 			async function getDarkMode() {
 				const dark = await ipcRenderer.sendSync('get-darkmode')
 				setDarkMode(dark === 'yes')

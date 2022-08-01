@@ -10,12 +10,14 @@ import pkg from '../../package.json'
 // Conditionally include the dev tools installer to load React Dev Tools
 let installExtension: any, REACT_DEVELOPER_TOOLS: any, REDUX_DEVTOOLS: any // NEW!
 if (!app.isPackaged) {
+	// eslint-disable-next-line
 	const devTools = require('electron-devtools-installer')
 	installExtension = devTools.default
 	REACT_DEVELOPER_TOOLS = devTools.REACT_DEVELOPER_TOOLS
 	REDUX_DEVTOOLS = devTools.REDUX_DEVTOOLS
 }
 
+// eslint-disable-next-line
 const { setupTitlebar, attachTitlebarToWindow } = require('custom-electron-titlebar/main')
 
 // Disable GPU Acceleration for Windows 7

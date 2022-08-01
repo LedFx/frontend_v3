@@ -90,7 +90,7 @@ export const DeviceSchemaForm = (props: DeviceSchemaFormProps) => {
 				</Grid>
 				{
 					Object.entries(deviceSchema.impl[type]).map(([key, schema]: [string, schemaEntry]) => {
-						if (schema.type == 'int' && schema.validation.hasOwnProperty('max') && schema.validation.hasOwnProperty('min')) {
+						if (schema.type == 'int' && Object.prototype.hasOwnProperty.call(schema.validation, 'max') && Object.prototype.hasOwnProperty.call(schema.validation, 'min')) {
 							return (
 								<Grid item xs={6}>
 									<Frame
@@ -116,7 +116,7 @@ export const DeviceSchemaForm = (props: DeviceSchemaFormProps) => {
 								</Grid>
 							)
 						}
-						if (schema.validation.hasOwnProperty('oneof')) {
+						if (Object.prototype.hasOwnProperty.call(schema.validation, 'oneof')) {
 							return (
 								<Grid item xs={6}>
 									<Frame
@@ -142,7 +142,7 @@ export const DeviceSchemaForm = (props: DeviceSchemaFormProps) => {
 								</Grid>
 							)
 						}
-						if (schema.validation.hasOwnProperty('special') && schema.validation.special == 'ip' && schema.type == 'string') {
+						if (Object.prototype.hasOwnProperty.call(schema.validation, 'special') && schema.validation.special == 'ip' && schema.type == 'string') {
 							return (
 								<Grid item xs={6}>
 									<Frame
@@ -207,7 +207,7 @@ export const DeviceSchemaForm = (props: DeviceSchemaFormProps) => {
 								</Grid>
 							)
 						}
-						if ((schema.type == 'list') && schema.validation.hasOwnProperty('special') && (schema.validation.special == 'ip')) {
+						if ((schema.type == 'list') && Object.prototype.hasOwnProperty.call(schema.validation, 'special') && (schema.validation.special == 'ip')) {
 							return (
 								<Grid item xs={6}>
 									<Frame

@@ -39,7 +39,7 @@ export const EffectSchemaForm = (effect: effect | undefined) => {
 	const colors = useStore((store) => store.api.colors)
 	const palettes = useStore((store) => store.api.palettes)
 	const config = useStore((store) => effect ?
-		store.api.effects.hasOwnProperty(effect.id) && store.api.effects[effect.id].base_config :
+		Object.prototype.hasOwnProperty.call(store.api.effects, effect.id) && store.api.effects[effect.id].base_config :
 		store.api.globalEffectConfig
 	)
 	const setConfig = useStore((store) => effect ?
@@ -128,7 +128,7 @@ export const EffectSchemaForm = (effect: effect | undefined) => {
 					style={{
 						width: '100%',
 						height: '40px',
-						background: config.hasOwnProperty(type) && (predefs[config[type].toLowerCase()] || config[type])
+						background: Object.prototype.hasOwnProperty.call(config, type) && (predefs[config[type].toLowerCase()] || config[type])
 					}}
 					onClick={() => { setOpen(true) }}
 					startIcon={<Edit />}
@@ -162,7 +162,7 @@ export const EffectSchemaForm = (effect: effect | undefined) => {
 						}}
 						popupWidth={288}
 						showAlpha={false}
-						value={config.hasOwnProperty(type) && (predefs[config[type].toLowerCase()] || config[type])}
+						value={Object.prototype.hasOwnProperty.call(config, type) && (predefs[config[type].toLowerCase()] || config[type])}
 						defaultColors={type == 'palette' ? Object.values(palettes) : Object.values(colors)}
 					/>
 				</Dialog>

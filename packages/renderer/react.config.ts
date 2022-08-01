@@ -96,6 +96,7 @@ export {
 	function builtinModulesExport(modules: string[]) {
 		return modules
 			.map((moduleId) => {
+				// eslint-disable-next-line
 				const nodeModule = require(moduleId)
 				const requireModule = `const M = require("${moduleId}");`
 				const exportDefault = 'export default M;'
