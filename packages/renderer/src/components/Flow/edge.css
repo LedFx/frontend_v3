@@ -23,7 +23,7 @@
   min-height: 40px;
 }
 
-.react-flow__handle {
+/* .react-flow__handle {
   width: 30px;
   height: 30px;
   background: #eee;
@@ -32,4 +32,4 @@
 
 .react-flow__handle:hover {
   box-shadow: 0 0 10px 10px rgba(0, 0, 0, 0.08);
-}
+} */

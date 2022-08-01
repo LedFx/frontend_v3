@@ -14,7 +14,7 @@ import { Box, CardActions, Chip, IconButton, Tooltip, Typography } from '@mui/ma
 import Card from '@mui/material/Card'
 import CardContent from '@mui/material/CardContent'
 import './edge.css'
-import { useState } from 'react'
+import { CSSProperties, useState } from 'react'
 import { Handle, Position } from 'react-flow-renderer'
 import { CreateControllerDialog } from '../Dialogs/CreateControllerDialog'
 import { CreateDeviceDialog } from '../Dialogs/CreateDeviceDialog'
@@ -24,6 +24,18 @@ import { EffectSchemaDialog } from '../Dialogs/EffectSchemaDialog'
 
 const nodeWidth = '300px'
 const nodeHeight = '160px'
+
+const handleStyle = {
+	".react-flow__handle": {
+		"width": "30px",
+		"height": "30px",
+		"background": "#eee",
+		"border": "2px solid rgb(135, 135, 135)",
+	},
+	".react-flow__handle:hover": {
+		"box-shadow": "0 0 10px 10px rgba(0, 0, 0, 0.08)"
+	}
+}
 
 export const EffectNode = (node: { data: effect; }) => {
 	const effect = node.data as effect
@@ -50,7 +62,7 @@ export const EffectNode = (node: { data: effect; }) => {
 					{/* <Popover onConfirm={async () => { event.stopPropagation(); await Ledfx(`/api/effects?id=${effect.id}`, 'DELETE') }} variant="text" /> */}
 
 				</CardActions>
-				<Handle type="source" position={Position.Right}/>
+				<Handle type="source" position={Position.Right} style={handleStyle as CSSProperties} />
 			</Card>
 			{EffectSchemaDialog({ effect: effect, open: open, handleclose: () => setOpen(false) })}
 		</>
@@ -90,8 +102,8 @@ export const ControllerNode = (node: { data: controller; }) => {
 						</IconButton>
 					</Tooltip>
 				</CardActions>
-				<Handle type="source" position={Position.Right}/>
-				<Handle type="target" position={Position.Left}/>
+				<Handle type="source" position={Position.Right} style={handleStyle as CSSProperties} />
+				<Handle type="target" position={Position.Left} style={handleStyle as CSSProperties} />
 			</Card>
 			{CreateControllerDialog({
 				id: controller.id,
@@ -127,7 +139,7 @@ export const DeviceNode = (node: { data: device; }) => {
 						</IconButton>
 					</Tooltip>
 				</CardActions>
-				<Handle type="target" position={Position.Left}/>
+				<Handle type="target" position={Position.Left} style={handleStyle as CSSProperties} />
 			</Card>
 			{EditDeviceDialog(open, () => { setOpen(false) }, device)}
 		</>
@@ -136,18 +148,18 @@ export const DeviceNode = (node: { data: device; }) => {
 
 function ConnectionIcon(state: deviceState) {
 	switch (state) {
-	case deviceState.Connected:
-		return <Tooltip arrow title="Connected" color='primary'>
-			<SignalWifiStatusbar4BarIcon />
-		</Tooltip>
-	case deviceState.Connecting:
-		return <Tooltip arrow title="Connecting" color='disabled'>
-			<WifiFindIcon />
-		</Tooltip>
-	default:
-		return <Tooltip arrow title="Disconnected" color='disabled'>
-			<SignalWifiBadIcon />
-		</Tooltip>
+		case deviceState.Connected:
+			return <Tooltip arrow title="Connected" color='primary'>
+				<SignalWifiStatusbar4BarIcon />
+			</Tooltip>
+		case deviceState.Connecting:
+			return <Tooltip arrow title="Connecting" color='disabled'>
+				<WifiFindIcon />
+			</Tooltip>
+		default:
+			return <Tooltip arrow title="Disconnected" color='disabled'>
+				<SignalWifiBadIcon />
+			</Tooltip>
 	}
 }
 
