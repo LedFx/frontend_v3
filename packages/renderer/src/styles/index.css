@@ -26,3 +26,39 @@ body {
 p {
   margin: 0.5rem;
 }
+
+.edgebutton {
+  width: 20px;
+  height: 20px;
+  background: #eee;
+  border: 2px solid rgb(135, 135, 135);
+  cursor: pointer;
+  border-radius: 50%;
+  font-size: 12px;
+  line-height: 1;
+}
+
+.edgebutton:hover {
+  box-shadow: 0 0 10px 6px rgba(0, 0, 0, 0.08);
+}
+
+.edgebutton-foreignobject body {
+  background: transparent;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 40px;
+}
+
+.react-flow__handle {
+  width: 30px;
+  height: 30px;
+  background: #eee;
+  border: 2px solid rgb(135, 135, 135);
+}
+
+.react-flow__handle:hover {
+  box-shadow: 0 0 10px 10px rgba(0, 0, 0, 0.08);
+}

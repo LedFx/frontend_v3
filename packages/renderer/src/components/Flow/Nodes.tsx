@@ -25,17 +25,15 @@ import { EffectSchemaDialog } from '../Dialogs/EffectSchemaDialog'
 const nodeWidth = '300px'
 const nodeHeight = '160px'
 
-const handleStyle = {
-	".react-flow__handle": {
-		"width": "30px",
-		"height": "30px",
-		"background": "#eee",
-		"border": "2px solid rgb(135, 135, 135)",
-	},
-	".react-flow__handle:hover": {
-		"box-shadow": "0 0 10px 10px rgba(0, 0, 0, 0.08)"
-	}
-}
+// const handleStyle = {
+// 	width: "30px",
+// 	height: "30px",
+// 	background: "#eee",
+// 	border: "2px solid rgb(135, 135, 135)",
+// 	hover: {
+// 		"box-shadow": "0 0 10px 10px rgba(0, 0, 0, 0.08)"
+// 	}
+// }
 
 export const EffectNode = (node: { data: effect; }) => {
 	const effect = node.data as effect
@@ -62,7 +60,7 @@ export const EffectNode = (node: { data: effect; }) => {
 					{/* <Popover onConfirm={async () => { event.stopPropagation(); await Ledfx(`/api/effects?id=${effect.id}`, 'DELETE') }} variant="text" /> */}
 
 				</CardActions>
-				<Handle type="source" position={Position.Right} style={handleStyle as CSSProperties} />
+				<Handle type="source" position={Position.Right} />
 			</Card>
 			{EffectSchemaDialog({ effect: effect, open: open, handleclose: () => setOpen(false) })}
 		</>
@@ -102,8 +100,8 @@ export const ControllerNode = (node: { data: controller; }) => {
 						</IconButton>
 					</Tooltip>
 				</CardActions>
-				<Handle type="source" position={Position.Right} style={handleStyle as CSSProperties} />
-				<Handle type="target" position={Position.Left} style={handleStyle as CSSProperties} />
+				<Handle type="source" position={Position.Right} />
+				<Handle type="target" position={Position.Left} />
 			</Card>
 			{CreateControllerDialog({
 				id: controller.id,
@@ -139,7 +137,7 @@ export const DeviceNode = (node: { data: device; }) => {
 						</IconButton>
 					</Tooltip>
 				</CardActions>
-				<Handle type="target" position={Position.Left} style={handleStyle as CSSProperties} />
+				<Handle type="target" position={Position.Left} />
 			</Card>
 			{EditDeviceDialog(open, () => { setOpen(false) }, device)}
 		</>
