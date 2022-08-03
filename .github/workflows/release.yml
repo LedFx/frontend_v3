@@ -42,7 +42,7 @@ jobs:
         run: yarn build
       - name: Preparing Archive
         run: |
-          mv dist frontend_v3
+          mv dist/renderer/ frontend_v3
           printf "${{ env.MESSAGES }}" >> frontend_v3/messages.md
       - name: Create Archive
         uses: thedoctor0/zip-release@master
