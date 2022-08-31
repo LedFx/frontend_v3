@@ -20,7 +20,7 @@ export const AudioDeviceDialog = (open: boolean, handleClose: () => void) => {
 				<Box sx={{ width: '100%' }}>
 					<List>
 						{
-							audioDevices.map((ad, i) => ((ad.channels_in == 1 || ad.channels_in == 2) &&
+							audioDevices.map((ad, i) => (
 								<ListItem key={i} >
 									<ListItemText primary={ad.name} />
 									<Button variant="outlined" onClick={
